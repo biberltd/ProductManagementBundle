@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreLocalizableEntity;
 
@@ -48,14 +48,14 @@ class ProductAttribute extends CoreLocalizableEntity
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductAttributeLocalization",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttributeLocalization",
      *     mappedBy="attribute"
      * )
      */
     protected $localizations;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\SiteManagementBundle\Entity\Site")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      */
     private $site;

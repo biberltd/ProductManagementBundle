@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        InvalidAttributeSetException
- * @package		BiberLtd\Core\Bundles\ProductManagementBundle\Exceptions
+ * @package		BiberLtd\Bundle\ProductManagementBundle\Exceptions
  *
  * @author		Can Berkol
  * @version     1.0.0
@@ -13,9 +13,9 @@
  * @description Exception to $set collection in product attribute related functions.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Exceptions;
+namespace BiberLtd\Bundle\ProductManagementBundle\Exceptions;
 
-use BiberLtd\Bundles\ExceptionBundle\Services;
+use BiberLtd\Bundle\ExceptionBundle\Services;
 
 class InvalidAttributeSetException extends Services\ExceptionAdapter {
     public function __construct($kernel, $msg = "", $code = 'PMB0001', Exception $previous = null) {

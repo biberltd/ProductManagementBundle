@@ -15,7 +15,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreEntity;
 
@@ -51,14 +51,14 @@ class AttributesOfProduct extends CoreEntity
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductAttribute")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute")
      * @ORM\JoinColumn(name="attribute", referencedColumnName="id", onDelete="CASCADE")
      */
     private $attribute;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", onDelete="CASCADE")
      */
     private $product;

@@ -17,9 +17,9 @@
  *
  */
 
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Controller;
+namespace BiberLtd\Bundle\ProductManagementBundle\Controller;
 
-use BiberLtd\Core\Bundles\ProductManagementBundle\Services\ProductManagementModel;
+use BiberLtd\Bundle\ProductManagementBundle\Services\ProductManagementModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpKernel\Exception,
     Symfony\Component\HttpFoundation\Response,

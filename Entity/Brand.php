@@ -1,5 +1,5 @@
 <?php
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreEntity;
 /** 
@@ -50,7 +50,7 @@ class Brand extends CoreEntity
     public $date_removed;
 
     /** 
-     * @ORM\OneToMany(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product", mappedBy="brand")
+     * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product", mappedBy="brand")
      */
     private $products;
 

@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreEntity;
 
@@ -46,14 +46,14 @@ class ProductsOfSite extends CoreEntity
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $product;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\SiteManagementBundle\Entity\Site")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $site;

@@ -41,19 +41,19 @@
  * Do not forget to implement SITE, ORDER, AND PAGINATION RELATED FUNCTIONALITY
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Services;
+namespace BiberLtd\Bundle\ProductManagementBundle\Services;
 
 /** Extends CoreModel */
 use BiberLtd\Core\CoreModel;
 /** Entities to be used */
-use BiberLtd\Core\Bundles\ProductManagementBundle\Entity as BundleEntity;
-use BiberLtd\Core\Bundles\FileManagementBundle\Entity as FileBundleEntity;
-use BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity as MLSEntity;
-use BiberLtd\Core\Bundles\SiteManagementBundle\Entity as SiteManagementEntity;
+use BiberLtd\Bundle\ProductManagementBundle\Entity as BundleEntity;
+use BiberLtd\Bundle\FileManagementBundle\Entity as FileBundleEntity;
+use BiberLtd\Bundle\MultiLanguageSupportBundle\Entity as MLSEntity;
+use BiberLtd\Bundle\SiteManagementBundle\Entity as SiteManagementEntity;
 /** Helper Models */
-use BiberLtd\Core\Bundles\FileManagementBundle\Services as FMMService;
-use BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Services as MLSService;
-use BiberLtd\Core\Bundles\SiteManagementBundle\Services as SMMService;
+use BiberLtd\Bundle\FileManagementBundle\Services as FMMService;
+use BiberLtd\Bundle\MultiLanguageSupportBundle\Services as MLSService;
+use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
 /** Core Service */
 use BiberLtd\Core\Services as CoreServices;
 use BiberLtd\Core\Exceptions as CoreExceptions;
@@ -10342,7 +10342,7 @@ class ProductManagementModel extends CoreModel{
 
     /**
      * @name            validateAndGetLocale()
-     *                  Validates $locale parameter and returns BiberLtd\Core\Bundles\MultiLanguageSupport\Entity\Language if found in database.
+     *                  Validates $locale parameter and returns BiberLtd\Bundle\MultiLanguageSupport\Entity\Language if found in database.
      *
      * @since           1.4.2
      * @version         1.4.2
@@ -10352,7 +10352,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $locale
      *
-     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Language
+     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\Language
      */
     private function validateAndGetLocale($locale){
         if (!is_string($locale) && !is_numeric($locale) && !$locale instanceof MLSEntity\Language) {
@@ -10378,7 +10378,7 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            validateAndGetProduct()
-     *                  Validates $product parameter and returns BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product if found in database.
+     *                  Validates $product parameter and returns BiberLtd\Bundle\ProductManagementBundle\Entity\Product if found in database.
      *
      * @since           1.4.0
      * @version         1.4.0
@@ -10389,7 +10389,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $product
      *
-     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product
+     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private function validateAndGetProduct($product){
         if (!is_numeric($product) && !$product instanceof BundleEntity\Product) {
@@ -10419,7 +10419,7 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            validateAndGetProductAttribute()
-     *                  Validates $attribute parameter and returns BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductAttribute if found in database.
+     *                  Validates $attribute parameter and returns BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute if found in database.
      *
      * @since           1.4.2
      * @version         1.4.2
@@ -10430,7 +10430,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $attribute
      *
-     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductAttribute
+     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute
      */
     private function validateAndGetProductAttribute($attribute){
         if (!is_numeric($attribute) && !$attribute instanceof BundleEntity\ProductAttribute) {
@@ -10455,7 +10455,7 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            validateAndGetProductCategory()
-     *                  Validates $category parameter and returns BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory if found in database.
+     *                  Validates $category parameter and returns BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory if found in database.
      *
      * @since           1.4.2
      * @version         1.4.2
@@ -10466,7 +10466,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $category
      *
-     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product
+     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private function validateAndGetProductCategory($category){
         if (!is_numeric($category) && !$category instanceof BundleEntity\ProductCategory) {

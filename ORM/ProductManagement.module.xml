@@ -640,7 +640,7 @@
     </association>
     <comment caption="ProductManagementBundle Pricing" description="attributes_of_product:195 TL&#10;attributes_of_product_category: 130 TL&#10;categories_of_product: 130 TL&#10;files_of_product: 170 TL&#10;product: 345 TL&#10;product_attribute: 105 TL&#10;product_attribute_localization: 130 TL&#10;product_attribute_values: 195 TL&#10;product_localization: 170 TL&#10;product_category: 205 TL&#10;product_category_localization: 170 TL&#10;products_of_site: 150 TL&#10;&#10;toplam: 2.095 TL" uuid="9da07e25-2a8c-47a0-a4bd-fff803791de3"/>
     <orm-attributes>
-      <attribute name="namespace">BiberLtd\Core\Bundles\ProductManagementBundle\Entity</attribute>
+      <attribute name="namespace">BiberLtd\Bundle\ProductManagementBundle\Entity</attribute>
       <attribute name="file-suffix">without-suffix</attribute>
       <attribute name="filename-format">entity-name-only</attribute>
     </orm-attributes>

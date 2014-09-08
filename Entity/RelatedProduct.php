@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use BiberLtd\Core\CoreEntity;
 use Doctrine\ORM\Mapping AS ORM;
 
@@ -30,14 +30,14 @@ class RelatedProduct extends CoreEntity
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $product;
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
      * @ORM\JoinColumn(
      *     name="related_product",
      *     referencedColumnName="id",

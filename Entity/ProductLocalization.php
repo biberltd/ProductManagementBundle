@@ -15,7 +15,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreEntity;
 
@@ -58,7 +58,7 @@ class ProductLocalization extends CoreEntity
     /** 
      * @ORM\Id
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product",
      *     inversedBy="localizations",
      *     cascade={"persist"}
      * )
@@ -68,7 +68,7 @@ class ProductLocalization extends CoreEntity
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $language;

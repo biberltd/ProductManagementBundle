@@ -15,7 +15,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreLocalizableEntity;
 
@@ -71,14 +71,14 @@ class ProductCategory extends CoreLocalizableEntity
     private $sort_order;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\FileManagementBundle\Entity\File", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
      * @ORM\JoinColumn(name="preview_image", referencedColumnName="id", nullable=false)
      */
     private $preview_image;
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory",
      *     mappedBy="parent"
      * )
      */
@@ -86,7 +86,7 @@ class ProductCategory extends CoreLocalizableEntity
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategoryLocalization",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategoryLocalization",
      *     mappedBy="category"
      * )
      */
@@ -94,7 +94,7 @@ class ProductCategory extends CoreLocalizableEntity
 
     /** 
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory",
      *     inversedBy="product_categories"
      * )
      * @ORM\JoinColumn(name="parent", referencedColumnName="id", onDelete="RESTRICT")
@@ -103,7 +103,7 @@ class ProductCategory extends CoreLocalizableEntity
 
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\SiteManagementBundle\Entity\Site")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      */
     private $site;
