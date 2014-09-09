@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        ActiveProductCategoryLocale
- * @package		BiberLtd\Core\ProductManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
  *
  * @author      Can Berkol
  *
@@ -14,8 +14,8 @@
  * @description active_product_locale
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
-use BiberLtd\Core\CoreEntity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
+use BiberLtd\Bundle\CoreBundle\CoreEntity;
 use Doctrine\ORM\Mapping AS ORM;
 
 /** 
@@ -30,14 +30,14 @@ class ActiveProductCategoryLocale extends CoreEntity
 {
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory")
      * @ORM\JoinColumn(name="product_category", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $product_category;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="locale", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $locale;

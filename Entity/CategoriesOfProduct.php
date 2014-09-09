@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        CategoriesOfProduct
- * @package		BiberLtd\Core\ProductManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
  *
  * @author      Can Berkol
  * @author		Murat Ünal
@@ -15,9 +15,9 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreEntity;
+use BiberLtd\Bundle\CoreBundle\CoreEntity;
 
 /** 
  * @ORM\Entity
@@ -42,14 +42,14 @@ class CategoriesOfProduct extends CoreEntity
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory")
      * @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
      */
     private $category;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $product;

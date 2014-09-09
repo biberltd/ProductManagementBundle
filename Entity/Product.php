@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        Product
- * @package		BiberLtd\Core\ProductManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
  *
  * @author      Can Berkol
  * @author		Murat Ünal
@@ -15,11 +15,11 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreLocalizableEntity;
+use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
 
 /**
  * @ORM\Entity
@@ -118,7 +118,7 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductLocalization",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductLocalization",
      *     mappedBy="product",
      *     cascade={"persist"}
      * )
@@ -126,25 +126,25 @@ class Product extends CoreLocalizableEntity{
     protected $localizations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\SiteManagementBundle\Entity\Site")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      */
     private $site;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\FileManagementBundle\Entity\File")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File")
      * @ORM\JoinColumn(name="preview_file", referencedColumnName="id")
      */
     private $preview_file;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\StockManagementBundle\Entity\Supplier")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\StockManagementBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Brand", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Brand", inversedBy="products")
      * @ORM\JoinColumn(name="brand", referencedColumnName="id", onDelete="CASCADE")
      */
     private $brand;

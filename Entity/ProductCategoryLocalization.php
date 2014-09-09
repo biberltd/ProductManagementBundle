@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        ProductCategoryLocalization
- * @package		BiberLtd\Core\ProductManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
  *
  * @author		Murat Ünal
  *
@@ -14,9 +14,9 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ProductManagementBundle\Entity;
+namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreEntity;
+use BiberLtd\Bundle\CoreBundle\CoreEntity;
 
 /** 
  * @ORM\Entity
@@ -57,7 +57,7 @@ class ProductCategoryLocalization extends CoreEntity
     /** 
      * @ORM\Id
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory",
+     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory",
      *     inversedBy="localizations"
      * )
      * @ORM\JoinColumn(name="category", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -65,7 +65,7 @@ class ProductCategoryLocalization extends CoreEntity
     private $category;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @ORM\Id
      */
