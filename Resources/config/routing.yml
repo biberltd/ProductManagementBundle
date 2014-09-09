@@ -1,3 +1,31 @@
-biber_ltd_product_management_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: BiberLtdProductManagementBundle:Default:index }
+biber_ltd_core_bundles_product_management:
+    pattern:  products/{sortcolumn}/{sortorder}/{product_number}
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productList }
+
+    pattern:  products/edit/{product_id_or_code}
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productEdit }
+
+    pattern:  products/new
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productNew }
+    pattern:  products/delete
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productDelete }
+    pattern:  product_categories/{sortcolumn}/{sortorder}/{page_number}
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productCategoryList }
+    pattern:  product_categories/edit/{id}
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productCategoryEdit }
+    pattern:  product_categories/new
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productCategoryNew }
+    pattern:  product_categories/delete
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productCategoryDelete }
+    pattern:  product_attributes/{sortcolumn}/{sortorder}/{page_number}
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productAttributeList }
+    pattern:  product_attributes/edit/{id}
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productAttributeEdit }
+    pattern:  product_attributes/new
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productAttributeNew }
+    pattern:  product_attributes/delete
+    defaults: { _controller: BiberLtdCoreBundlesContentManagementBundle:Manage:productAttributeDelete }
+    pattern: brand
+    defaults: {_controller: BiberLtdCoreBundlesProductManagementBundle:Test:test}
+
+    

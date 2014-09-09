@@ -1,7 +1,4 @@
-parameters:
-#    biber_ltd_product_management.example.class: BiberLtd\Bundle\ProductManagementBundle\Example
-
 services:
-#    biber_ltd_product_management.example:
-#        class: %biber_ltd_product_management.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    productmanagement.model:
+            class:        BiberLtd\Bundle\ProductManagementBundle\Services\ProductManagementModel
+            arguments:    [@kernel, "default", "doctrine"]
