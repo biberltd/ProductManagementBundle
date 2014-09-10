@@ -1,5 +1,5 @@
 {
-    "name": "biberltd/productmanagementbundle",
+    "name": "biberltd/product-management-bundle",
     "type": "symfony-bundle",
     "description": "",
     "keywords": [],
@@ -17,12 +17,15 @@
         }
     ],
     "require": {
-        "php": ">=5.3.2"
+        "biberltd/core-bundle" : "self.version",
+	"biberltd/file-management-bundle" : "self.version",
+	"biberltd/site-management-bundle" : "self.version",
+	"biberltd/multilanguage-support-bundle" : "self.version"
     },
     "autoload": {
-        "psr-0": { "BiberLtd\\ProductManagementBundle": "" }
+        "psr-0": { "BiberLtd\\Bundle\\ProductManagementBundle": "" }
 
     },
     "minimum-stability": "dev",
-    "target-dir": "BiberLtd/ProductManagementBundle"
+    "target-dir": "BiberLtd/Bundle/ProductManagementBundle"
 }
