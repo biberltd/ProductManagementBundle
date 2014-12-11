@@ -1,4 +1,0 @@
-services:
-    productmanagement.model:
-            class:        BiberLtd\Bundle\ProductManagementBundle\Services\ProductManagementModel
-            arguments:    [@kernel, "default", "doctrine"]
