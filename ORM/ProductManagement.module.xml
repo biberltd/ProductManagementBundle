@@ -1,0 +1,669 @@
+<?xml version="1.0"?>
+<skipper version="3.0.0.1104" mvc="Symfony2" orm="Doctrine2">
+  <module name="ProductManagementBundle" import-format="Doctrine2Php" import-path="../Entity" uuid="9741bde0-dba7-4022-9b83-7ddfcd40a5c4">
+    <entity name="ActiveProductLocale" description="This table is used to match products with locales. This way user can pick in which locale the products will be visible." uuid="0b71f735-9ad2-4268-9865-c28389d95af2">
+      <field name="product" description="Selected product." type="integer" size="15" required="true" primary="true" uuid="731bb636-e96c-4077-9b19-f534f4b14d8c"/>
+      <field name="locale" description="Language" type="integer" size="5" required="true" primary="true" uuid="a5c63f12-6554-40c3-8bef-c0aa1be4edeb"/>
+      <index name="idx_u_active_product_locale" unique="true">
+        <index-field name="product"/>
+        <index-field name="locale"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">active_product_locale</attribute>
+        <attribute name="export-file-name">ActiveProductLocale.php</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ActiveProductLocale" to="Product" caption="idx_f_active_product_locale_product" inverse-alias="product" uuid="6164e2b3-f5a2-4938-90dc-5023e1ab8d87">
+      <association-field from="product" to="id"/>
+    </association>
+    <association from="ActiveProductLocale" to="Language" caption="idx_f_active_product_locale" inverse-alias="locale" uuid="30c08aaf-e94b-4f4a-87a4-5f62fe77113b">
+      <association-field from="locale" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ActiveProductCategoryLocale" description="This table associates product categories with locales. This way user can deactivate some product categories in selected languages and activate them in other languages." uuid="5ca3abd3-e423-44e0-be5b-2b26ff7c6dfe">
+      <field name="product_category" description="Selected product category." type="integer" size="10" required="true" primary="true" uuid="6ca80d97-f6f5-4f46-bd27-a112b7e421cc"/>
+      <field name="locale" description="Selected language." type="integer" size="5" required="true" primary="true" uuid="7f31841d-3751-4f5e-ba87-5230cbd4e4e2"/>
+      <index name="idx_u_active_product_category_locale_id" unique="true">
+        <index-field name="product_category"/>
+        <index-field name="locale"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">active_product_category_locale</attribute>
+        <attribute name="export-file-name">ActiveProductCategoryLocale.php</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ActiveProductCategoryLocale" to="ProductCategory" caption="idx_f_active_product_category_locale_product_category" inverse-alias="product_category" uuid="14af7ccd-120f-476b-bf71-7632fb151220">
+      <association-field from="product_category" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ActiveProductCategoryLocale" to="Language" caption="idx_f_active_product_category_locale_locale" inverse-alias="locale" uuid="aa3357dd-d8f5-456f-ac6d-5ddd8f46fbde">
+      <association-field from="locale" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="Brand" description="Holds brand definitions" uuid="5a305683-57f2-495d-9e9a-011d3343c137">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="9a8dea35-16ad-4658-897b-d6c1dfdc10b1"/>
+      <field name="name" description="Name of brand." type="string" size="255" required="true" uuid="0fb2a1b0-abbf-49a8-b70b-cc3475eb9f40"/>
+      <field name="logo" description="Path to logo file of brand." type="text" uuid="09e54c64-7475-45ee-9ff6-85133cf4abbb"/>
+      <field name="date_added" description="Date when the brand is first added." type="datetime" required="true" uuid="2872704d-1501-42e4-a11f-32422b6d9517"/>
+      <field name="date_updated" description="Date when the brand is last updated." type="datetime" required="true" uuid="15c307fe-52ff-4412-ac65-823f18d0e8c3"/>
+      <field name="date_removed" description="Date when the brand is removed." type="datetime" uuid="11c5a017-ba64-4cd9-be5a-6d8fc180fb96"/>
+      <index name="idx_u_brand_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_brand_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <index name="idx_n_brand_date_updated">
+        <index-field name="date_updated"/>
+      </index>
+      <index name="idx_n_brand_date_removed">
+        <index-field name="date_removed"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">brand</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">Brand.php</attribute>
+      </orm-attributes>
+    </entity>
+    <entity name="VolumePricing" description="Holds volume pricing definitions." uuid="b1cc9d75-7583-466b-9675-95dd95acbaf9">
+      <field name="id" description="System given id." type="integer" size="15" required="true" unique="true" primary="true" auto-increment="true" uuid="f001335e-0529-4c6b-bcf0-8f8722c20d7f"/>
+      <field name="product" description="Product that pricing information belongs to." type="integer" size="15" required="true" uuid="9335149d-fb31-46a6-b4b7-ea774b8a2c14"/>
+      <field name="quantity_limit" description="Quantity limit." type="integer" size="5" required="true" uuid="2328ac34-a7ac-4f8c-8157-1499ade067a3"/>
+      <field name="limit_direction" description="Limit direction. xm: x or more, xl: x or less." type="string" size="2" default="xm" required="true" uuid="55199346-ba34-44ac-aed4-0fa83d2f540f"/>
+      <field name="date_added" description="Date when information is added." type="datetime" required="true" uuid="b84ea42d-7297-4186-9d6a-ca0890fd8b0e"/>
+      <field name="date_updated" description="Date when information is updated." type="datetime" default="xl" required="true" uuid="faaa20d6-62fb-4a12-88f0-3ce0c7c9054c"/>
+      <field name="price" description="Price." type="decimal" size="8" default="0.00" required="true" uuid="1dc19d69-2a9d-4178-8cde-734b20a8138c"/>
+      <field name="discounted_price" description="Discounted price." type="decimal" size="8" uuid="2e0de060-a2f2-4540-894c-f8e4cf852eb3"/>
+      <index name="idx_n_volume_pricing">
+        <index-field name="product"/>
+      </index>
+      <index name="idx_n_volume_pricing_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <index name="idx_n_volume_pricing_updated">
+        <index-field name="date_updated"/>
+      </index>
+      <index name="idx_u_volume_pricing_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">volume_pricing</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">VolumePricing.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="VolumePricing" to="Product" caption="idx_f_volume_pricing_product" inverse-alias="product" uuid="7f2dacf7-b140-408d-bd13-4fa5a6d1a44c">
+      <association-field from="product" to="id"/>
+    </association>
+    <entity name="Product" description="Stores product entries." uuid="ed4e2029-a3f4-47c3-8258-b05222394278">
+      <field name="id" description="System given id." type="integer" size="15" required="true" unique="true" primary="true" auto-increment="true" uuid="fbb95d07-3b5f-4c5d-9d7a-fd6add86ae05"/>
+      <field name="quantity" description="Number of items in stock." type="integer" size="5" default="0" required="true" uuid="d397ed1b-1713-4585-ab3d-fcc210903f45"/>
+      <field name="price" description="Item most up-to-date base price." type="decimal" size="6" default="0.00" required="true" uuid="90c3172e-1b3b-46a5-b182-9d74288aa02f"/>
+      <field name="discount_price" description="Item most-up-to-date-discount price." type="decimal" size="6" uuid="a70131c8-f88e-41a9-90e6-76ef4570fb32"/>
+      <field name="count_view" description="Number of times that product is seen." type="integer" size="10" default="0" required="true" uuid="992c3b59-49d4-4d1f-8977-dc5b8b98655e"/>
+      <field name="count_like" description="Number of times that product is liked." type="integer" size="10" default="0" required="true" uuid="dd6419a5-45fc-42c3-9d74-20d4a43aea1b"/>
+      <field name="sku" description="Stock keeping unit or a unique identifier." type="string" size="155" required="true" uuid="0a781011-36c3-4d51-9008-5c8750b940fd"/>
+      <field name="sort_order" description="Custom sort order." type="integer" default="0" required="true" uuid="3e04fdbd-4daf-4366-8dc4-a8474c7fde81"/>
+      <field name="date_added" description="Date when the product is added." type="datetime" required="true" uuid="183ef22c-3612-483c-8ff0-0203b6a79aaf"/>
+      <field name="date_updated" description="Date when the product is last updated." type="datetime" required="true" uuid="760381a9-04f2-4f6a-8aa9-cd795fdab643"/>
+      <field name="date_removed" description="Date when the product is deleted." type="datetime" uuid="5764f9d8-971d-42b4-9a65-8d30a81af221"/>
+      <field name="status" description="a:active;i:inactive;p:pre-order;o:out of stock;v:visible;h:hidden" type="string" size="1" default="a" required="true" uuid="3fdd14b6-7fce-459c-842d-34558b38c415"/>
+      <field name="type" description="t:tangible;i:intangible" type="string" size="1" default="t" required="true" uuid="e7e4e579-9db1-4c2d-a1f8-8dd3c7f46026"/>
+      <field name="is_customizable" description="y:yes;n:no" type="string" size="1" default="n" required="true" uuid="e40cc306-5368-49c0-84f4-c3c8df08bb06"/>
+      <field name="site" description="Primary site that product has been originated from." type="integer" size="10" uuid="4fae015c-a1cc-4407-bb7b-3b424bfd644e"/>
+      <field name="preview_file" description="Preview file of the image." type="integer" size="15" uuid="98b87b84-3591-4f65-810c-a1f113834464"/>
+      <field name="brand" description="Product brand if it exists." type="integer" size="10" uuid="3f8a3990-5353-4a14-8a84-61b9c8a71a86"/>
+      <field name="supplier" description="Supplier of product if exists." type="integer" size="10" uuid="63f9dee1-5188-435e-9959-b16d0b187544"/>
+      <field name="extra_info" description="Json encoded extra details." type="text" uuid="2ebb3962-ba61-46a7-a73d-c8fd96e7b445"/>
+      <index name="idx_u_product_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_u_product_sku" unique="true">
+        <index-field name="sku"/>
+        <index-field name="site"/>
+      </index>
+      <index name="idx_n_product_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <index name="idx_n_product_date_updated">
+        <index-field name="date_updated"/>
+      </index>
+      <index name="idx_n_products_of_brand">
+        <index-field name="id"/>
+        <index-field name="brand"/>
+      </index>
+      <index name="idx_n_product_date_removed">
+        <index-field name="date_removed"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">product</attribute>
+        <attribute name="export-file-name">Product.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="Product" to="Site" caption="idx_f_product_site" inverse-alias="site" uuid="e4252e7a-8190-4bbb-a9a3-4c751d015dc3">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Product" to="File" caption="idx_f_product_preview_file" inverse-alias="preview_file" uuid="41a3d993-2696-4ce9-a68b-2a2546b61166">
+      <association-field from="preview_file" to="id"/>
+    </association>
+    <association from="Product" to="Brand" caption="idx_f_product_brand" owner-alias="products" inverse-alias="brand" uuid="e5582ebd-a1fb-44b2-b45d-edd45512cf0f">
+      <association-field from="brand" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Product" to="Supplier" caption="idx_f_product_supplier" inverse-alias="supplier" uuid="3534aca0-24b7-42e2-8fae-bee6d480eafb">
+      <association-field from="supplier" to="id"/>
+    </association>
+    <entity name="ProductLocalization" description="Hols localization for each product." uuid="398bafb3-54d0-4c80-b26c-398e9a15f46d">
+      <field name="product" description="Localized product." type="integer" size="15" required="true" primary="true" uuid="2f2c2584-53ab-417a-b413-4d9423a997b5"/>
+      <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="ae088787-2b78-4dec-98d9-f921e4d7c4c3"/>
+      <field name="name" description="Localized name of product." type="string" size="155" required="true" uuid="40ab4024-e239-4cb2-a0f3-06a47bbf75ea"/>
+      <field name="url_key" description="Url slug." type="string" size="255" uuid="c907fe0b-c120-489b-b6c7-b04dfd812c06"/>
+      <field name="description" description="Short description of product." type="text" uuid="fdb04dbc-927e-4d57-a4b4-dc51bb9323c8"/>
+      <field name="meta_keywords" description="Meta keywords for the product." type="string" size="155" uuid="873fa034-c79f-465d-8b47-ce5a464d37ce"/>
+      <field name="meta_description" description="Meta description for the product." type="string" size="155" uuid="80262f8a-69b8-4ee1-9e37-3f09a9baedc8"/>
+      <index name="idx_u_product_localization" unique="true">
+        <index-field name="product"/>
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_product_localization_url_key">
+        <index-field name="product"/>
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">product_localization</attribute>
+        <attribute name="export-file-name">ProductLocalization.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductLocalization" to="Product" caption="idx_f_product_localization_product" owner-alias="localizations" inverse-alias="product" uuid="cd249b46-dc20-4984-9105-8f1fa3b4dedf">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+        <attribute name="side-inverse">
+          <attribute name="cascade">
+            <attribute name="cascade-persist">true</attribute>
+          </attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="cascade">
+            <attribute name="cascade-persist">true</attribute>
+          </attribute>
+        </attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductLocalization" to="Language" caption="idx_f_product_localization_language" inverse-alias="language" uuid="7ce2c176-5fc7-4c80-84e1-7bb3305de122">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ProductsOfSite" description="Associates products with sites." uuid="54bdf829-a601-4c54-97b8-3ccbeb915fac">
+      <field name="product" description="Product which resides in site." type="integer" size="15" required="true" primary="true" uuid="75999664-c852-4d43-a742-ea4556bf07a9"/>
+      <field name="site" description="Site that owns the product." type="integer" size="10" required="true" primary="true" uuid="38dd4c65-232b-4cc7-9819-3e7a5dbc4894"/>
+      <field name="date_added" description="Date when the product is added to site." type="datetime" required="true" uuid="dbb90c72-3106-4c24-b2c8-1fe52d44cdee"/>
+      <field name="count_view" description="Number of times that product is seen within site." type="integer" size="10" default="0" required="true" uuid="e9bd4cd5-bf57-4b24-89c6-91a283758d9a"/>
+      <field name="count_like" description="Number of times that product is liked within the site." type="integer" size="10" default="0" required="true" uuid="56dccfea-0105-41c9-81dc-e48df41bec93"/>
+      <index name="idx_u_products_of_site" unique="true">
+        <index-field name="product"/>
+        <index-field name="site"/>
+      </index>
+      <index name="idx_n_products_of_site_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">products_of_site</attribute>
+        <attribute name="export-file-name">ProductsOfSite.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductsOfSite" to="Product" caption="idx_f_products_of_site_product" inverse-alias="product" uuid="2e4250bb-0af2-49a9-bb56-90ff793474be">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductsOfSite" to="Site" caption="idx_f_products_of_site_site" inverse-alias="site" uuid="5e9d566d-86ce-46ec-acec-b61d968fb34e">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ProductCategory" description="Stores product category definitions." uuid="ab52fd8c-bbaa-4acd-bf2b-ddf58080803e">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="7622a311-9c7d-4daf-b243-50629f3b989e"/>
+      <field name="level" description="t:top;b:bottom;m:middle" type="string" size="1" default="t" required="true" uuid="146ed0fe-06e1-4297-b416-ab50c13a44c7"/>
+      <field name="count_children" description="Number of children categories." type="integer" size="10" default="0" required="true" uuid="569d8a54-de19-4a84-a119-e3b199f6f10a"/>
+      <field name="date_added" description="Date when the category is added." type="datetime" required="true" uuid="2c487eca-ed41-4b5c-b9cd-435a8367df76"/>
+      <field name="date_updated" description="Date when the category is last updated." type="datetime" uuid="5c171611-684f-4a97-b5dc-1e60c03fb7f8"/>
+      <field name="parent" description="Parent catgory." type="integer" size="10" uuid="5ef774a7-92d3-4edc-9eec-9b8ff0de82a0"/>
+      <field name="site" description="Site in which the category is defined." type="integer" size="10" uuid="96f72547-c4c4-46dc-adfc-894c32c3bb10"/>
+      <field name="preview_image" description="Preview image of category if exists." type="integer" size="15" required="true" uuid="79835db4-15cd-4c4d-9a95-6c1f1ea795bc"/>
+      <field name="is_featured" description="y:yes,n:no" type="string" size="1" default="n" required="true" uuid="f17386c9-101d-40da-8b74-399a9171b98a"/>
+      <field name="sort_order" description="Custom sort order." type="integer" default="1" uuid="7151dda8-e41d-42f7-bf5f-27a84cc63c2e"/>
+      <index name="idx_u_product_category_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_product_category_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <index name="idx_n_product_category_date_updated">
+        <index-field name="date_updated"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">product_category</attribute>
+        <attribute name="export-file-name">ProductCategory.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductCategory" to="ProductCategory" caption="idx_f_product_category_parent" owner-alias="product_categories" inverse-alias="parent" uuid="c14f5878-4dee-4629-a7eb-85530f7eac9d">
+      <association-field from="parent" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">RESTRICT</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductCategory" to="Site" caption="idx_f_product_category_site" inverse-alias="site" uuid="8900df27-8d92-4a35-99f3-837cef9ae4f7">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductCategory" to="File" caption="idx_f_product_category_preview_image" inverse-alias="preview_image" uuid="3b152a02-3044-4b53-ade0-2b1670e9ecc3">
+      <association-field from="preview_image" to="id"/>
+      <orm-attributes>
+        <attribute name="side-owning">
+          <attribute name="cascade">
+            <attribute name="cascade-persist">true</attribute>
+          </attribute>
+        </attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ProductCategoryLocalization" description="Holds product category localization values." uuid="d5752aa3-5dc2-43c1-a65d-b8c8beb1bc25">
+      <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="7f76e36d-7edb-4531-977a-4057d5baa9b0"/>
+      <field name="category" description="Localized product category." type="integer" size="10" required="true" primary="true" uuid="54d31d99-57f1-4a44-98e8-42a353e20e71"/>
+      <field name="name" description="Localized category name." type="string" size="45" uuid="01f134e3-6245-4a60-938c-8f4da869d8cc"/>
+      <field name="url_key" description="Localized url key of category." type="string" size="155" required="true" uuid="21aba8f8-e9ba-44af-88e1-2f8eb7f5c8c9"/>
+      <field name="description" description="Localized description." type="string" size="255" uuid="aa3b13b9-259a-4942-98a2-37b27d56aa3c"/>
+      <field name="meta_keywords" description="Localized meta keywords." type="string" size="155" uuid="f5213016-80e6-468c-8714-856e5484a079"/>
+      <field name="meta_description" description="Localized meta description." type="string" size="255" uuid="81ebc39e-a5b4-4ba5-abda-e432dd92882e"/>
+      <index name="idx_u_product_category_localization" unique="true">
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_product_category_localization_url_key">
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8-turkish-ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">product_category_localization</attribute>
+        <attribute name="export-file-name">ProductCategoryLocalization.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductCategoryLocalization" to="ProductCategory" caption="idx_f_product_category_localization_product_category" owner-alias="localizations" inverse-alias="category" uuid="1f496e54-ba0c-472d-a55f-db00287e9014">
+      <association-field from="category" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductCategoryLocalization" to="Language" caption="idx_f_product_category_localization_language" inverse-alias="language" uuid="90fa7d86-109a-4dee-8f53-eb1712691b6f">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="CategoriesOfProduct" description="Associates categories with product." uuid="ff58bc59-4964-4488-92c9-914bc835a050">
+      <field name="product" description="Product that is associated with category." type="integer" size="15" required="true" primary="true" uuid="aaa4200a-a3a8-4c05-a2e8-b9395d1a343b"/>
+      <field name="category" description="Category that product is associated with." type="integer" size="10" primary="true" uuid="c82ca7ab-f392-44d2-b71e-ffa4cb1196d1"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="0" required="true" uuid="6b1bd0f8-a58c-45e8-a40e-8e1054488eae"/>
+      <field name="date_added" description="Date when the product is associated with category." type="datetime" required="true" uuid="d6d5edd7-3c48-4f3a-a677-ba3f288ceb26"/>
+      <index name="idx_u_categories_of_product" unique="true">
+        <index-field name="product"/>
+        <index-field name="category"/>
+      </index>
+      <index name="idx_n_categories_of_product_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">categories_of_product</attribute>
+        <attribute name="export-file-name">CategoriesOfProduct.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="CategoriesOfProduct" to="ProductCategory" caption="idx_f_categories_of_category" inverse-alias="category" uuid="cd03db2c-7b7b-4448-9a6d-05afdd69d069">
+      <association-field from="category" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="CategoriesOfProduct" to="Product" caption="idx_f_categories_of_product_product" inverse-alias="product" uuid="238a4721-3792-4a5b-b65e-81b2d9eba953">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ProductAttribute" description="Stores product attribute definitions." uuid="be02716a-911d-4e0e-8e00-5c89d2dbb0de">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="5adb5405-cfb5-4664-8f11-47ad25ed08fd"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="0" required="true" uuid="e4812345-e946-419f-91e1-224630a1f09c"/>
+      <field name="date_added" description="Date when the attribute is added." type="datetime" required="true" uuid="6c6b0581-d872-4b19-b6cd-905146f101ac"/>
+      <field name="site" description="Site where attribute is registered to." type="integer" size="10" uuid="f69985e6-474d-480f-9698-68956c977c89"/>
+      <index name="idx_u_product_attribute_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_product_attribute_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">product_attribute</attribute>
+        <attribute name="export-file-name">ProductAttribute.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductAttribute" to="Site" caption="idx_f_product_attribute_site" inverse-alias="site" uuid="fbb3c492-f148-4658-89df-2ee3d75761d0">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ProductAttributeLocalization" description="Stores product attribute's localized definitions." uuid="ab4d46b1-9b5b-4ce2-9e65-898e5bcf4073">
+      <field name="attribute" description="Localized attribute." type="integer" size="10" primary="true" uuid="4756b5ba-084d-40f4-a96d-404951e0cf03"/>
+      <field name="language" description="Localization language." type="integer" size="5" primary="true" uuid="447b267e-9c3d-472c-a776-f963d4840e47"/>
+      <field name="name" description="Localized name of product attribute." type="string" size="155" required="true" uuid="02426073-8204-4fe5-b902-f8505cedeaec"/>
+      <field name="url_key" description="Localized url key of product attribute." type="string" size="255" required="true" uuid="b00ceea3-911d-4739-b09c-162fe2014355"/>
+      <index name="idx_u_product_attribute_localization" unique="true">
+        <index-field name="attribute"/>
+        <index-field name="language"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">product_attribute_localization</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_Ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">ProductAttributeLocalization.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductAttributeLocalization" to="Language" caption="idx_f_product_attribute_localization_language" inverse-alias="language" uuid="e3c61ead-3ee4-4349-8be9-ae96cbf3eb3a">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductAttributeLocalization" to="ProductAttribute" caption="idx_f_product_attribute_localization_attribute" owner-alias="localizations" inverse-alias="attribute" uuid="0193716e-9fc7-4858-a23c-15c14d9270ce">
+      <association-field from="attribute" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="AttributesOfProduct" description="Associates attributes with products." uuid="f94f0dff-737d-40da-bdae-9cc36c5db82a">
+      <field name="product" description="Associated product." type="integer" size="15" primary="true" uuid="b78d0409-7b66-491d-acb4-662dd70c90f5"/>
+      <field name="attribute" description="Product attribute." type="integer" size="10" primary="true" uuid="07b3fdf8-f50d-4a6e-8bc3-b35964ba5dcf"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="0" required="true" uuid="a3ba019f-a27f-4a52-a606-2b2834cf1f3b"/>
+      <field name="date_added" description="Date when the attribute is first associated with product." type="datetime" required="true" uuid="28529f3d-e80e-47ff-a53f-843bb5904d54"/>
+      <field name="price_factor" description="If attribute changes price, by what percentage or amount?" type="decimal" size="5" uuid="7b5de8d1-a7ca-4da0-afe0-643b390fbd9a"/>
+      <field name="price_factor_type" description="a:amount,p:percentage" type="string" size="1" default="a" uuid="ffed21ca-63b5-42b6-a725-54f24198139b"/>
+      <index name="idx_u_attributes_of_product" unique="true">
+        <index-field name="product"/>
+        <index-field name="attribute"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">attributes_of_product</attribute>
+        <attribute name="export-file-name">AttributesOfProduct.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="AttributesOfProduct" to="ProductAttribute" caption="idx_f_attributes_of_product_attribute" inverse-alias="attribute" uuid="e167335a-3e8d-4bd4-8fd9-1c391b514969">
+      <association-field from="attribute" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="AttributesOfProduct" to="Product" caption="idx_f_attributes_of_product_product" inverse-alias="product" uuid="1f0350dc-9c72-48ba-abce-f8eaef6689dc">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="ProductAttributeValues" description="Stores individual values of product attributes and their localizations." uuid="e923dbd1-47ee-440d-b826-abf97f12cc74">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="f6f83f84-da34-47ca-bf48-ddf5025f092d"/>
+      <field name="attribute" description="Attribute to which the value belongs." type="integer" size="10" uuid="31ff5efd-8dbe-4aa9-aa9d-3e975000a74d"/>
+      <field name="language" description="Localization language." type="integer" size="5" uuid="1573878d-a37e-4b94-8e10-590ccdd86109"/>
+      <field name="product" description="Product that attribute belongs to." type="integer" size="15" uuid="784ee0e9-a900-4afb-900b-ddf0a958e000"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="0" required="true" uuid="ce4a87cf-1280-44c9-a85e-9e9b0e4898bb"/>
+      <field name="value" description="Attribute value of product." type="text" required="true" uuid="be354112-453d-4d5c-9e25-9dc29613f48f"/>
+      <index name="idx_u_product_attribute_values_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_u_product_attribute_values">
+        <index-field name="attribute"/>
+        <index-field name="language"/>
+        <index-field name="product"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">product_attribute_values</attribute>
+        <attribute name="export-file-name">ProductAttributeValues.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="ProductAttributeValues" to="Product" caption="idx_f_product_attribute_values_product" inverse-alias="product" uuid="33e6dd4a-056c-4513-ad3a-f9a2632ffa57">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductAttributeValues" to="ProductAttribute" caption="idx_f_product_attribute_values_attribute" inverse-alias="attribute" uuid="00219d56-949c-48cd-a37a-2f379cab16ec">
+      <association-field from="attribute" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="ProductAttributeValues" to="Language" caption="idx_f_product_attribute_values_language" inverse-alias="language" uuid="470e3e96-7a47-422c-b4a7-4cdef7b62939">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="AttributesOfProductCategory" description="Associates product categories with attributes." uuid="b7508859-399b-4f7f-877e-60541c9194d4">
+      <field name="attribute" description="Associated attribute." type="integer" size="10" primary="true" uuid="07056ca7-4052-4b3a-bf75-47288d05fee1"/>
+      <field name="category" description="Associated product category." type="integer" size="10" primary="true" uuid="923ac6fd-db6b-48f5-9c36-75d58ee26dc6"/>
+      <field name="sort_order" description="Custom sort order" type="integer" size="10" default="1" required="true" uuid="1a3b9c16-d818-4db5-aa54-9b214132d6e4"/>
+      <field name="date_added" description="Date when attribute is associated to product category." type="datetime" required="true" uuid="59542872-d372-4714-9ad2-5ed88026eeb3"/>
+      <index name="idx_u_attributes_of_product_category" unique="true">
+        <index-field name="attribute"/>
+        <index-field name="category"/>
+      </index>
+      <index name="idx_n_attributes_of_product_category_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">attributes_of_product_category</attribute>
+        <attribute name="export-file-name">AttributesOfProductCategory.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="AttributesOfProductCategory" to="ProductAttribute" caption="idx_f_attributes_of_product_category_attribute" inverse-alias="product_attribute" uuid="840c7489-cc34-4e4b-898b-01b810449cd7">
+      <association-field from="attribute" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="AttributesOfProductCategory" to="ProductCategory" caption="idx_f_attributes_of_product_category_product_category" inverse-alias="product_category" uuid="e2c72d09-406c-495e-8e08-e9040c7710f3">
+      <association-field from="category" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="FilesOfProduct" description="Associates files with products." uuid="88915b8c-14d5-42f1-a4e4-5d2a31ff96e3">
+      <field name="file" description="Associated file." type="integer" size="15" primary="true" uuid="cc68f9a8-5c48-4a87-8cf8-f0a69f7f07a1"/>
+      <field name="product" description="Associated product." type="integer" size="15" primary="true" uuid="f9347a7d-de2c-44e1-9c49-9018f561f963"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="1" required="true" uuid="ddf16b71-6795-4af4-acf0-cae8c8c553b4"/>
+      <field name="date_added" description="Date when file is added to the product." type="datetime" required="true" uuid="b010c299-4708-4cf8-8fa0-67545665a833"/>
+      <field name="type" description="To easily categorize media by type. v:video;i:image;a:audio;:e:embed" type="string" size="1" default="i" required="true" uuid="59b73353-7e58-497b-ba04-e7476ad173f3"/>
+      <index name="idx_u_files_of_product" unique="true">
+        <index-field name="file"/>
+        <index-field name="product"/>
+      </index>
+      <index name="idx_n_files_of_product_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">files_of_product</attribute>
+        <attribute name="export-file-name">FilesOfProduct.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="FilesOfProduct" to="File" caption="idx_f_files_of_product_file" inverse-alias="file" uuid="a4613ba6-5969-4a2b-af9e-bc9132f1c1cf">
+      <association-field from="file" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+        <attribute name="side-owning">
+          <attribute name="cascade">
+            <attribute name="cascade-persist">true</attribute>
+          </attribute>
+        </attribute>
+      </orm-attributes>
+    </association>
+    <association from="FilesOfProduct" to="Product" caption="idx_f_files_of_product_product" inverse-alias="product" uuid="5f16c0a9-34a7-43d5-84ac-afb2ca4ee191">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+        <attribute name="side-owning">
+          <attribute name="cascade">
+            <attribute name="cascade-persist">true</attribute>
+          </attribute>
+        </attribute>
+      </orm-attributes>
+    </association>
+    <entity name="RelatedProduct" description="Matches related products." uuid="fd9a924e-dc7c-44be-a74e-510e80042650">
+      <field name="product" type="integer" size="15" required="true" primary="true" uuid="1dcd4df3-bb16-4aeb-939a-ea99d7ee1edb"/>
+      <field name="related_product" type="integer" size="15" required="true" primary="true" uuid="fc470c97-3a1f-47ff-9332-b2bc6016a495"/>
+      <index name="idx_u_related_products" unique="true">
+        <index-field name="product"/>
+        <index-field name="related_product"/>
+      </index>
+      <orm-attributes>
+        <attribute name="export-file-name">RelatedProduct.php</attribute>
+        <attribute name="table">related_product</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="engine">innodb</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+        </attribute>
+      </orm-attributes>
+    </entity>
+    <association from="RelatedProduct" to="Product" caption="idx_f_related_product_product" inverse-alias="product" uuid="c8028be7-5ae1-4cec-876f-f2ede71ad79f">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+        <attribute name="on-update">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="RelatedProduct" to="Product" caption="idx_f_related_product_product_related_product" inverse-alias="related_product" uuid="0eb05669-2c51-49dc-9baf-88edaf1a74ba">
+      <association-field from="related_product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+        <attribute name="on-update">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <comment caption="ProductManagementBundle Pricing" description="attributes_of_product:195 TL&#10;attributes_of_product_category: 130 TL&#10;categories_of_product: 130 TL&#10;files_of_product: 170 TL&#10;product: 345 TL&#10;product_attribute: 105 TL&#10;product_attribute_localization: 130 TL&#10;product_attribute_values: 195 TL&#10;product_localization: 170 TL&#10;product_category: 205 TL&#10;product_category_localization: 170 TL&#10;products_of_site: 150 TL&#10;&#10;toplam: 2.095 TL" uuid="9da07e25-2a8c-47a0-a4bd-fff803791de3"/>
+    <orm-attributes>
+      <attribute name="namespace">BiberLtd\Bundle\ProductManagementBundle\Entity</attribute>
+      <attribute name="file-suffix">without-suffix</attribute>
+      <attribute name="filename-format">entity-name-only</attribute>
+    </orm-attributes>
+  </module>
+  <visual-data>
+    <entity uuid="0b71f735-9ad2-4268-9865-c28389d95af2" bg-color="4294967295" hdr-color="4292006610" position-x="1000" position-y="372" size-x="0" size-x2="109" size-y="0" size-y2="45"/>
+    <entity uuid="398bafb3-54d0-4c80-b26c-398e9a15f46d" bg-color="4294967295" hdr-color="4292006610" position-x="450" position-y="50" size-x="0" size-x2="149" size-y="0" size-y2="101"/>
+    <entity uuid="54bdf829-a601-4c54-97b8-3ccbeb915fac" bg-color="4294967295" hdr-color="4292006610" position-x="50" position-y="450" size-x="0" size-x2="125" size-y="0" size-y2="87"/>
+    <entity uuid="5a305683-57f2-495d-9e9a-011d3343c137" bg-color="4294967295" hdr-color="4292006610" position-x="1450" position-y="200" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
+    <entity uuid="5ca3abd3-e423-44e0-be5b-2b26ff7c6dfe" bg-color="4294967295" hdr-color="4292006610" position-x="1124" position-y="439" size-x="0" size-x2="151" size-y="0" size-y2="45"/>
+    <entity uuid="88915b8c-14d5-42f1-a4e4-5d2a31ff96e3" bg-color="4294967295" hdr-color="4292006610" position-x="1450" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
+    <module uuid="9741bde0-dba7-4022-9b83-7ddfcd40a5c4" bg-color="4280139519" size-x="0" size-x2="1700" size-y="7" size-y2="550"/>
+    <comment uuid="9da07e25-2a8c-47a0-a4bd-fff803791de3" bg-color="4294951085" position-x="1" position-y="10" size-x="1" size-x2="168" size-y="-3" size-y2="203" txt-color="4278190080"/>
+    <entity uuid="ab4d46b1-9b5b-4ce2-9e65-898e5bcf4073" bg-color="4294967295" hdr-color="4292006610" position-x="750" position-y="200" size-x="0" size-x2="145" size-y="0" size-y2="73"/>
+    <entity uuid="ab52fd8c-bbaa-4acd-bf2b-ddf58080803e" bg-color="4294967295" hdr-color="4292006610" position-x="350" position-y="350" size-x="0" size-x2="138" size-y="0" size-y2="115"/>
+    <entity uuid="b1cc9d75-7583-466b-9675-95dd95acbaf9" bg-color="4294967295" hdr-color="4292006610" position-x="1350" position-y="350" size-x="0" size-x2="147" size-y="0" size-y2="129"/>
+    <entity uuid="b7508859-399b-4f7f-877e-60541c9194d4" bg-color="4294967295" hdr-color="4292006610" position-x="1250" position-y="150" size-x="0" size-x2="150" size-y="0" size-y2="73"/>
+    <entity uuid="be02716a-911d-4e0e-8e00-5c89d2dbb0de" bg-color="4294967295" hdr-color="4292006610" position-x="900" position-y="450" size-x="0" size-x2="118" size-y="0" size-y2="73"/>
+    <entity uuid="d5752aa3-5dc2-43c1-a65d-b8c8beb1bc25" bg-color="4294967295" hdr-color="4292006610" position-x="650" position-y="350" size-x="0" size-x2="149" size-y="0" size-y2="115"/>
+    <entity uuid="e923dbd1-47ee-440d-b826-abf97f12cc74" bg-color="4294967295" hdr-color="4292006610" position-x="1100" position-y="50" size-x="0" size-x2="121" size-y="0" size-y2="101"/>
+    <entity uuid="ed4e2029-a3f4-47c3-8258-b05222394278" bg-color="4294967295" hdr-color="4292006610" position-x="200" position-y="150" size-x="0" size-x2="134" size-y="0" size-y2="199"/>
+    <entity uuid="f94f0dff-737d-40da-bdae-9cc36c5db82a" bg-color="4294967295" hdr-color="4292006610" position-x="1080" position-y="242" size-x="0" size-x2="142" size-y="0" size-y2="101"/>
+    <entity uuid="fd9a924e-dc7c-44be-a74e-510e80042650" bg-color="4294967295" hdr-color="4292006610" position-x="1550" position-y="450" size-x="0" size-x2="142" size-y="0" size-y2="45"/>
+    <entity uuid="ff58bc59-4964-4488-92c9-914bc835a050" bg-color="4294967295" hdr-color="4292006610" position-x="800" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
+  </visual-data>
+</skipper>
