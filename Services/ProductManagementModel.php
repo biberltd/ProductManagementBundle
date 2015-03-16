@@ -15,8 +15,8 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.4.5
- * @date            05.07.2014
+ * @version         1.5.1
+ * @date            03.03.2015
  *
  * =============================================================================================================
  * !! INSTRUCTIONS ON IMPORTANT ASPECTS OF MODEL METHODS !!!
@@ -143,7 +143,7 @@ class ProductManagementModel extends CoreModel{
         /** remove invalid product entries */
         foreach ($set as $attr) {
             if (!is_numeric($attr['attribute']) && !$attr['attribute'] instanceof BundleEntity\ProductAttribute) {
-                unset($attr[$count]);
+                unset($set[$count]);
             }
             $count++;
         }
@@ -159,15 +159,6 @@ class ProductManagementModel extends CoreModel{
         /** Start persisting files */
         foreach ($set as $item) {
             /** If no entity is provided as product we need to check if it does exist */
-            if (!$item['attribute'] instanceof BundleEntity\ProductAttribute && is_numeric($item['attribute'])) {
-                $response = $this->getProductAttribute($item['attribute'], 'id');
-                if ($response['error']) {
-                    return $this->createException('EntityDoesNotExist', 'Table: product_attribute, id: ' . $product, 'msg.error.db.product.notfound');
-                }
-                $item['attribute'] = $response['result']['set'];
-            } else {
-                return $this->createException('InvalidParameter', '$set must contain an array of arrays where "attribute" key holds a value of an integer representing database row id or BiberLtd\\Core\\Bundles\\ProductManagementBundle\\Entity\\ProductAttribute entity', 'msg.error.invalid.parameter.product.attribute');
-            }
             $aopCollection = array();
             /** Check if association exists */
             if (!$this->isAttributeAssociatedWithProduct($item['attribute'], $product, true)) {
@@ -291,7 +282,7 @@ class ProductManagementModel extends CoreModel{
      *                  Associates locales with a given product by creating new row in files_of_product_table.
      *
      * @since           1.2.3
-     * @version         1.4.2
+     * @version         1.4.9
      * @author          Can Berkol
      *
      * @use             $this->isLocaleAssociatedWithProduct()
@@ -313,7 +304,7 @@ class ProductManagementModel extends CoreModel{
         $aplCollection = array();
         $count = 0;
         /** Start persisting locales */
-        $mlsModel = $this->get('multilanguagesupport.model');
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
         foreach ($locales as $locale) {
             $locale = $this->validateAndGetLocale($locale);
             /** If no entity s provided as file we need to check if it does exist */
@@ -465,19 +456,19 @@ class ProductManagementModel extends CoreModel{
         $count = 0;
         /** Start persisting files */
         foreach ($products as $product) {
-           $product = $this->validateAndGetProduct($product);
+            $productEntity = $this->validateAndGetProduct($product['product']);
 
             /** Check if association exists */
-            if ($this->isProductAssociatedWithCategory($product['product'], $category, true)) {
-                new CoreExceptions\DuplicateAssociationException($this->kernel, 'Product => Category');
-                $this->response['code'] = 'msg.error.db.duplicate.association';
+            if ($this->isProductAssociatedWithCategory($productEntity, $category, true)) {
+                //                new CoreExceptions\DuplicateAssociationException($this->kernel, 'Product => Category');
+                //                $this->response['code'] = 'msg.error.db.duplicate.association';
                 /** If file association already exist move silently to next file */
                 break;
             }
             /** prepare object */
             $cop = new BundleEntity\CategoriesOfProduct();
             $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
-            $cop->setProduct($product['product'])->setCategory($category)->setDateAdded($now);
+            $cop->setProduct($productEntity)->setCategory($category)->setDateAdded($now);
             if (!is_null($product['sort_order'])) {
                 $cop->setSortOrder($product['sort_order']);
             } else {
@@ -958,9 +949,9 @@ class ProductManagementModel extends CoreModel{
         }
         $countDeleted = 0;
         foreach ($collection as $entry){
-                $entry = $this->validateAndGetProductAttribute($entry);
-                $this->em->remove($entry);
-                $countDeleted++;
+            $entry = $this->validateAndGetProductAttribute($entry);
+            $this->em->remove($entry);
+            $countDeleted++;
         }
         if ($countDeleted < 0) {
             $this->response['error'] = true;
@@ -1005,9 +996,13 @@ class ProductManagementModel extends CoreModel{
         }
         $countDeleted = 0;
         foreach ($collection as $entry) {
-                $entry = $this->validateAndGetProductCategory($entry);
-                $this->em->remove($entry);
-                $countDeleted++;
+            $entry = $this->validateAndGetProductCategory($entry);
+            $localizations = $entry->getLocalizations();
+            foreach($localizations as $localization){
+                $this->em->remove($localization);
+            }
+            $this->em->remove($entry);
+            $countDeleted++;
         }
 
         if ($countDeleted < 0) {
@@ -1336,6 +1331,81 @@ class ProductManagementModel extends CoreModel{
         return $this->response;
     }
     /**
+     * @name            getCategoriesOfProductEntry ()
+     *                  Gets an entry.
+     *
+     * @since           1.4.6
+     * @version         1.4.6
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           miixed $product
+     * @param           mixed $category
+     *
+     * @deprecated      Will be deleted in v1.2.0. Use $this->listCategoriesOfProduct() instead.
+     *
+     * @return          array       $response
+     */
+    public function getCategoriesOfProductEntry($product, $category)
+    {
+        $this->resetResponse();
+        /** Parameter must be an array */
+        if ($product instanceof BundleEntity\Product) {
+            $product = $product->getId();
+        } else if (is_numeric($product)) {
+            $response = $this->getProduct($product, 'id');
+            if (!$response['error']) {
+                $product = $response['result']['set']->getId();
+            }
+        } else if (is_string($product)) {
+            $response = $this->getProduct($product, 'sku');
+            if (!$response['error']) {
+                $product = $response['result']['set']->getId();
+            }
+        }
+
+        if ($category instanceof BundleEntity\ProductCategory) {
+            $category = $category->getId();
+        } else if (is_numeric($category)) {
+            $response = $this->getProductCategory($category, 'id');
+            if (!$response['error']) {
+                $category = $response['result']['set']->getId();
+            }
+        }
+        $qStr = 'SELECT ' . $this->entity['categories_of_product']['alias'] . ' FROM ' . $this->entity['categories_of_product']['name'] . ' ' . $this->entity['categories_of_product']['alias']
+            . ' WHERE ' . $this->entity['categories_of_product']['alias'] . '.product = ' . $product
+            . ' AND ' . $this->entity['categories_of_product']['alias'] . '.category = ' . $category;
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
+
+        if (!is_null($result)) {
+            $this->response = array(
+                'rowCount' => $this->response['rowCount'],
+                'result' => array(
+                    'set' => $result[0],
+                    'total_rows' => 1,
+                    'last_insert_id' => null,
+                ),
+                'error' => false,
+                'code' => 'scc.db.select.done',
+            );
+            return $this->response;
+        }
+        $this->response = array(
+            'rowCount' => $this->response['rowCount'],
+            'result' => array(
+                'set' => null,
+                'total_rows' => 0,
+                'last_insert_id' => null,
+            ),
+            'error' => true,
+            'code' => 'scc.err.entry.notexist',
+        );
+
+        return $this->response;
+    }
+    /**
      * @name            getMaxSortOrderOfAttributeInProduct ()
      *                  Returns the largest sort order value for a given attribute from attributes_of_product table.
      *
@@ -1400,8 +1470,8 @@ class ProductManagementModel extends CoreModel{
         $product = $this->validateAndGetProduct($product);
 
         $q_str = 'SELECT MAX('.$this->entity['files_of_product']['alias'].'.sort_order) FROM '
-                        . $this->entity['files_of_product']['name'].' '.$this->entity['files_of_product']['alias']
-                        .' WHERE '.$this->entity['files_of_product']['alias'].'.product = '.$product->getId();
+            . $this->entity['files_of_product']['name'].' '.$this->entity['files_of_product']['alias']
+            .' WHERE '.$this->entity['files_of_product']['alias'].'.product = '.$product->getId();
 
         $query = $this->em->createQuery($q_str);
         $result = $query->getSingleScalarResult();
@@ -1749,7 +1819,7 @@ class ProductManagementModel extends CoreModel{
         }
 
         $result = $this->em->getRepository($this->entity['product_attribute_values']['name'])
-            ->findOneBy(array('id' => $id));
+                           ->findOneBy(array('id' => $id));
 
         $error = true;
         $code = 'msg.error.db.entry.notexist';
@@ -2476,6 +2546,7 @@ class ProductManagementModel extends CoreModel{
         $countInserts = 0;
         $countLocalizations = 0;
         $insertedItems = array();
+        $localizations = array();
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\ProductAttribute) {
                 $entity = $data;
@@ -2483,7 +2554,6 @@ class ProductManagementModel extends CoreModel{
                 $insertedItems[] = $entity;
                 $countInserts++;
             } else if (is_object($data)) {
-                $localizations = array();
                 $entity = new BundleEntity\ProductAttribute;
                 if (!property_exists($data, 'date_added')) {
                     $data->date_added = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
@@ -2594,6 +2664,7 @@ class ProductManagementModel extends CoreModel{
         $countInserts = 0;
         $countLocalizations = 0;
         $insertedItems = array();
+        $localizations = array();
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\ProductCategory) {
                 $entity = $data;
@@ -2601,7 +2672,6 @@ class ProductManagementModel extends CoreModel{
                 $insertedItems[] = $entity;
                 $countInserts++;
             } else if (is_object($data)) {
-                $localizations = array();
                 $entity = new BundleEntity\ProductCategory;
                 if (!property_exists($data, 'date_added')) {
                     $data->date_added = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
@@ -2688,7 +2758,7 @@ class ProductManagementModel extends CoreModel{
             'result' => array(
                 'set' => $insertedItems,
                 'total_rows' => $countInserts,
-                'last_insert_id' => $entity->getId(),
+                'last_insert_id' => isset($entity) ? $entity->getId() : 0,
             ),
             'error' => false,
             'code' => 'scc.db.insert.done',
@@ -2827,9 +2897,9 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            insertProducts ()
-     *                Inserts one or more products into database.
+     *                  Inserts one or more products into database.
      *
-     * @since            1.0.1
+     * @since           1.4.9
      * @version         1.1.7
      * @author          Can Berkol
      *
@@ -2850,6 +2920,7 @@ class ProductManagementModel extends CoreModel{
         $countInserts = 0;
         $countLocalizations = 0;
         $insertedItems = array();
+        $localizations = array();
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\Product) {
                 $entity = $data;
@@ -2857,7 +2928,6 @@ class ProductManagementModel extends CoreModel{
                 $insertedItems[] = $entity;
                 $countInserts++;
             } else if (is_object($data)) {
-                $localizations = array();
                 $entity = new BundleEntity\Product;
                 if (!property_exists($data, 'date_added')) {
                     $data->date_added = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
@@ -2884,6 +2954,13 @@ class ProductManagementModel extends CoreModel{
                     $localeSet = false;
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
+                        case 'brand':
+                            $response = $this->getBrand($value, 'id');
+                            if (!$response['error']) {
+                                $entity->$set($response['result']['set']);
+                            }
+                            unset($response);
+                            break;
                         case 'local':
                             $localizations[$countInserts]['localizations'] = $value;
                             $localeSet = true;
@@ -2906,6 +2983,14 @@ class ProductManagementModel extends CoreModel{
                                 $entity->$set($response['result']['set']);
                             } else {
                                 new CoreExceptions\SiteDoesNotExistException($this->kernel, $value);
+                            }
+                            unset($response, $sModel);
+                            break;
+                        case 'supplier':
+                            $sModel = $this->kernel->getContainer()->get('stockmanagement.model');
+                            $response = $sModel->getSupplier($value, 'id');
+                            if (!$response['error']) {
+                                $entity->$set($response['result']['set']);
                             }
                             unset($response, $sModel);
                             break;
@@ -3345,7 +3430,7 @@ class ProductManagementModel extends CoreModel{
             . ' WHERE ' . $this->entity['categories_of_product']['alias'] . '.category = ' . $category->getId()
             . ' AND ' . $this->entity['categories_of_product']['alias'] . '.product = ' . $product->getId();
         $query = $this->em->createQuery($q_str);
-
+        ;
         $result = $query->getSingleScalarResult();
 
         /** flush all into database */
@@ -3377,7 +3462,7 @@ class ProductManagementModel extends CoreModel{
      *                  List active locales of a given product.
      *
      * @since           1.2.3
-     * @version         1.2.3
+     * @version         1.4.8
      * @author          Can Berkol
      *
      * @use             $this->createException()
@@ -3404,7 +3489,7 @@ class ProductManagementModel extends CoreModel{
         }
         $productId = $product->getId();
         $qStr = 'SELECT ' . $this->entity['active_product_locale']['alias']
-            . ' FROM ' . $this->entity['active_product_locale']['name'] . ' ' . $this->entity['active_product_locale']['name']
+            . ' FROM ' . $this->entity['active_product_locale']['name'] . ' ' . $this->entity['active_product_locale']['alias']
             . ' WHERE ' . $this->entity['active_product_locale']['alias'] . '.product = ' . $productId;
         $query = $this->em->createQuery($qStr);
         $result = $query->getResult();
@@ -3503,7 +3588,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->getProduct()
      *
-     * @param           mixed $product Product entity, sku, url key or id.
+     * @param           mixed $product Product entity, sku, urllistProductsOfCategoryInLocales key or id.
      * @param           array $sortOrder Array
      *                                      'column'            => 'asc|desc'
      * @param           array $limit
@@ -4583,7 +4668,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @return          array           $response
      */
-    public function listProductAttributes($filter = null, $sortOrder = null, $limit = null, $queryStr = null)
+    public function listProductAttributes($filter = null, $sortOrder = null, $limit = null, $queryStr = null, $returnLocales = false)
     {
         $this->resetResponse();
         if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -4661,15 +4746,32 @@ class ProductManagementModel extends CoreModel{
 
         $attributes = array();
         $unique = array();
+        $localizations  = array();
         foreach ($result as $entry) {
             $id = $entry->getAttribute()->getId();
             if (!isset($unique[$id])) {
-                $attributes[] = $entry->getAttribute();
+                $attributes[$id] = $entry->getAttribute();
                 $unique[$id] = $entry->getAttribute();
             }
+            $localizations[$id][] = $entry;
         }
         unset($unique);
-        $totalRows = count($attributes);
+        $responseSet = array();
+        if ($returnLocales) {
+            foreach ($attributes as $key => $attribute) {
+                $responseSet[$key]['entity'] = $attribute;
+                $responseSet[$key]['localizations'] = $localizations[$key];
+            }
+        } else {
+            $responseSet = $attributes;
+        }
+        $newCollection = array();
+        foreach ($responseSet as $item) {
+            $newCollection[] = $item;
+        }
+        unset($responseSet, $products);
+
+        $totalRows = count($newCollection);
         if ($totalRows < 1) {
             $this->response['code'] = 'err.db.entry.notexist';
             return $this->response;
@@ -4677,7 +4779,7 @@ class ProductManagementModel extends CoreModel{
         $this->response = array(
             'rowCount' => $this->response['rowCount'],
             'result' => array(
-                'set' => $attributes,
+                'set' => $newCollection,
                 'total_rows' => $totalRows,
                 'last_insert_id' => null,
             ),
@@ -5053,7 +5155,7 @@ class ProductManagementModel extends CoreModel{
      *                  List products from database based on a variety of conditions.
      *
      * @since           1.0.0
-     * @version         1.2.7
+     * @version         1.4.9
      * @author          Can Berkol
      *
      * @throws          InvalidSortOrderException
@@ -5097,7 +5199,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @return          array           $response
      */
-    public function listProducts($filter = null, $sortOrder = null, $limit = null, $queryStr = null)
+    public function listProducts($filter = null, $sortOrder = null, $limit = null, $queryStr = null,$returnLocales = false)
     {
         $this->resetResponse();
         if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -5165,7 +5267,6 @@ class ProductManagementModel extends CoreModel{
             $lqStr = 'SELECT ' . $this->entity['product_localization']['alias'] . ', ' . $this->entity['product']['alias']
                 . ' FROM ' . $this->entity['product_localization']['name'] . ' ' . $this->entity['product_localization']['alias']
                 . ' JOIN ' . $this->entity['product_localization']['alias'] . '.product ' . $this->entity['product']['alias'];
-            $lqStr .= $where_str . $group_str . $order_str;
             $lQuery = $this->em->createQuery($lqStr);
             $lQuery = $this->addLimit($lQuery, $limit);
             $result = $lQuery->getResult();
@@ -5174,7 +5275,12 @@ class ProductManagementModel extends CoreModel{
                 $selectedIds[] = $entry->getProduct()->getId();
             }
             if (count($selectedIds) > 0) {
-                $where_str .= ' AND ' . $this->entity['product_localization']['alias'] . '.product IN(' . implode(',', $selectedIds) . ')';
+                if(strlen($where_str) == 0){
+                    $where_str .= ' WHERE  ' . $this->entity['product_localization']['alias'] . '.product IN(' . implode(',', $selectedIds) . ')';
+                }
+                else{
+                    $where_str .= ' AND ' . $this->entity['product_localization']['alias'] . '.product IN(' . implode(',', $selectedIds) . ')';
+                }
             }
         }
 
@@ -5191,12 +5297,27 @@ class ProductManagementModel extends CoreModel{
         foreach ($result as $entry) {
             $id = $entry->getProduct()->getId();
             if (!isset($unique[$id])) {
-                $products[] = $entry->getProduct();
+                $products[$id] = $entry->getProduct();
                 $unique[$id] = $entry->getProduct();
             }
+            $localizations[$id][] = $entry;
         }
         unset($unique);
-        $totalRows = count($products);
+        $responseSet = array();
+        if ($returnLocales) {
+            foreach ($products as $key => $product) {
+                $responseSet[$key]['entity'] = $product;
+                $responseSet[$key]['localizations'] = $localizations[$key];
+            }
+        } else {
+            $responseSet = $products;
+        }
+        $newCollection = array();
+        foreach ($responseSet as $item) {
+            $newCollection[] = $item;
+        }
+        unset($responseSet, $products);
+        $totalRows = count($newCollection);
         if ($totalRows < 1) {
             $this->response['result']['set'] = array();
             $this->response['error'] = true;
@@ -5206,7 +5327,7 @@ class ProductManagementModel extends CoreModel{
         $this->response = array(
             'rowCount' => $this->response['rowCount'],
             'result' => array(
-                'set' => $products,
+                'set' => $newCollection,
                 'total_rows' => $totalRows,
                 'last_insert_id' => null,
             ),
@@ -5999,7 +6120,7 @@ class ProductManagementModel extends CoreModel{
             );
             return $this->response;
         }
-//        $products = $result;
+        //        $products = $result;
         $products = array();
         if (!$withCategory) {
             foreach ($result as $cop) {
@@ -6138,7 +6259,7 @@ class ProductManagementModel extends CoreModel{
             );
             return $this->response;
         }
-//        $products = $result;
+        //        $products = $result;
         $products = array();
         if (!$withCategory) {
             foreach ($result as $cop) {
@@ -6160,6 +6281,135 @@ class ProductManagementModel extends CoreModel{
         return $this->response;
     }
 
+    /**
+     * @name            listProductsOfCategoryInLocales ()
+     *                  List products of categories that are associated with a locale.
+     *
+     * @since           1.2.3
+     * @version         1.2.3
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $locales entity, id, or sku
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          array           $response
+     */
+    public function listProductsOfCategoryInLocales($category, array $locales, $sortOrder = null, $limit = null)
+    {
+        $this->resetResponse();
+        /**
+         * Prepare language ids
+         */
+        $langIds = array();
+        foreach ($locales as $locale) {
+            if (!$locale instanceof MLSEntity\Language && !is_numeric($locale) && !is_string($locale)) {
+                return $this->createException('InvalidParameter', 'Language entity', 'err.invalid.parameter.language');
+            }
+            if (!is_object($locale)) {
+                switch ($locale) {
+                    case is_numeric($locale):
+                        $langIds[] = $locale;
+                        break;
+                    case is_string($locale):
+                        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+                        $response = $mlsModel->getLanguage($locale, 'iso_code');
+                        if (!$response['error']) {
+                            $locale = $response['result']['set'];
+                            $langIds[] = $locale->getId();
+                        }
+                        break;
+                }
+            } else {
+                $langIds[] = $locale->getId();
+            }
+        }
+        $langIds = implode(',', $langIds);
+
+        /**
+         * List products of category
+         */
+        $responsePoc = $this->listProductsOfCategory($category);
+        if ($responsePoc['error']) {
+            return $responsePoc;
+        }
+        $productIdCollection = array();
+        $productCollection = array();
+        foreach ($responsePoc['result']['set'] as $productEntity) {
+            $productIdCollection[] = $productEntity->getId();
+            $productCollection[$productEntity->getId()] = $productEntity;
+        }
+        $productIdCollection = implode(',',$productIdCollection);
+        /**
+         * Prepare $filter
+         */
+        $q_str = 'SELECT ' . $this->entity['active_product_locale']['alias']
+            . ' FROM ' . $this->entity['active_product_locale']['name'] . ' ' . $this->entity['active_product_locale']['alias']
+            . ' JOIN ' . $this->entity['active_product_locale']['alias'] . '.product ' . $this->entity['product']['alias']
+            . ' WHERE ' . $this->entity['active_product_locale']['alias'] . '.locale IN (' . $langIds . ')'
+            . ' AND '. $this->entity['active_product_locale']['alias'] . '.product IN (' . $productIdCollection . ')';
+
+        /**
+         * Prepare ORDER BY section of query.
+         */
+        $order_str = '';
+        if ($sortOrder != null) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'quantiy':
+                    case 'price':
+                    case 'sku':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                        $column = $this->entity['product']['alias'] . '.' . $column;
+                        break;
+                }
+                $order_str .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $order_str = rtrim($order_str, ', ');
+            $order_str = ' ORDER BY ' . $order_str . ' ';
+        }
+        $q_str .= $order_str;
+        $query = $this->em->createQuery($q_str);
+        $result = $query->getResult();
+
+        $totalRows = count($result);
+        if ($totalRows < 1) {
+            $this->response = array(
+                'rowCount' => $this->response['rowCount'],
+                'result' => array(
+                    'set' => null,
+                    'total_rows' => $totalRows,
+                    'last_insert_id' => null,
+                ),
+                'error' => true,
+                'code' => 'err.db.entry.notexist',
+            );
+            return $this->response;
+        }
+        $products = array();
+        foreach ($result as $cop) {
+            $products[] = $cop->getProduct();
+        }
+        $totalRows = count($products);
+
+        $this->response = array(
+            'rowCount' => $this->response['rowCount'],
+            'result' => array(
+                'set' => $products,
+                'total_rows' => $totalRows,
+                'last_insert_id' => null,
+            ),
+            'error' => false,
+            'code' => 'err.db.entry.exist',
+        );
+        return $this->response;
+
+    }
     /**
      * @name            listProductsOfSite ()
      *                List products that belong to a site.
@@ -7216,7 +7466,7 @@ class ProductManagementModel extends CoreModel{
      *                  Removes the association of files with products.
      *
      * @since           1.0.6
-     * @version         1.1.4
+     * @version         1.5.1
      * @author          Can Berkol
      *
      * @use             $this->doesProductExist()
@@ -7273,17 +7523,19 @@ class ProductManagementModel extends CoreModel{
         $count = 0;
         /** Start persisting entries */
         foreach ($categories as $category) {
-            /** If no entity is provided as file we need to check if it does exist */
             if (is_numeric($category)) {
                 $response = $this->getProductCategory($category, 'id');
                 if ($response['error']) {
                     return $this->createException('EntityDoesNotExist', 'ProductCategory', 'err.db.product_category.notexist');
                 }
-                $to_remove[] = $category;
+                $to_remove[] = $response['result']['set'];
             }
-            if ($category instanceof BundleEntity\CategoriesOfProduct) {
+            if (is_object($category) && $category instanceof BundleEntity\CategoriesOfProduct) {
                 $this->em->remove($category);
                 $cop_count++;
+            }
+            else{
+                $to_remove[] = $category->getId();
             }
             $count++;
         }
@@ -7291,7 +7543,6 @@ class ProductManagementModel extends CoreModel{
         if ($cop_count > 0) {
             $this->em->flush();
         }
-
         if (count($to_remove) > 0) {
             $ids = implode(',', $to_remove);
             $table = $this->entity['categories_of_product']['name'] . ' ' . $this->entity['categories_of_product']['alias'];
@@ -7439,7 +7690,7 @@ class ProductManagementModel extends CoreModel{
      *                  Removes the locales from products
      *
      * @since           1.2.3
-     * @version         1.2.3
+     * @version         1.5.0
      * @author          Can Berkol
      *
      * @use             $this->doesProductExist()
@@ -7463,7 +7714,7 @@ class ProductManagementModel extends CoreModel{
             }
         }
         /** issue an error only if there is no valid file or files of product entries */
-        if (count($locale) < 1) {
+        if (count($locales) < 1) {
             return $this->createException('InvalidParameter', '$locales', 'err.invalid.parameter.locales');
         }
         if (!is_numeric($product) && !$product instanceof BundleEntity\Product) {
@@ -7487,7 +7738,8 @@ class ProductManagementModel extends CoreModel{
         $to_remove = array();
         $count = 0;
         /** Start persisting files */
-        $mlsModel = $this->get('multilanguagesupport.model');
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+
         foreach ($locales as $locale) {
             /** If no entity is provided as file we need to check if it does exist */
             if (is_numeric($locale)) {
@@ -7495,22 +7747,23 @@ class ProductManagementModel extends CoreModel{
                 if ($response['error']) {
                     return $this->createException('EntityDoesNotExist', 'Language', 'err.db.language.notexist');
                 }
-                $to_remove[] = $locale;
+                $entity = $response['result']['set'];
+                $to_remove[] = $entity->getId();
             } else if (is_string($locale)) {
                 $response = $mlsModel->getLanguage($locale, 'iso_code');
                 if ($response['error']) {
                     return $this->createException('EntityDoesNotExist', 'Language', 'err.db.language.notexist');
                 }
-                $to_remove[] = $locale;
+                $entity = $response['result']['set'];
+                $to_remove[] = $entity->getId();
             }
-            if ($locale instanceof BundleEntity\ActveProductLocale) {
+            else if ($locale instanceof BundleEntity\ActveProductCategoryLocale) {
                 $this->em->remove($locale);
                 $aplCount++;
-            } else {
-                $to_remove[] = $locale;
             }
             $count++;
         }
+
         /** flush all into database */
         if ($aplCount > 0) {
             $this->em->flush();
@@ -7545,7 +7798,7 @@ class ProductManagementModel extends CoreModel{
      *                  Removes the locales from products
      *
      * @since           1.2.3
-     * @version         1.2.3
+     * @version         1.4.7
      * @author          Can Berkol
      *
      * @use             $this->doesProductExist()
@@ -7568,8 +7821,7 @@ class ProductManagementModel extends CoreModel{
                 unset($locale);
             }
         }
-        /** issue an error only if there is no valid file or files of product entries */
-        if (count($locale) < 1) {
+        if (count($locales) < 1) {
             return $this->createException('InvalidParameter', '$locales', 'err.invalid.parameter.locales');
         }
         if (!is_numeric($category) && !$category instanceof BundleEntity\ProductCategory) {
@@ -7595,19 +7847,19 @@ class ProductManagementModel extends CoreModel{
                 if ($response['error']) {
                     return $this->createException('EntityDoesNotExist', 'Language', 'err.db.language.notexist');
                 }
-                $to_remove[] = $locale;
+                $entity = $response['result']['set'];
+                $to_remove[] = $entity->getId();
             } else if (is_string($locale)) {
                 $response = $mlsModel->getLanguage($locale, 'iso_code');
                 if ($response['error']) {
                     return $this->createException('EntityDoesNotExist', 'Language', 'err.db.language.notexist');
                 }
-                $to_remove[] = $locale;
+                $entity = $response['result']['set'];
+                $to_remove[] = $entity->getId();
             }
-            if ($locale instanceof BundleEntity\ActveProductCategoryLocale) {
+            else if ($locale instanceof BundleEntity\ActveProductCategoryLocale) {
                 $this->em->remove($locale);
                 $aplCount++;
-            } else {
-                $to_remove[] = $locale;
             }
             $count++;
         }
@@ -8166,6 +8418,7 @@ class ProductManagementModel extends CoreModel{
         $countUpdates = 0;
         $countLocalizations = 0;
         $updatedItems = array();
+        $localizations = array();
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\ProductAttribute) {
                 $entity = $data;
@@ -8194,7 +8447,6 @@ class ProductManagementModel extends CoreModel{
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
                         case 'local':
-                            $localizations = array();
                             foreach ($value as $langCode => $translation) {
                                 $localization = $oldEntity->getLocalization($langCode, true);
                                 $newLocalization = false;
@@ -8325,6 +8577,7 @@ class ProductManagementModel extends CoreModel{
                     return $this->createException('EntityDoesNotExist', 'ProductAttribute with id ' . $data->id, 'err.invalid.entity');
                 }
                 $oldEntity = $response['result']['set'];
+
                 foreach ($data as $column => $value) {
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
@@ -8435,7 +8688,7 @@ class ProductManagementModel extends CoreModel{
         }
         $countUpdates = 0;
         $updatedItems = array();
-
+        $localizations = array();
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\ProductCategory) {
                 $entity = $data;
@@ -8464,7 +8717,6 @@ class ProductManagementModel extends CoreModel{
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
                         case 'local':
-                            $localizations = array();
                             foreach ($value as $langCode => $translation) {
                                 $response = $this->getProductCategoryLocalization($oldEntity, $langCode);
                                 $newLocalization = false;
@@ -8585,6 +8837,7 @@ class ProductManagementModel extends CoreModel{
         }
         $countUpdates = 0;
         $updatedItems = array();
+        $localizations = array();
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\Product) {
                 $entity = $data;
@@ -8613,7 +8866,6 @@ class ProductManagementModel extends CoreModel{
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
                         case 'local':
-                            $localizations = array();
                             foreach ($value as $langCode => $translation) {
                                 $localization = $oldEntity->getLocalization($langCode, true);
                                 $newLocalization = false;
@@ -10015,7 +10267,7 @@ class ProductManagementModel extends CoreModel{
         }
 
         $result = $this->em->getRepository($this->entity['volume_pricing']['name'])
-            ->findOneBy(array('id' => $id));
+                           ->findOneBy(array('id' => $id));
 
         $error = true;
         $code = 'err.db.entry.notexist';
@@ -10342,7 +10594,7 @@ class ProductManagementModel extends CoreModel{
 
     /**
      * @name            validateAndGetLocale()
-     *                  Validates $locale parameter and returns BiberLtd\Bundle\MultiLanguageSupport\Entity\Language if found in database.
+     *                  Validates $locale parameter and returns BiberLtd\Core\Bundles\MultiLanguageSupport\Entity\Language if found in database.
      *
      * @since           1.4.2
      * @version         1.4.2
@@ -10352,7 +10604,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $locale
      *
-     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\Language
+     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Language
      */
     private function validateAndGetLocale($locale){
         if (!is_string($locale) && !is_numeric($locale) && !$locale instanceof MLSEntity\Language) {
@@ -10378,7 +10630,7 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            validateAndGetProduct()
-     *                  Validates $product parameter and returns BiberLtd\Bundle\ProductManagementBundle\Entity\Product if found in database.
+     *                  Validates $product parameter and returns BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product if found in database.
      *
      * @since           1.4.0
      * @version         1.4.0
@@ -10389,10 +10641,10 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $product
      *
-     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\Product
+     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product
      */
     private function validateAndGetProduct($product){
-        if (!is_numeric($product) && !$product instanceof BundleEntity\Product) {
+        if (!is_numeric($product) && !is_string($product) && !$product instanceof BundleEntity\Product) {
             return $this->createException('InvalidParameter', '$product parameter must hold BiberLtd\\Core\\Bundles\\ProductManagementBundle\\Entity\\Product Entity, string representing url_key or sku, or integer representing database row id', 'msg.error.invalid.parameter.product');
         }
         if ($product instanceof BundleEntity\Product) {
@@ -10419,7 +10671,7 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            validateAndGetProductAttribute()
-     *                  Validates $attribute parameter and returns BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute if found in database.
+     *                  Validates $attribute parameter and returns BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductAttribute if found in database.
      *
      * @since           1.4.2
      * @version         1.4.2
@@ -10430,7 +10682,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $attribute
      *
-     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute
+     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductAttribute
      */
     private function validateAndGetProductAttribute($attribute){
         if (!is_numeric($attribute) && !$attribute instanceof BundleEntity\ProductAttribute) {
@@ -10455,7 +10707,7 @@ class ProductManagementModel extends CoreModel{
     }
     /**
      * @name            validateAndGetProductCategory()
-     *                  Validates $category parameter and returns BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory if found in database.
+     *                  Validates $category parameter and returns BiberLtd\Core\Bundles\ProductManagementBundle\Entity\ProductCategory if found in database.
      *
      * @since           1.4.2
      * @version         1.4.2
@@ -10466,7 +10718,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $category
      *
-     * @return          object          BiberLtd\Bundle\ProductManagementBundle\Entity\Product
+     * @return          object          BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product
      */
     private function validateAndGetProductCategory($category){
         if (!is_numeric($category) && !$category instanceof BundleEntity\ProductCategory) {
@@ -10521,6 +10773,44 @@ class ProductManagementModel extends CoreModel{
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.1                      Can Berkol
+ * 03.03.2015
+ * **************************************
+ * U removeCategoriesFromProduct()
+ * *
+ * **************************************
+ * v1.5.0                      Can Berkol
+ * 25.12.2014
+ * **************************************
+ * U removeLocalesFromProducts()
+ *
+ * **************************************
+ * v1.4.9                      Can Berkol
+ * 24.12.2014
+ * **************************************
+ * U addLocalesToProduct()
+ * U insertProducts()
+ * U listProducts()
+ *
+ * **************************************
+ * v1.4.8                      Can Berkol
+ * 23.12.2014
+ * **************************************
+ * U listActiveLocalesOfProduct()
+ *
+ * **************************************
+ * v1.4.7                      Can Berkol
+ * 10.12.2014
+ * **************************************
+ * U removeLocalesFromProductCategory()
+ *
+ * **************************************
+ * v1.4.6                      Can Berkol
+ * 22.09.2014
+ * **************************************
+ * A getCategoriesOfProductEntry()
+ *
  * **************************************
  * v1.4.5                      Can Berkol
  * 05.07.2014
