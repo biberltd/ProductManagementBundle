@@ -15,8 +15,8 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.1
- * @date            03.03.2015
+ * @version         1.5.2
+ * @date            18.03.2015
  *
  * =============================================================================================================
  * !! INSTRUCTIONS ON IMPORTANT ASPECTS OF MODEL METHODS !!!
@@ -3577,7 +3577,144 @@ class ProductManagementModel extends CoreModel{
         );
         return $this->response;
     }
+    /**
+     * @name            listActiveProductsOfCategory ()
+     *
+     * @since           1.5.2
+     * @version         1.5.2
+     * @author          Can Berkol
+     *
+     * @use             $this->getProduct()
+     *
+     * @param           mixed $category
+     * @param           array $sortOrder
+     * @param           array $limit
+     * @param           array $withCategory
+     *
+     * @return          array           $response
+     */
+    public function listActiveProductsOfCategory($category, $sortOrder = null, $limit = null, $withCategory = false){
+        $this->resetResponse();
+        if (!$category instanceof BundleEntity\ProductCategory && !is_numeric($category) && !is_string($category)) {
+            return $this->createException('InvalidParameter', 'Product entity', 'err.invalid.parameter.product');
+        }
+        if (!is_object($category)) {
+            switch ($category) {
+                case is_numeric($category):
+                    $response = $this->getProductCategory($category, 'id');
+                    break;
+                case is_string($category):
+                    $response = $this->getProductCategory($category, 'url_key');
+                    break;
+            }
+            if ($response['error']) {
+                return $this->createException('InvalidParameter', 'ProductCategory entity', 'err.invalid.parameter.product_category');
+            }
+            $category = $response['result']['set'];
+        }
 
+        /**
+         * Prepare $filter
+         */
+        $q_str = 'SELECT ' . $this->entity['categories_of_product']['alias'] . ', ' . $this->entity['product']['alias']
+            . ' FROM ' . $this->entity['categories_of_product']['name'] . ' ' . $this->entity['categories_of_product']['alias']
+            . ' JOIN ' . $this->entity['categories_of_product']['alias'] . '.product ' . $this->entity['product']['alias']
+            . ' WHERE ' . $this->entity['categories_of_product']['alias'] . '.category = ' . $category->getId();
+
+        /**
+         * Prepare ORDER BY section of query.
+         */
+        $order_str = '';
+        if ($sortOrder != null) {
+            foreach ($sortOrder as $column => $direction) {
+                $sorting = false;
+                if (!in_array($column, array('name', 'url_key'))) {
+                    $sorting = true;
+                    switch ($column) {
+                        case 'id':
+                        case 'quantiy':
+                        case 'price':
+                        case 'sku':
+                        case 'date_added':
+                        case 'date_updated':
+                            $column = $this->entity['product']['alias'] . '.' . $column;
+                            break;
+                        case 'sort_order':
+                            $column = $this->entity['categories_of_product']['alias'] . '.' . $column;
+                            break;
+                    }
+                    $order_str .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                }
+            }
+            if ($sorting) {
+                $order_str = rtrim($order_str, ', ');
+                $order_str = ' ORDER BY ' . $order_str . ' ';
+            }
+        }
+        $q_str .= $order_str;
+        $query = $this->em->createQuery($q_str);
+        $result = $query->getResult();
+        if (count($result) > 0) {
+            if ($sortOrder != null) {
+                $collection = array();
+                foreach ($result as $item) {
+                    $collection[] = $item->getProduct()->getId();
+                }
+                unset($result);
+                $filter = array();
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['product']['alias'] . '.id', 'comparison' => 'in', 'value' => $collection),
+                        ),
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['product']['alias'] . '.status', 'comparison' => '=', 'value' => 'a'),
+                        )
+                    )
+                );
+                return $this->listProducts($filter, $sortOrder, $limit);
+            }
+
+        }
+
+        $totalRows = count($result);
+        if ($totalRows < 1) {
+            $this->response = array(
+                'rowCount' => $this->response['rowCount'],
+                'result' => array(
+                    'set' => array(),
+                    'total_rows' => $totalRows,
+                    'last_insert_id' => null,
+                ),
+                'error' => true,
+                'code' => 'err.db.entry.notexist',
+            );
+            return $this->response;
+        }
+        //        $products = $result;
+        $products = array();
+        if (!$withCategory) {
+            foreach ($result as $cop) {
+                $products[] = $cop->getProduct();
+            }
+        }
+        $totalRows = count($products);
+
+        $this->response = array(
+            'rowCount' => $this->response['rowCount'],
+            'result' => array(
+                'set' => $products,
+                'total_rows' => $totalRows,
+                'last_insert_id' => null,
+            ),
+            'error' => false,
+            'code' => 'err.db.entry.exist',
+        );
+        return $this->response;
+    }
     /**
      * @name            listAttributesOfProduct ()
      *                  List attributes of a given product
@@ -10773,6 +10910,12 @@ class ProductManagementModel extends CoreModel{
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.2                      Can Berkol
+ * 18.03.2015
+ * **************************************
+ * A listActiveProductsOfCategory()
+ *
  * **************************************
  * v1.5.1                      Can Berkol
  * 03.03.2015
