@@ -24,8 +24,10 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="product_attribute_values",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_u_product_attribute_values", columns={"attribute","language","product"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_product_attribute_values_id", columns={"id"})}
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="idxUProductAttributeValuesId", columns={"id"}),
+ *         @ORM\UniqueConstraint(name="idxUProductAttributeValues", columns={"attribute","language","product"})
+ *     }
  * )
  */
 class ProductAttributeValues extends CoreEntity

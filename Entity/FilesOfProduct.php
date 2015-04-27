@@ -23,8 +23,8 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="files_of_product",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_n_files_of_product_date_added", columns={"date_added"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_files_of_product", columns={"file","product"})}
+ *     indexes={@ORM\Index(name="idxUFilesOfProductDateAdded", columns={"date_added"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUFilesOfProduct", columns={"file","product"})}
  * )
  */
 class FilesOfProduct extends CoreEntity
@@ -213,10 +213,6 @@ class FilesOfProduct extends CoreEntity
     public function getType() {
         return $this->type;
     }
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
-
 }
 /**
  * Change Log:

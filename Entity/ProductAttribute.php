@@ -23,8 +23,12 @@ use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
  * @ORM\Table(
  *     name="product_attribute",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_n_product_attribute_date_added", columns={"date_added"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_product_attribute_id", columns={"id"})}
+ *     indexes={
+ *         @ORM\Index(name="idxNProductAttributeDateAdded", columns={"date_added"}),
+ *         @ORM\Index(name="idxNProductAttributeDateUpdated", columns={"date_updated"}),
+ *         @ORM\Index(name="idxNProductAttributeDateRemoved", columns={"date_removed"})
+ *     },
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUProductAttributeId", columns={"id"})}
  * )
  */
 class ProductAttribute extends CoreLocalizableEntity
@@ -45,6 +49,16 @@ class ProductAttribute extends CoreLocalizableEntity
      * @ORM\Column(type="datetime", nullable=false)
      */
     public $date_added;
+
+	/**
+	 * @ORM\Column(type="datetime", nullable=false)
+	 */
+	public $date_updated;
+
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	public $date_removed;
 
     /** 
      * @ORM\OneToMany(

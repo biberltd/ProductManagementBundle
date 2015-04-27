@@ -24,8 +24,8 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="product_localization",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_u_product_localization_url_key", columns={"product","language","url_key"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_product_localization", columns={"product","language"})}
+ *     indexes={@ORM\Index(name="idxUProductUrlKey", columns={"product","language","url_key"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUProductLocalization", columns={"product","language"})}
  * )
  */
 class ProductLocalization extends CoreEntity

@@ -23,7 +23,8 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="product_attribute_localization",
  *     options={"charset":"utf8","collate":"utf8_turkish_Ci","engine":"innodb"},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_product_attribute_localization", columns={"attribute","language"})}
+ *     indexes={@ORM\Index(name="idxUProductAttributeUrlKey", columns={"attribute","language","url_key"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUProductAttributeLocalization", columns={"attribute","language"})}
  * )
  */
 class ProductAttributeLocalization extends CoreEntity
@@ -210,11 +211,6 @@ class ProductAttributeLocalization extends CoreEntity
     public function getUrlKey() {
         return $this->url_key;
     }
-
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
-
 }
 /**
  * Change Log:

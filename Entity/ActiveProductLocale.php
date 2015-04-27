@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping AS ORM;
  * @ORM\Table(
  *     name="active_product_locale",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_active_product_locale", columns={"product","locale"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUActiveLocaleOfProduct", columns={"product","locale"})}
  * )
  */
 class ActiveProductLocale extends CoreEntity
