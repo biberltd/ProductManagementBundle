@@ -19,7 +19,7 @@
     "require": {
         "biberltd/core-bundle" : "~3.2",
 		"biberltd/file-management-bundle" : "~3.1",
-		"biberltd/site-management-bundle" : "~3.1",
+		"biberltd/site-management-bundle" : "~3.2",
 		"biberltd/multilanguage-support-bundle" : "~3.1"
     },
     "autoload": {
