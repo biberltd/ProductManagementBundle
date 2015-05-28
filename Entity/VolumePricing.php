@@ -75,7 +75,7 @@ class VolumePricing extends CoreEntity
 
 	/**
 	 *
-	 * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ProductManagementBundle\Entity\Product")
+	 * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
 	 * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
 	 */
 	private $product;
