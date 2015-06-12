@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.4
+ * @version         1.5.5
  *
- * @date            25.05.2015
+ * @date            12.06.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -1862,7 +1862,7 @@ class ProductManagementModel extends CoreModel{
      * @name            insertProductAttributeLocalizations()
 	 *
      * @since           1.1.3
-     * @version         1.5.3
+     * @version         1.5.5
      * @author          Can Berkol
      *
      * @use             $this->createException()
@@ -1885,34 +1885,33 @@ class ProductManagementModel extends CoreModel{
 				$insertedItems[] = $entity;
 				$countInserts++;
 			}
-			else if(is_object($data)){
-				$entity = new BundleEntity\ProductAttributeLocalization();
-				foreach($data as $column => $value){
-					$set = 'set'.$this->translateColumnName($column);
-					switch($column){
-						case 'language':
-							$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-							$response = $lModel->getLanguage($value);
-							if(!$response->error->exists){
-								$entity->$set($response->result->set);
-							}
-							unset($response, $lModel);
-							break;
-						case 'attribute':
-							$response = $this->getProductAttribute($value);
-							if(!$response->error->exists){
-								$entity->$set($response->result->set);
-							}
-							unset($response, $lModel);
-							break;
-						default:
-							$entity->$set($value);
-							break;
+			else{
+				$attribute = $data['entity'];
+				foreach($data['localizations'] as $locale => $translation){
+					$entity = new BundleEntity\ProductAttributeLocalization();
+					$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+					$response = $lModel->getLanguage($locale);
+					if($response->error->exist){
+						return $response;
 					}
+					$entity->setLanguage($response->result->set);
+					unset($response);
+					$entity->setAttribute($attribute);
+					foreach($translation as $column => $value){
+						$set = 'set'.$this->translateColumnName($column);
+						switch($column){
+							default:
+								if(is_object($value) || is_array($value)){
+									$value = json_encode($value);
+								}
+								$entity->$set($value);
+								break;
+						}
+					}
+					$this->em->persist($entity);
+					$insertedItems[] = $entity;
+					$countInserts++;
 				}
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
 			}
 		}
 		if($countInserts > 0){
@@ -2221,7 +2220,7 @@ class ProductManagementModel extends CoreModel{
      * @name            insertProductCategoryLocalizations()
      *
      * @since           1.1.8
-     * @version         1.5.3
+     * @version         1.5.5
      * @author          Can Berkol
      *
      * @use             $this->createException()
@@ -2244,34 +2243,33 @@ class ProductManagementModel extends CoreModel{
 				$insertedItems[] = $entity;
 				$countInserts++;
 			}
-			else if(is_object($data)){
-				$entity = new BundleEntity\ProductCategoryLocalization();
-				foreach($data as $column => $value){
-					$set = 'set'.$this->translateColumnName($column);
-					switch($column){
-						case 'language':
-							$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-							$response = $lModel->getLanguage($value);
-							if(!$response->error->exists){
-								$entity->$set($response->result->set);
-							}
-							unset($response, $lModel);
-							break;
-						case 'category':
-							$response = $this->getProductCategory($value);
-							if(!$response->error->exists){
-								$entity->$set($response->result->set);
-							}
-							unset($response, $lModel);
-							break;
-						default:
-							$entity->$set($value);
-							break;
+			else{
+				$cat = $data['entity'];
+				foreach($data['localizations'] as $locale => $translation){
+					$entity = new BundleEntity\ProductCategoryLocalization();
+					$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+					$response = $lModel->getLanguage($locale);
+					if($response->error->exist){
+						return $response;
 					}
+					$entity->setLanguage($response->result->set);
+					unset($response);
+					$entity->setCategory($cat);
+					foreach($translation as $column => $value){
+						$set = 'set'.$this->translateColumnName($column);
+						switch($column){
+							default:
+								if(is_object($value) || is_array($value)){
+									$value = json_encode($value);
+								}
+								$entity->$set($value);
+								break;
+						}
+					}
+					$this->em->persist($entity);
+					$insertedItems[] = $entity;
+					$countInserts++;
 				}
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
 			}
 		}
 		if($countInserts > 0){
@@ -2284,7 +2282,7 @@ class ProductManagementModel extends CoreModel{
      * @name            insertProductLocalizations ()
 	 *
 	 * @since           1.1.8
-	 * @version         1.5.3
+	 * @version         1.5.5
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->createException()
@@ -2301,40 +2299,39 @@ class ProductManagementModel extends CoreModel{
 		$countInserts = 0;
 		$insertedItems = array();
 		foreach($collection as $data){
-			if($data instanceof BundleEntity\ProductLocalizations){
+			if($data instanceof BundleEntity\ProductLocalization){
 				$entity = $data;
 				$this->em->persist($entity);
 				$insertedItems[] = $entity;
 				$countInserts++;
 			}
-			else if(is_object($data)){
-				$entity = new BundleEntity\ProductLocalizations();
-				foreach($data as $column => $value){
-					$set = 'set'.$this->translateColumnName($column);
-					switch($column){
-						case 'language':
-							$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-							$response = $lModel->getLanguage($value);
-							if(!$response->error->exists){
-								$entity->$set($response->result->set);
-							}
-							unset($response, $lModel);
-							break;
-						case 'product':
-							$response = $this->getProduct($value);
-							if(!$response->error->exists){
-								$entity->$set($response->result->set);
-							}
-							unset($response, $lModel);
-							break;
-						default:
-							$entity->$set($value);
-							break;
+			else{
+				$product = $data['entity'];
+				foreach($data['localizations'] as $locale => $translation){
+					$entity = new BundleEntity\ProductLocalization();
+					$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+					$response = $lModel->getLanguage($locale);
+					if($response->error->exist){
+						return $response;
 					}
+					$entity->setLanguage($response->result->set);
+					unset($response);
+					$entity->setProduct($product);
+					foreach($translation as $column => $value){
+						$set = 'set'.$this->translateColumnName($column);
+						switch($column){
+							default:
+								if(is_object($value) || is_array($value)){
+									$value = json_encode($value);
+								}
+								$entity->$set($value);
+								break;
+						}
+					}
+					$this->em->persist($entity);
+					$insertedItems[] = $entity;
+					$countInserts++;
 				}
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
 			}
 		}
 		if($countInserts > 0){
@@ -6644,6 +6641,12 @@ class ProductManagementModel extends CoreModel{
 
 /**
  * Change Log
+ * **************************************
+ 5* v1.5.4                      12.06.2015
+ * Can Berkol
+ * **************************************
+ * BF :: insertLocalizations() methods rewritten.
+ *
  * **************************************
  * v1.5.4                      25.05.2015
  * Can Berkol
