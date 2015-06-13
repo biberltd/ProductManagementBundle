@@ -4039,9 +4039,9 @@ class ProductManagementModel extends CoreModel{
 		}
 		$oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT '.$this->entity['p']['alias'].', '.$this->entity['p']['alias']
+		$qStr = 'SELECT '.$this->entity['p']['alias'].', '.$this->entity['pl']['alias']
 			.' FROM '.$this->entity['pl']['name'].' '.$this->entity['pl']['alias']
-			.' JOIN '.$this->entity['pl']['alias'].'.category '.$this->entity['p']['alias'];
+			.' JOIN '.$this->entity['pl']['alias'].'.product '.$this->entity['p']['alias'];
 
 		if(!is_null($sortOrder)){
 			foreach($sortOrder as $column => $direction){
