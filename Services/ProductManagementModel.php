@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.5
+ * @version         1.5.6
  *
- * @date            12.06.2015
+ * @date            01.06.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -2282,7 +2282,7 @@ class ProductManagementModel extends CoreModel{
      * @name            insertProductLocalizations ()
 	 *
 	 * @since           1.1.8
-	 * @version         1.5.5
+	 * @version         1.5.6
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->createException()
@@ -2321,9 +2321,6 @@ class ProductManagementModel extends CoreModel{
 						$set = 'set'.$this->translateColumnName($column);
 						switch($column){
 							default:
-								if(is_object($value) || is_array($value)){
-									$value = json_encode($value);
-								}
 								$entity->$set($value);
 								break;
 						}
@@ -6642,7 +6639,13 @@ class ProductManagementModel extends CoreModel{
 /**
  * Change Log
  * **************************************
- 5* v1.5.4                      12.06.2015
+ * v1.5.6                      15.06.2015
+ * Can Berkol
+ * **************************************
+ * BF :: insertLocalizations() methods had a false login on default: case. Fixed.
+ *
+ * **************************************
+ * v1.5.5                      12.06.2015
  * Can Berkol
  * **************************************
  * BF :: insertLocalizations() methods rewritten.
