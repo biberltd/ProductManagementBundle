@@ -23,8 +23,8 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="products_of_site",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_n_products_of_site_date_added", columns={"date_added"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_products_of_site", columns={"product","site"})}
+ *     indexes={@ORM\Index(name="idxNProductsOfSiteDateAdded", columns={"date_added"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUProductsOfSite", columns={"product","site"})}
  * )
  */
 class ProductsOfSite extends CoreEntity
@@ -213,10 +213,6 @@ class ProductsOfSite extends CoreEntity
     public function getSite() {
         return $this->site;
     }
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
-
 }
 /**
  * Change Log:

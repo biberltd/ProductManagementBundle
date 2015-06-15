@@ -5,8 +5,8 @@
  *
  * @author      Can Berkol
  *
- * @version     1.0.0
- * @date        06.03.2014
+ * @version     1.0.1
+ * @date        27.04.2015
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
@@ -31,9 +31,9 @@ class ActiveProductCategoryLocale extends CoreEntity
     /** 
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory")
-     * @ORM\JoinColumn(name="product_category", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="category", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $product_category;
+    private $category;
 
     /** 
      * @ORM\Id
@@ -81,47 +81,53 @@ class ActiveProductCategoryLocale extends CoreEntity
         return $this->locale;
     }
 
-    /**
-     * @name            setProductCategory ()
-     *                  Sets the product_category property.
-     *                  Updates the data only if stored value and value to be set are different.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product_category
-     *
-     * @return          object                $this
-     */
-    public function setProductCategory($product_category) {
-        if($this->setModified('product_category', $product_category)->isModified()) {
-            $this->product_category = $product_category;
-        }
+	/**
+	 * @name            setCategory()
+	 *
+	 * @author          Can Berkol
+	 *
+	 * @since           1.0.1
+	 * @version         1.0.1
+	 *
+	 * @use             $this->setModified()
+	 *
+	 * @param           mixed				$category
+	 *
+	 * @return          object                $this
+	 */
+	public function setCategory($category) {
+		if($this->setModified('category', $category)->isModified()) {
+			$this->category = $category;
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @name            getProductCategory ()
-     *                  Returns the value of product_category property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product_category
-     */
-    public function getProductCategory() {
-        return $this->product_category;
-    }
+	/**
+	 * @name            getCategory ()
+	 *
+	 * @author          Can Berkol
+	 *
+	 * @since           1.0.1
+	 * @version         1.0.1
+	 *
+	 * @return          mixed           $this->product_category
+	 */
+	public function getCategory() {
+		return $this->category;
+	}
 }
 /**
  * Change Log:
+ * /**
+ * Change Log:
+ * **************************************
+ * v1.0.1                      27.04.2015
+ * TW#
+ * Can Berkol
+ * **************************************
+ * A product_category
+ *
  * **************************************
  * v1.0.0                      Can Berkol
  * 06.03.2014

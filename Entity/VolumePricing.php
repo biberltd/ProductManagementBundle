@@ -23,11 +23,12 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  *     name="volume_pricing",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
  *     indexes={
- *         @ORM\Index(name="idx_n_volume_pricing", columns={"product"}),
- *         @ORM\Index(name="idx_n_volume_pricing_date_added", columns={"date_added"}),
- *         @ORM\Index(name="idx_n_volume_pricing_updated", columns={"date_updated"})
+ *         @ORM\Index(name="idxNVolumePricing", columns={"product","id"}),
+ *         @ORM\Index(name="idxNVolumePricingDateAdded", columns={"date_added"}),
+ *         @ORM\Index(name="idxNVolumePricingDateUpdated", columns={"date_updated"}),
+ *         @ORM\Index(name="idxNVolumePricingDateRemoved", columns={"date_removed"})
  *     },
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_volume_pricing_id", columns={"id"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUVolumePricingId", columns={"id"})}
  * )
  */
 class VolumePricing extends CoreEntity
@@ -67,13 +68,18 @@ class VolumePricing extends CoreEntity
      * @ORM\Column(type="decimal", length=8, nullable=true)
      */
     private $discounted_price;
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	public $date_removed;
 
-    /** 
-     * 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false)
-     */
-    private $product;
+	/**
+	 *
+	 * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
+	 * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+	 */
+	private $product;
+
 
 
     /**

@@ -8,11 +8,11 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  *     name="brand",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
  *     indexes={
- *         @ORM\Index(name="idx_n_brand_date_added", columns={"date_added"}),
- *         @ORM\Index(name="idx_n_brand_date_updated", columns={"date_updated"}),
- *         @ORM\Index(name="idx_n_brand_date_removed", columns={"date_removed"})
+ *         @ORM\Index(name="idxNBrandDateAdded", columns={"date_added"}),
+ *         @ORM\Index(name="idxNBrandDateUpdated", columns={"date_updated"}),
+ *         @ORM\Index(name="idxNBrandDateRemoved", columns={"date_removed"})
  *     },
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_brand_id", columns={"id"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUBrandId", columns={"id"})}
  * )
  */
 class Brand extends CoreEntity
@@ -185,6 +185,13 @@ class Brand extends CoreEntity
     public function getProducts() {
         return $this->products;
     }
-
-
 }
+/**
+ * Change Log:
+ * **************************************
+ * v1.0.1                      27.04.2015
+ * TW#
+ * Can Berkol
+ * **************************************
+ * Major ORM changes.
+ */

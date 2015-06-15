@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping AS ORM;
  * @ORM\Table(
  *     name="related_product",
  *     options={"charset":"utf8","engine":"innodb","collate":"utf8_turkish_ci"},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_related_products", columns={"product","related_product"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxURelatedProduct", columns={"product","related_product"})}
  * )
  */
 class RelatedProduct extends CoreEntity

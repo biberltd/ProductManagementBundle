@@ -25,10 +25,11 @@ use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
  *     name="product_category",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
  *     indexes={
- *         @ORM\Index(name="idx_n_product_category_date_added", columns={"date_added"}),
- *         @ORM\Index(name="idx_n_product_category_date_updated", columns={"date_updated"})
+ *         @ORM\Index(name="idxNProductCategoryDateAdded", columns={"date_added"}),
+ *         @ORM\Index(name="idxNProductCategoryDateUpdated", columns={"date_updated"}),
+ *         @ORM\Index(name="idxNProductCategoryDateRemoved", columns={"date_removed"})
  *     },
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_product_category_id", columns={"id"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUProductCategoryId", columns={"id"})}
  * )
  */
 class ProductCategory extends CoreLocalizableEntity
@@ -60,6 +61,11 @@ class ProductCategory extends CoreLocalizableEntity
      */
     public $date_updated;
 
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	public $date_removed;
+
     /** 
      * @ORM\Column(type="string", length=1, nullable=false)
      */
@@ -72,7 +78,7 @@ class ProductCategory extends CoreLocalizableEntity
 
     /** 
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
-     * @ORM\JoinColumn(name="preview_image", referencedColumnName="id", nullable=false)
+	 * @ORM\JoinColumn(name="preview_image", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $preview_image;
 

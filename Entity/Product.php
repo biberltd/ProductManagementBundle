@@ -27,16 +27,16 @@ use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
  *     name="product",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
  *     indexes={
- *         @ORM\Index(name="idx_n_product_date_added", columns={"date_added"}),
- *         @ORM\Index(name="idx_n_product_date_updated", columns={"date_updated"}),
- *         @ORM\Index(name="idx_n_products_of_brand", columns={"id","brand"}),
- *         @ORM\Index(name="idx_n_product_date_removed", columns={"date_removed"})
+ *         @ORM\Index(name="idxNProductDateAdded", columns={"date_added"}),
+ *         @ORM\Index(name="idxNProductDateUpdated", columns={"date_updated"}),
+ *         @ORM\Index(name="idxNProductDateRemoved", columns={"date_removed"}),
+ *         @ORM\Index(name="idxNProductsOfBrand", columns={"id","brand"})
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="idx_u_product_id", columns={"id"}),
- *         @ORM\UniqueConstraint(name="idx_u_product_sku", columns={"sku","site"})
+ *         @ORM\UniqueConstraint(name="idxUProductId", columns={"id"}),
+ *         @ORM\UniqueConstraint(name="idxUProductSku", columns={"sku","site"})
  *     }
- * )z
+ * )
  */
 class Product extends CoreLocalizableEntity{
     /**
@@ -133,7 +133,7 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File")
-     * @ORM\JoinColumn(name="preview_file", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="preview_file", referencedColumnName="id", onDelete="CASCADE")
      */
     private $preview_file;
 
@@ -750,8 +750,6 @@ class Product extends CoreLocalizableEntity{
     public function getExtraInfo() {
         return $this->extra_info;
     }
-
-
 }
 /**
  * Change Log:

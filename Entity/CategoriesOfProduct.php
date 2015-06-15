@@ -24,8 +24,8 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="categories_of_product",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_n_categories_of_product_date_added", columns={"date_added"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_categories_of_product", columns={"product","category"})}
+ *     indexes={@ORM\Index(name="idxNCategoriesOfProductDateAdded", columns={"date_added"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUCategoriesOfProduct", columns={"product","category"})}
  * )
  */
 class CategoriesOfProduct extends CoreEntity
@@ -176,7 +176,7 @@ class CategoriesOfProduct extends CoreEntity
 
 }
 /**
- * Change Lo
+ * Change Log
  * **************************************
  * v1.0.2                      Can Berkol
  * 29.11.2013

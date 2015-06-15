@@ -3,10 +3,11 @@
  * @name        AttributesOfProductCategory
  * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
  *
+ *  @author		Can Berkol
  * @author		Murat Ünal
  *
- * @version     1.0.0
- * @date        11.09.2013
+ * @version     1.0.1
+ * @date        27.04.2015
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
@@ -23,8 +24,8 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Table(
  *     name="attributes_of_product_category",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idx_n_attributes_of_product_category_date_added", columns={"date_added"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_attributes_of_product_category", columns={"attribute","category"})}
+ *     indexes={@ORM\Index(name="idxNAttributesOfProductCategoryDateAdded", columns={"date_added"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUAttributesOfProductCategory", columns={"attribute","category"})}
  * )
  */
 class AttributesOfProductCategory extends CoreEntity
@@ -44,98 +45,90 @@ class AttributesOfProductCategory extends CoreEntity
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute")
      * @ORM\JoinColumn(name="attribute", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $product_attribute;
+    private $attribute;
 
     /** 
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory")
      * @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $product_category;
+    private $category;
 
-    /**
-     * @name                  setProductAttribute ()
-     *                                            Sets the product_attribute property.
-     *                                            Updates the data only if stored value and value to be set are different.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product_attribute
-     *
-     * @return          object                $this
-     */
-    public function setProductAttribute($product_attribute) {
-        if(!$this->setModified('product_attribute', $product_attribute)->isModified()) {
-            return $this;
-        }
-		$this->product_attribute = $product_attribute;
+	/**
+	 * @name            setAttribute()
+	 *
+	 * @author          Can Berkol
+	 *
+	 * @since           1.0.1
+	 * @version         1.0.1
+	 *
+	 * @use             $this->setModified()
+	 *
+	 * @param           mixed			$attribute
+	 *
+	 * @return          object                $this
+	 */
+	public function setAttribute($attribute) {
+		if(!$this->setModified('attribute', $attribute)->isModified()) {
+			return $this;
+		}
+		$this->attribute = $attribute;
 		return $this;
-    }
+	}
 
-    /**
-     * @name            getProductAttribute ()
-     *                                      Returns the value of product_attribute property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product_attribute
-     */
-    public function getProductAttribute() {
-        return $this->product_attribute;
-    }
+	/**
+	 * @name            getAttribute()
+	 *
+	 * @author          Can Berkol
+	 *
+	 * @since           1.0.1
+	 * @version         1.0.1
+	 *
+	 * @return          mixed           $this->product_attribute
+	 */
+	public function getAttribute() {
+		return $this->attribute;
+	}
 
-    /**
-     * @name                  setProductCategory ()
-     *                                           Sets the product_category property.
-     *                                           Updates the data only if stored value and value to be set are different.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product_category
-     *
-     * @return          object                $this
-     */
-    public function setProductCategory($product_category) {
-        if(!$this->setModified('product_category', $product_category)->isModified()) {
-            return $this;
-        }
-		$this->product_category = $product_category;
+	/**
+	 * @name            setCategory()
+	 *
+	 * @author          Can Berkol
+	 *
+	 * @since           1.0.1
+	 * @version         1.0.1
+	 *
+	 * @use             $this->setModified()
+	 *
+	 * @param           mixed $product_category
+	 *
+	 * @return          object                $this
+	 */
+	public function setCategory($product_category) {
+		if(!$this->setModified('category', $product_category)->isModified()) {
+			return $this;
+		}
+		$this->category = $product_category;
 		return $this;
-    }
+	}
+
+	/**
+	 * @name            getCategory()
+	 *
+	 * @author          Can Berkol
+	 *
+	 * @since           1.0.1
+	 * @version         1.0.1
+	 *
+	 * @return          mixed           $this->product_category
+	 */
+	public function getCategory() {
+		return $this->category;
+	}
 
     /**
-     * @name            getProductCategory ()
-     *                                     Returns the value of product_category property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product_category
-     */
-    public function getProductCategory() {
-        return $this->product_category;
-    }
-
-    /**
-     * @name                  setSortOrder ()
-     *                                     Sets the sort_order property.
-     *                                     Updates the data only if stored value and value to be set are different.
-     *
+     * @name            setSortOrder ()
+	 *
      * @author          Can Berkol
      *
      * @since           1.0.0
@@ -157,8 +150,7 @@ class AttributesOfProductCategory extends CoreEntity
 
     /**
      * @name            getSortOrder ()
-     *                               Returns the value of sort_order property.
-     *
+	 *
      * @author          Can Berkol
      *
      * @since           1.0.0
@@ -169,13 +161,16 @@ class AttributesOfProductCategory extends CoreEntity
     public function getSortOrder() {
         return $this->sort_order;
     }
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
-
 }
 /**
  * Change Log:
+ * **************************************
+ * v1.0.1                      27.04.2015
+ * TW#
+ * Can Berkol
+ * **************************************
+ * Major ORM changes.
+ *
  * **************************************
  * v1.0.0                      Murat Ünal
  * 11.09.2013
