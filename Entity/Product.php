@@ -137,10 +137,6 @@ class Product extends CoreLocalizableEntity{
      */
     private $preview_file;
 
-    /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\StockManagementBundle\Entity\Supplier")
-     * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
-     */
     private $supplier;
 
     /** 
