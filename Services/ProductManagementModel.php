@@ -2369,6 +2369,7 @@ class ProductManagementModel extends CoreModel{
                 $insertedItems[] = $entity;
                 $countInserts++;
             } else if (is_object($data)) {
+                unset($data->id);
                 $entity = new BundleEntity\Product;
                 if (!property_exists($data, 'date_added')) {
                     $data->date_added = $now;
@@ -4081,9 +4082,9 @@ class ProductManagementModel extends CoreModel{
 
 		$entities = array();
 		foreach($result as $entry){
-			$id = $entry->getAttribute()->getId();
+			$id = $entry->getProduct()->getId();
 			if(!isset($unique[$id])){
-				$entities[] = $entry->getAttribute();
+				$entities[] = $entry->getProduct();
 			}
 		}
 		$totalRows = count($entities);
