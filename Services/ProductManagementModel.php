@@ -12,7 +12,7 @@
  *
  * @version         1.5.6
  *
- * @date            23.06.2015
+ * @date            01.06.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -103,7 +103,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array           $collection  Contains an array with two keys: attribute, and sort_order
      * @param           mixed           $product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function addAttributesToProduct($collection, $product){
         $timeStamp = time();
@@ -173,7 +173,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array           $collection
      * @param           mixed           $product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function addFilesToProduct($collection, $product){
 		$timeStamp = time();
@@ -229,7 +229,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array       $locales
      * @param           mixed       $product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function addLocalesToProduct($locales, $product){
 		$timeStamp = time();
@@ -283,7 +283,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array           $locales
      * @param           mixed           $category
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function addLocalesToProductCategory($locales, $category){
 		$timeStamp = time();
@@ -338,7 +338,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array           $collection 		Contains an array with two keys: file, and sortorder
      * @param           mixed           $category
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function addProductsToCategory(array $collection, $category){
         $timeStamp = time();
@@ -394,7 +394,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed           $product
      * @param           array           $collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function addProductToCategories($product, $collection){
 		$timeStamp = time();
@@ -686,7 +686,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed           $brand
 	 * @param           bool            $bypass
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function doesBrandExist($brand, $bypass = false){
 		$response = $this->getBrand($brand);
@@ -727,7 +727,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           array 			$collection
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteProductAttributes($collection){
 		$timeStamp = time();
@@ -816,7 +816,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           array 			$collection
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteProductCategories($collection){
 		$timeStamp = time();
@@ -853,7 +853,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed 			$product
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteProduct($product){
 		return $this->deleteProducts(array($product));
@@ -906,7 +906,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed 			$pricing
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteVolumePricing($pricing){
 		return $this->deleteVolumePricings(array($pricing));
@@ -922,7 +922,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           array 			$collection
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteVolumePricings($collection){
 		$timeStamp = time();
@@ -963,7 +963,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed           $attribute
      * @param           bool            $bypass
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function doesProductAttributeExist($attribute, $bypass = false){
         $response = $this->getProductAttribute($attribute);
@@ -1024,7 +1024,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed           $product
 	 * @param           bool            $bypass
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function doesProductExist($product, $bypass = false){
 		$response = $this->getProduct($product);
@@ -1052,7 +1052,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed           $category
 	 * @param           bool            $bypass
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function doesProductCategoryExist($category, $bypass = false){
 		$response = $this->getProductCategory($category);
@@ -1080,7 +1080,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed           $product
      * @param           mixed           $language
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getAttributeValueOfProduct($attribute, $product, $language){
 		$timeStamp = time();
@@ -1167,7 +1167,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed           $product            id, entity, sku, url_key
      * @param           bool            $bypass             if set to true return integer instead of response
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getMaxSortOrderOfAttributeInProduct($product, $bypass = false){
         $timeStamp = time();
@@ -1199,7 +1199,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed 			$product
      * @param           bool 			$bypass
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getMaxSortOrderOfProductFile($product, $bypass = false){
 		$timeStamp = time();
@@ -1235,7 +1235,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed           $category
      * @param           bool            $bypass
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getMaxSortOrderOfProductInCategory($category, $bypass = false){
 		$timeStamp = time();
@@ -1266,7 +1266,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getMostRecentFileOfProduct($product){
 		$timeStamp = time();
@@ -1302,7 +1302,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$category
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getParentOfProductCategory($category){
         $response = $this->getProductCategory($category);
@@ -1328,7 +1328,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed           $product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
 	public function getProduct($product){
 		$timeStamp = time();
@@ -1361,7 +1361,7 @@ class ProductManagementModel extends CoreModel{
 	 * @name            getProductByUrlKey()
 	 *
 	 * @since           1.5.3
-	 * @version         1.5.7
+	 * @version         1.5.3
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->listProducts()
@@ -1370,7 +1370,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed 			$urlKey
 	 * @param			mixed			$language
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductByUrlKey($urlKey, $language = null){
 		$timeStamp = time();
@@ -1403,7 +1403,6 @@ class ProductManagementModel extends CoreModel{
 		}
 		$response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
 
-		$response->result->set = $response->result->set[0];
 		$response->stats->execution->start = $timeStamp;
 		$response->stats->execution->end = time();
 
@@ -1422,7 +1421,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed           $attr
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductAttribute($attr){
 		$timeStamp = time();
@@ -1452,7 +1451,7 @@ class ProductManagementModel extends CoreModel{
 	 * @name            getProductAttributeByUrlKey()
 	 *
 	 * @since           1.5.3
-	 * @version         1.5.7
+	 * @version         1.5.3
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->listProducts()
@@ -1461,7 +1460,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed 			$urlKey
 	 * @param			mixed			$language
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductAttributeByUrlKey($urlKey, $language = null){
 		$timeStamp = time();
@@ -1493,7 +1492,7 @@ class ProductManagementModel extends CoreModel{
 			}
 		}
 		$response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
-		$response->result->set = $response->result->set[0];
+
 		$response->stats->execution->start = $timeStamp;
 		$response->stats->execution->end = time();
 
@@ -1555,7 +1554,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed           $category
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductCategory($category){
 		$timeStamp = time();
@@ -1588,7 +1587,7 @@ class ProductManagementModel extends CoreModel{
 	 * @name            getProductCategoryByUrlKey()
 	 *
 	 * @since           1.5.3
-	 * @version         1.5.7
+	 * @version         1.5.3
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->listProducts()
@@ -1597,7 +1596,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed 			$urlKey
 	 * @param			mixed			$language
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductCategoryByUrlKey($urlKey, $language = null){
 		$timeStamp = time();
@@ -1629,7 +1628,7 @@ class ProductManagementModel extends CoreModel{
 			}
 		}
 		$response = $this->listProductCategories($filter, null, array('start' => 0, 'count' => 1));
-		$response->result->set = $response->result->set[0];
+
 		$response->stats->execution->start = $timeStamp;
 		$response->stats->execution->end = time();
 
@@ -1649,7 +1648,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function getRandomCategoryOfProduct($product){
 		$timeStamp = time();
@@ -1710,7 +1709,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param  			mixed 			$product
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getVolumePricingOfProductWithMaximumQuantity($product){
 		$response = $this->getProduct($product);
@@ -1735,7 +1734,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		mixed 			$product
 	 * @param   		int 			$count
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function incrementCountViewOfProduct($product, $count){
 		$response = $this->getProduct($product);
@@ -1774,7 +1773,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           array 			$collection
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertBrands($collection){
 		$timeStamp = time();
@@ -1836,7 +1835,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function insertProduct($product){
         return $this->insertProducts(array($product));
@@ -2351,7 +2350,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array 			$collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function insertProducts($collection){
 		$timeStamp = time();
@@ -2459,6 +2458,7 @@ class ProductManagementModel extends CoreModel{
 			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+
 	}
 	/**
 	 * @name            insertVolumePricing ()
@@ -2473,7 +2473,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed 			$volumePricing
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertVolumePricing($volumePricing){
 		return $this->insertVolumePricings(array($volumePricing));
@@ -2564,7 +2564,7 @@ class ProductManagementModel extends CoreModel{
 	 *
      * @param           bool 		$bypass
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function isAttributeAssociatedWithProduct($attribute, $product, $bypass = false){
 		$timeStamp = time();
@@ -2611,7 +2611,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed       $product
 	 * @param           bool        $bypass     true or false
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function isFileAssociatedWithProduct($file, $product, $bypass = false){
 		$timeStamp = time();
@@ -2662,7 +2662,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed 		$product
      * @param           bool 		$bypass
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function isLocaleAssociatedWithProduct($locale, $product, $bypass = false){
 		$timeStamp = time();
@@ -2712,7 +2712,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed 		$category
 	 * @param           bool 		$bypass
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function isLocaleAssociatedWithProductCategory($locale, $category, $bypass = false){
 		$timeStamp = time();
@@ -2762,7 +2762,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           mixed 		$category
 	 * @param           bool 		$bypass
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function isProductAssociatedWithCategory($product, $category, $bypass = false){
 		$timeStamp = time();
@@ -2807,7 +2807,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed $product 		entity
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listActiveLocalesOfProduct($product){
 		$timeStamp = time();
@@ -2849,7 +2849,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed 		$category 		entity
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listActiveLocalesOfProductCategory($category){
 		$timeStamp = time();
@@ -2977,7 +2977,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listAttributesOfProduct($product, $sortOrder = null, $limit = null){
         $timeStamp = time();
@@ -3032,7 +3032,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listAttributesOfProductCategory($category, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3088,7 +3088,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listAllAttributeValuesOfProduct($product, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3145,7 +3145,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listAllChildProductCategories($sortOrder = null, $limit = null){
         $column = $this->entity['pc']['alias'] . '.parent';
@@ -3177,7 +3177,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listAttributeValuesOfProduct($product, $type, $sortOrder = null, $limit = null){
         $this->resetResponse();
@@ -3235,7 +3235,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listBrands($filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3303,7 +3303,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listCategoriesOfProduct($product, $filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3354,7 +3354,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 				$sortOrder
      * @param           array 				$limit
      *
-	 * @return			\BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return			BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listChildCategoriesOfProductCategory($category, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3386,7 +3386,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listChildCategoriesOfProductCategoryWithPreviewImage($category, $sortOrder = null, $limit = null){
         $response = $this->getProductCategory($category);
@@ -3433,7 +3433,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 		$sortOrder
      * @param           array 		$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listCustomizableProducts($sortOrder = null, $limit = null){
         $column = $this->entity['p']['alias'] . '.is_customizable';
@@ -3464,7 +3464,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		array 			$sortOrder
 	 * @param   		array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listFeaturedParentProductCategories($filter = null, $sortOrder = null, $limit = null){
 		$filter[] = array(
@@ -3498,7 +3498,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 		$sortOrder
 	 * @param           array 		$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listFilesOfProduct($product, $filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3568,7 +3568,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listNotCustomizableProducts($sortOrder = null, $limit = null){
 		$column = $this->entity['p']['alias'] . '.is_customizable';
@@ -3598,7 +3598,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listOutOfStockProducts($sortOrder = null, $limit = null){
         $column = $this->entity['product']['alias'] . '.quantity';
@@ -3627,7 +3627,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listParentOnlyProductCategories($sortOrder = null, $limit = null){
         $column = $this->entity['pc']['alias'] . '.parent';
@@ -3660,7 +3660,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed 			$sortOrder
      * @param           mixed 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listParentOnlyProductCategoriesOfLevel($level = 1, $filter = null, $sortOrder = null, $limit = null){
         $column = $this->entity['pc']['alias'] . '.parent';
@@ -3694,7 +3694,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsPricedBetween($amounts, $sortOrder = null, $limit = null){
         return $this->listProductsPriced($amounts, 'between', $sortOrder, $limit);
@@ -3713,7 +3713,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
 	public function listProductAttributes($filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3788,7 +3788,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 		$sortOrder
      * @param           array 		$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductAttributeValues($filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3855,7 +3855,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductCategories($filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -3934,7 +3934,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		array 			$sortOrder
 	 * @param   		array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductCategoriesOfParentHavingLevel($category, $level, $filter = null, $sortOrder = null, $limit = null){
 		$filter[] = array(
@@ -3999,7 +3999,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductCategoriesOfLevel($level = 1, $sortOrder = null, $limit = null){
 		$conditions[] = array(
@@ -4027,7 +4027,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProducts($filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -4107,7 +4107,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsAdded($date, $eq, $sortOrder = null, $limit = null){
         // $eqOpts = array('after', 'before', 'between', 'on');
@@ -4167,7 +4167,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsAddedAfter($date, $sortOrder = null, $limit = null){
         return $this->listProductsAdded($date, 'after', $sortOrder, $limit);
@@ -4186,7 +4186,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductsAddedBefore($date, $sortOrder = null, $limit = null){
 		return $this->listProductsAdded($date, 'before', $sortOrder, $limit);
@@ -4205,7 +4205,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsAddedBetween($dates, $sortOrder = null, $limit = null){
         return $this->listProductsAdded($dates, 'between', $sortOrder, $limit);
@@ -4224,7 +4224,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsAddedOn($date, $sortOrder = null, $limit = null){
         return $this->listProductsAdded($date, 'on', $sortOrder, $limit);
@@ -4243,7 +4243,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsInCategory(array $categories, $sortOrder = null, $limit = null){
         $timeStamp = time();
@@ -4307,7 +4307,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsInLocales(array $locales, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -4376,7 +4376,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductCategoriesInLocales (array $locales, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -4445,7 +4445,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsLiked($likes, $eq, $sortOrder = null, $limit = null){
         //$eq_opts = array('less', 'more', 'between');
@@ -4502,7 +4502,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsLikedBetween($likes, $sortOrder = null, $limit = null){
         return $this->listProductsLiked($likes, 'between', $sortOrder, $limit);
@@ -4521,7 +4521,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsLikedLessThan($likes, $sortOrder = null, $limit = null){
         return $this->listProductsLiked($likes, 'less', $sortOrder, $limit);
@@ -4540,7 +4540,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsLikedMoreThan($likes, $sortOrder = null, $limit = null){
         return $this->listProductsLiked($likes, 'more', $sortOrder, $limit);
@@ -4558,7 +4558,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductsOfBrand($brand, $sortOrder = null, $limit = null){
 		$response = $this->getBrand($brand);
@@ -4592,7 +4592,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsOfCategory($category, $sortOrder = null, $limit = null){
         $timeStamp = time();
@@ -4674,7 +4674,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsOfCategoryInLocales($category, array $locales, $sortOrder = null, $limit = null){
         $timeStamp = time();
@@ -4761,7 +4761,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsOfSite($site, $sortOrder = null, $limit = null){
 		$SMMModel = new SMMService\SiteManagementModel($this->kernel);
@@ -4798,7 +4798,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsUpdated($date, $eq, $sortOrder = null, $limit = null){
         // $eq_opts = array('after', 'before', 'between', 'on');
@@ -4857,7 +4857,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsUpdatedAfter($date, $sortOrder = null, $limit = null){
         return $this->listProductsUpdated($date, 'after', $sortOrder, $limit);
@@ -4876,7 +4876,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsUpdatedBefore($date, $sortOrder = null, $limit = null){
         return $this->listProductsUpdated($date, 'before', $sortOrder, $limit);
@@ -4895,7 +4895,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductsUpdatedBetween($date, $sortOrder = null, $limit = null){
 		return $this->listProductsUpdated($date, 'between', $sortOrder, $limit);
@@ -4914,7 +4914,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductsUpdatedOn($date, $sortOrder = null, $limit = null){
 		return $this->listProductsUpdated($date, 'on', $sortOrder, $limit);
@@ -4934,7 +4934,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsWithPrice($price, $eq, $sortOrder = null, $limit = null){
        // $eq_opts = array('more', 'less', 'between');
@@ -4991,7 +4991,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsWithQuantities($quantity, $eq, $sortOrder = null, $limit = null){
         //$eq_opts = array('more', 'less', 'between');
@@ -5048,7 +5048,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsWithQuantityBetween($quantities, $sortOrder = null, $limit = null){
         return $this->listProductsWithQuantity($quantities, 'between', $sortOrder, $limit);
@@ -5086,7 +5086,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 		$sortOrder
      * @param           array 		$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsWithQuantitiesMoreThan($quantity, $sortOrder = null, $limit = null){
         return $this->listProductsWithQuantities($quantity, 'more', $sortOrder, $limit);
@@ -5105,7 +5105,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 		$sortOrder
 	 * @param           array 		$limit
      *
-     * @return         \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return         BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsWithPriceLessThan($amount, $sortOrder = null, $limit = null){
         return $this->listProductsPriced($amount, 'less', $sortOrder, $limit);
@@ -5124,7 +5124,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 		$sortOrder
 	 * @param           array 		$limit
      *
-     * @return         	\BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return         	BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsWithPriceMoreThan($amount, $sortOrder = null, $limit = null){
         return $this->listProductsPriced($amount, 'more', $sortOrder, $limit);
@@ -5144,7 +5144,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsViewed($views, $eq, $sortOrder = null, $limit = null){
         //$eq_opts = array('less', 'more', 'between');
@@ -5200,7 +5200,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsViewedBetween($views, $sortOrder = null, $limit = null){
         return $this->listProductsViewed($views, 'between', $sortOrder, $limit);
@@ -5219,7 +5219,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
     public function listProductsViewedLessThan($views, $sortOrder = null, $limit = null){
         return $this->listProductsViewed($views, 'less', $sortOrder, $limit);
@@ -5238,7 +5238,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
     public function listProductsViewedMoreThan($views, $sortOrder = null, $limit = null){
         return $this->listProductsViewed($views, 'more', $sortOrder, $limit);
@@ -5258,7 +5258,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 		$sortOrder
      * @param           array 		$limit
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listRelatedProductsOfProduct($product, $sortOrder = null, $limit = null){
         $timeStamp = time();
@@ -5316,7 +5316,7 @@ class ProductManagementModel extends CoreModel{
      * @param           mixed 			$product
      * @param           mixed 			$language
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listValuesOfProductAttributes($product, $attribute, $language){
         $timeStamp = time();
@@ -5369,7 +5369,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$sortOrder
 	 * @param           array 			$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listVolumePricings($filter = null, $sortOrder = null, $limit = null){
 		$timeStamp = time();
@@ -5438,7 +5438,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		array 		$sortOrder
 	 * @param   		array 		$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listVolumePricingsOfProduct($product, $filter = array(), $sortOrder = null, $limit = null){
 		$response = $this->getProduct($product);
@@ -5470,7 +5470,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		mixed 			$product
 	 * @param   		integer			$quantity
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listVolumePricingsOfProductWithClosestQuantity($product, $quantity){
 		return $this->listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, null, array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
@@ -5491,7 +5491,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		array 		$sortOrder
 	 * @param   		array 		$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, $quantity, $sortOrder = null, $limit = null){
 		$filter[] = array(
@@ -5522,7 +5522,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param   		array 		$sortOrder
 	 * @param   		array 		$limit
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, $sortOrder = null, $limit = null){
 		$filter[] = array(
@@ -5548,7 +5548,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array $categories array of ids or entities.
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function markCategoriesAsFeatured($categories){
         $timeStamp = time();
@@ -5584,7 +5584,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 		$collection
      * @param           mixed 		$product (id, sku, or object)
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function relateProductsWithProduct($collection, $product){
         $timeStamp = time();
@@ -5626,7 +5626,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$categories
 	 * @param           mixed			$product
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeCategoriesFromProduct($categories, $product){
 		$timeStamp = time();
@@ -5671,7 +5671,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$files
 	 * @param           mixed			$product
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeFilesFromProduct($files, $product){
 		$timeStamp = time();
@@ -5717,7 +5717,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$locales
 	 * @param           mixed			$product
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeLocalesFromProduct($locales, $product){
 		$timeStamp = time();
@@ -5736,7 +5736,7 @@ class ProductManagementModel extends CoreModel{
 			$idsToRemove[] = $response->result->set->getId();
 		}
 		$in = ' IN (' . implode(',', $idsToRemove) . ')';
-		$qStr = 'DELETE FROM '.$this->entity['apl']['name'].' '.$this->entity['apl']['alias']
+		$qStr = 'DELETE FROM '.$this->entity['apl']['name'].' '.$this->entity['fop']['alias']
 			.' WHERE '.$this->entity['apl']['alias'].'.product '.$product->getId()
 			.' AND '.$this->entity['apl']['alias'].'.language '.$in;
 
@@ -5763,7 +5763,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$products
 	 * @param           mixed			$category
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeProductsFromCategory($products, $category){
 		$timeStamp = time();
@@ -5810,7 +5810,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$categories
      * @param           mixed 			$locale
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function removeProductCategoriesFromLocale($categories, $locale){
         $timeStamp = time();
@@ -5856,7 +5856,7 @@ class ProductManagementModel extends CoreModel{
 	 * @param           array 			$products
 	 * @param           mixed 			$locale
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeProductsFromLocale($products, $locale){
 		$timeStamp = time();
@@ -5900,7 +5900,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           array 			$categories
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function unmarkCategoriesAsFeatured($categories) {
 		$timeStamp = time();
@@ -5935,7 +5935,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 		$collection
      * @param           mixed 		$product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function unrelateProductsFromProduct($collection, $product){
         $timeStamp = time();
@@ -5977,7 +5977,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           mixed 			$brand
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateBrand($brand){
 		return $this->updateBrands(array($brand));
@@ -5994,7 +5994,7 @@ class ProductManagementModel extends CoreModel{
 	 *
 	 * @param           array			$collection
 	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateBrands($collection){
 		$timeStamp = time();
@@ -6056,7 +6056,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$product
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProduct($product){
         return $this->updateProducts(array($product));
@@ -6073,7 +6073,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$attribute
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProductAttribute($attribute){
         return $this->updateProductAttributes(array($attribute));
@@ -6090,7 +6090,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array			$collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProductAttributes($collection){
         $timeStamp = time();
@@ -6188,7 +6188,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$data
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProductAttributeValue($data) {
         return $this->updateProductAttributeValues(array($data));
@@ -6205,7 +6205,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array 			$collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProductAttributeValues($collection){
 		$timeStamp = time();
@@ -6297,7 +6297,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$category
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProductCategory($category){
         return $this->updateProductCategories(array($category));
@@ -6314,7 +6314,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array 			$collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProductCategories($collection){
 		$timeStamp = time();
@@ -6439,7 +6439,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array 			$collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateProducts($collection){
 		$timeStamp = time();
@@ -6551,7 +6551,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           mixed 			$volumePricing
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateVolumePricing($volumePricing){
         return $this->updateVolumePricings(array($volumePricing));
@@ -6570,7 +6570,7 @@ class ProductManagementModel extends CoreModel{
      *
      * @param           array 		$collection
      *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateVolumePricings($collection) {
 		$timeStamp = time();
@@ -6638,12 +6638,6 @@ class ProductManagementModel extends CoreModel{
 
 /**
  * Change Log
- * **************************************
- * v1.5.                      23.06.2015
- * Can Berkol
- * **************************************
- * BF :: ..getByUrlKey() method Response bug fixed.
- *
  * **************************************
  * v1.5.6                      15.06.2015
  * Can Berkol
