@@ -2452,6 +2452,7 @@ class ProductManagementModel extends CoreModel{
         }
         /** Now handle localizations */
         if ($countInserts > 0 && $countLocalizations > 0) {
+            $this->em->flush();
             $this->insertProductLocalizations($localizations);
         }
 		if($countInserts > 0){
@@ -4108,7 +4109,7 @@ class ProductManagementModel extends CoreModel{
      * @param           array 			$sortOrder
      * @param           array 			$limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsAdded($date, $eq, $sortOrder = null, $limit = null){
         // $eqOpts = array('after', 'before', 'between', 'on');
