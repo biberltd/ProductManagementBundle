@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.6
+ * @version         1.5.8
  *
- * @date            01.06.2015
+ * @date            28.06.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -1545,7 +1545,7 @@ class ProductManagementModel extends CoreModel{
 	 * @name            getProductCategory()
 	 *
 	 * @since           1.0.1
-	 * @version         1.5.3
+	 * @version         1.5.7
 	 *
 	 * @author          Can Berkol
 	 * @author          Said İmamoğlu
@@ -2341,9 +2341,10 @@ class ProductManagementModel extends CoreModel{
      * @name            insertProducts()
      *
      * @since           1.1.7
-     * @version         1.5.3
+     * @version         1.5.7
 	 *
      * @author          Can Berkol
+     * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
@@ -3025,8 +3026,9 @@ class ProductManagementModel extends CoreModel{
      * @name            listAttributesOfProductCategory()
      *
      * @since           1.2.4
-     * @version         1.5.3
+     * @version         1.5.8
      * @author          Can Berkol
+     * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
@@ -3068,13 +3070,20 @@ class ProductManagementModel extends CoreModel{
 		$q = $this->addLimit($q, $limit);
 
 		$result = $q->getResult();
-
-		$totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $entities = array();
+        foreach ($result as $entity) {
+            $id = $entity->getAttribute()->getId();
+            if (!isset($entities[$id])) {
+                $entities[$id] = $entity->getAttribute();
+            }
+        }
+        $totalRows = count($entities);
+        unset($result);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
      * @name            listAllAttributeValuesOfProduct()
@@ -6640,6 +6649,17 @@ class ProductManagementModel extends CoreModel{
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.8                      28.06.2015
+ * Said İmamoğlu
+ * **************************************
+ * BF :: listAttributesOfProduct() attribute_of_product entity was returning.attribute entity collection returns now.
+ * **************************************
+ * v1.5.7                      22.06.2015
+ * Said İmamoğlu
+ * **************************************
+ * BF :: insertProducts() entity flush before inserting localizations.
+ * BF :: getProductCategoryByUrlKey() new response object support added.
  * **************************************
  * v1.5.6                      15.06.2015
  * Can Berkol
