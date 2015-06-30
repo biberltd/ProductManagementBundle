@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.8
+ * @version         1.5.9
  *
- * @date            28.06.2015
+ * @date            30.06.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -2605,8 +2605,9 @@ class ProductManagementModel extends CoreModel{
 	 * @name            isFileAssociatedWithBlogPost()
 	 *
 	 * @since           1.0.3
-	 * @version         1.5.3
+	 * @version         1.5.9
 	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->createException()
 	 *
@@ -2618,7 +2619,7 @@ class ProductManagementModel extends CoreModel{
 	 */
 	public function isFileAssociatedWithProduct($file, $product, $bypass = false){
 		$timeStamp = time();
-		$fModel = new FileService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
+		$fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
 		$response = $fModel->getFile($file);
 		if($response->error->exist){
@@ -2635,7 +2636,7 @@ class ProductManagementModel extends CoreModel{
 
 		$found = false;
 
-		$qStr = 'SELECT COUNT(' . $this->entity['fop']['alias'] . ')'
+		$qStr = 'SELECT COUNT(' . $this->entity['fop']['alias'].'.file' . ')'
 			. ' FROM ' . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias']
 			. ' WHERE ' . $this->entity['fop']['alias'] . '.file = ' . $file->getId()
 			. ' AND ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId();
@@ -6649,6 +6650,11 @@ class ProductManagementModel extends CoreModel{
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.9                      30.06.2015
+ * Said İmamoğlu
+ * **************************************
+ * BF :: isFileAssociatedWithProduct() can not count query result && Namespace of fileModel updated.
  * **************************************
  * v1.5.8                      28.06.2015
  * Said İmamoğlu
