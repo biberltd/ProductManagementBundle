@@ -659,7 +659,7 @@ class ProductManagementModel extends CoreModel{
 			}
 			else{
 				$response = $this->getBrand($entry);
-				if(!$response->error->exists){
+				if(!$response->error->exist){
 					$this->em->remove($response->result->set);
 					$countDeleted++;
 				}
@@ -742,7 +742,7 @@ class ProductManagementModel extends CoreModel{
 			}
 			else{
 				$response = $this->getProductAttribute($entry);
-				if(!$response->error->exists){
+				if(!$response->error->exist){
 					$this->em->remove($response->result->set);
 					$countDeleted++;
 				}
@@ -831,7 +831,7 @@ class ProductManagementModel extends CoreModel{
 			}
 			else{
 				$response = $this->getProductCategory($entry);
-				if(!$response->error->exists){
+				if(!$response->error->exist){
 					$this->em->remove($response->result->set);
 					$countDeleted++;
 				}
@@ -884,7 +884,7 @@ class ProductManagementModel extends CoreModel{
 			}
 			else{
 				$response = $this->getProduct($entry);
-				if(!$response->error->exists){
+				if(!$response->error->exist){
 					$this->em->remove($response->result->set);
 					$countDeleted++;
 				}
@@ -937,7 +937,7 @@ class ProductManagementModel extends CoreModel{
 			}
 			else{
 				$response = $this->getVolumePricing($entry);
-				if(!$response->error->exists){
+				if(!$response->error->exist){
 					$this->em->remove($response->result->set);
 					$countDeleted++;
 				}
@@ -1389,7 +1389,7 @@ class ProductManagementModel extends CoreModel{
 		if(!is_null($language)){
 			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 			$response = $mModel->getLanguage($language);
-			if(!$response->error->exists){
+			if(!$response->error->exist){
 				$filter[] = array(
 					'glue' => 'and',
 					'condition' => array(
@@ -1479,7 +1479,7 @@ class ProductManagementModel extends CoreModel{
 		if(!is_null($language)){
 			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 			$response = $mModel->getLanguage($language);
-			if(!$response->error->exists){
+			if(!$response->error->exist){
 				$filter[] = array(
 					'glue' => 'and',
 					'condition' => array(
@@ -1545,7 +1545,7 @@ class ProductManagementModel extends CoreModel{
 	 * @name            getProductCategory()
 	 *
 	 * @since           1.0.1
-	 * @version         1.5.7
+	 * @version         1.5.9
 	 *
 	 * @author          Can Berkol
 	 * @author          Said İmamoğlu
@@ -1564,10 +1564,10 @@ class ProductManagementModel extends CoreModel{
 		$result = null;
 		switch($category){
 			case is_numeric($category):
-				$result = $this->em->getRepository($this->entity['p']['name'])->findOneBy(array('id' => $category));
+				$result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('id' => $category));
 				break;
 			case is_string($category):
-				$result = $this->em->getRepository($this->entity['p']['name'])->findOneBy(array('sku' => $category));
+				$result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('sku' => $category));
 				if(is_null($result)){
 					$response = $this->getProductCategoryByUrlKey($category);
 					if(!$response->error->exist){
@@ -1615,7 +1615,7 @@ class ProductManagementModel extends CoreModel{
 		if(!is_null($language)){
 			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 			$response = $mModel->getLanguage($language);
-			if(!$response->error->exists){
+			if(!$response->error->exist){
 				$filter[] = array(
 					'glue' => 'and',
 					'condition' => array(
@@ -1975,7 +1975,7 @@ class ProductManagementModel extends CoreModel{
                         case 'language':
                             $lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
                             $response = $lModel->getLanguage($value);
-                            if($response->error->exists){
+                            if($response->error->exist){
 								return $response;
 							}
 							$entity->$set($response->result->set);
@@ -1983,14 +1983,14 @@ class ProductManagementModel extends CoreModel{
                             break;
                         case 'attribute':
                             $response = $this->getProductAttribute($value);
-							if($response->error->exists){
+							if($response->error->exist){
 								return $response;
 							}
 							$entity->$set($response->result->set);
                             break;
                         case 'product':
                             $response = $this->getProduct($value, 'id');
-							if($response->error->exists){
+							if($response->error->exist){
 								return $response;
 							}
 							$entity->$set($response->result->set);
@@ -2656,9 +2656,10 @@ class ProductManagementModel extends CoreModel{
      * @name            isLocaleAssociatedWithProduct ()
      *
      * @since           1.2.3
-     * @version         1.5.3
+     * @version         1.5.9
 	 *
      * @author          Can Berkol
+     * @author          Said İmamoğlu
      *
      * @user            $this->createException
      *
@@ -2685,7 +2686,7 @@ class ProductManagementModel extends CoreModel{
 		$product = $response->result->set;
         $found = false;
 
-        $qStr = 'SELECT COUNT(' . $this->entity['apl']['alias'] . ')'
+        $qStr = 'SELECT COUNT(' . $this->entity['apl']['alias'].'.product' . ')'
             . ' FROM ' . $this->entity['apl']['name'] . ' ' . $this->entity['apl']['alias']
             . ' WHERE ' . $this->entity['apl']['alias'] . '.locale = ' . $locale->getId()
             . ' AND ' . $this->entity['apl']['alias'] . '.product = ' . $product->getId();
@@ -3238,8 +3239,9 @@ class ProductManagementModel extends CoreModel{
 	 * @name            listBrands()
 	 *
 	 * @since           1.0.2
-	 * @version         1.5.3
+	 * @version         1.5.9
 	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->createException()
 	 *
@@ -3290,7 +3292,7 @@ class ProductManagementModel extends CoreModel{
 		foreach($result as $entry){
 			$id = $entry->getAttribute()->getId();
 			if(!isset($unique[$id])){
-				$entities[] = $entry->getAttribute();
+				$entities[$id] = $entry->getAttribute();
 			}
 		}
 		$totalRows = count($entities);
@@ -3774,8 +3776,8 @@ class ProductManagementModel extends CoreModel{
 		$entities = array();
 		foreach($result as $entry){
 			$id = $entry->getAttribute()->getId();
-			if(!isset($unique[$id])){
-				$entities[] = $entry->getAttribute();
+			if(!isset($entities[$id])){
+				$entities[$id] = $entry->getAttribute();
 			}
 		}
 		$totalRows = count($entities);
@@ -3840,11 +3842,10 @@ class ProductManagementModel extends CoreModel{
         $result = $q->getResult();
 
         $attributes = array();
-        $unique = array();
 		foreach($result as $entry){
 			$id = $entry->getAttribute()->getId();
-			if(!isset($unique[$id])){
-				$attributes[] = $entry->getAttribute();
+			if(!isset($attributes[$id])){
+				$attributes[$id] = $entry->getAttribute();
 			}
 		}
 		$totalRows = count($attributes);
@@ -3858,8 +3859,9 @@ class ProductManagementModel extends CoreModel{
 	 * @name            listProductCategories()
 	 *
 	 * @since           1.0.2
-	 * @version         1.5.3
+	 * @version         1.5.9
 	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->createException()
 	 *
@@ -3876,7 +3878,7 @@ class ProductManagementModel extends CoreModel{
 		}
 		$oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT '.$this->entity['pc']['alias'].', '.$this->entity['pc']['alias']
+		$qStr = 'SELECT '.$this->entity['pc']['alias'].', '.$this->entity['pcl']['alias']
 			.' FROM '.$this->entity['pcl']['name'].' '.$this->entity['pcl']['alias']
 			.' JOIN '.$this->entity['pcl']['alias'].'.category '.$this->entity['pc']['alias'];
 
@@ -3917,9 +3919,9 @@ class ProductManagementModel extends CoreModel{
 
 		$entities = array();
 		foreach($result as $entry){
-			$id = $entry->getAttribute()->getId();
-			if(!isset($unique[$id])){
-				$entities[] = $entry->getAttribute();
+			$id = $entry->getCategory()->getId();
+			if(!isset($entities[$id])){
+				$entities[$id] = $entry->getCategory();
 			}
 		}
 		$totalRows = count($entities);
@@ -4030,8 +4032,9 @@ class ProductManagementModel extends CoreModel{
 	 * @name            listProducts()
 	 *
 	 * @since           1.0.2
-	 * @version         1.5.3
+	 * @version         1.5.9
 	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->createException()
 	 *
@@ -4095,7 +4098,7 @@ class ProductManagementModel extends CoreModel{
 		foreach($result as $entry){
 			$id = $entry->getProduct()->getId();
 			if(!isset($unique[$id])){
-				$entities[] = $entry->getProduct();
+				$entities[$id] = $entry->getProduct();
 			}
 		}
 		$totalRows = count($entities);
@@ -4595,8 +4598,9 @@ class ProductManagementModel extends CoreModel{
      * @name            listProductsOfCategory ()
      *
      * @since           1.0.9
-     * @version         1.5.3
+     * @version         1.5.9
      * @author          Can Berkol
+     * @author          Said İmamoğlu
      *
      * @use             $this->getProduct()
      *
@@ -4650,23 +4654,20 @@ class ProductManagementModel extends CoreModel{
         $query = $this->em->createQuery($qStr);
         $result = $query->getResult();
 
-		if ($sortOrder != null) {
-			$collection = array();
-			foreach ($result as $item) {
-				$collection[] = $item->getProduct()->getId();
-			}
-			unset($result);
-			$filter = array();
-			$filter[] = array(
-				'glue' => 'and',
-				'condition' => array(
-					array(
-						'glue' => 'and',
-						'condition' => array('column' => $this->entity['product']['alias'] . '.id', 'comparison' => 'in', 'value' => $collection),
-					)
-				)
-			);
-		}
+        $collection = array();
+        foreach ($result as $item) {
+            $collection[] = $item->getProduct()->getId();
+        }
+        unset($result);
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['p']['alias'] . '.id', 'comparison' => 'in', 'value' => $collection),
+                )
+            )
+        );
 		return $this->listProducts($filter, $sortOrder, $limit);
     }
 
@@ -5372,8 +5373,9 @@ class ProductManagementModel extends CoreModel{
 	 * @name            listVolumePricings()
 	 *
 	 * @since           1.0.2
-	 * @version         1.5.3
+	 * @version         1.5.9
 	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->createException()
 	 *
@@ -5426,8 +5428,8 @@ class ProductManagementModel extends CoreModel{
 		$entities = array();
 		foreach($result as $entry){
 			$id = $entry->getVolumePricing()->getId();
-			if(!isset($unique[$id])){
-				$entities[] = $entry->getVolumePricing();
+			if(!isset($entities[$id])){
+				$entities[$id] = $entry->getVolumePricing();
 			}
 		}
 		$totalRows = count($entities);
@@ -6655,6 +6657,9 @@ class ProductManagementModel extends CoreModel{
  * Said İmamoğlu
  * **************************************
  * BF :: isFileAssociatedWithProduct() can not count query result && Namespace of fileModel updated.
+ * BF :: isLocaleAssociatedWithProduct() can not count query result.
+ * BF :: listProductsInCategory() entity namespace problem fixed
+ * BF :: getProductCategory() entity namespace problem fixed.
  * **************************************
  * v1.5.8                      28.06.2015
  * Said İmamoğlu
