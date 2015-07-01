@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.9
+ * @version         1.5.6
  *
- * @date            30.06.2015
+ * @date            01.06.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -33,42 +33,44 @@ use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
 use BiberLtd\Bundle\CoreBundle\Services as CoreServices;
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
 
-class ProductManagementModel extends CoreModel{
+class ProductManagementModel extends CoreModel
+{
     /**
-     * @name            __construct()
+     * @name            __construct ()
      *
      * @author          Can Berkol
      *
      * @since           1.0.0
      * @version         1.5.3
      *
-     * @param           object 		$kernel
-     * @param           string 		$dbConnection
-     * @param           string 		$orm
+     * @param           object $kernel
+     * @param           string $dbConnection
+     * @param           string $orm
      */
-    public function __construct($kernel, $dbConnection = 'default', $orm = 'doctrine'){
+    public function __construct($kernel, $dbConnection = 'default', $orm = 'doctrine')
+    {
         parent::__construct($kernel, $dbConnection, $orm);
 
         $this->entity = array(
-            'apl' 		=> array('name' => 'ProductManagementBundle:ActiveProductLocale', 'alias' => 'apl'),
-            'apcl' 		=> array('name' => 'ProductManagementBundle:ActiveProductCategoryLocale', 'alias' => 'apcl'),
-            'aop' 		=> array('name' => 'ProductManagementBundle:AttributesOfProduct', 'alias' => 'aop'),
-            'aopc' 		=> array('name' => 'ProductManagementBundle:AttributesOfProductCategory', 'alias' => 'aopc'),
-            'b' 		=> array('name' => 'ProductManagementBundle:Brand', 'alias' => 'b'),
-            'cop' 		=> array('name' => 'ProductManagementBundle:CategoriesOfProduct', 'alias' => 'cop'),
-            'f' 		=> array('name' => 'FileManagementBundle:File', 'alias' => 'f'),
-            'fop' 		=> array('name' => 'ProductManagementBundle:FilesOfProduct', 'alias' => 'fop'),
-            'l' 		=> array('name' => 'MultiLanguageSupportBundle:Language', 'alias' => 'l'),
-            'p' 		=> array('name' => 'ProductManagementBundle:Product', 'alias' => 'p'),
-            'pa' 		=> array('name' => 'ProductManagementBundle:ProductAttribute', 'alias' => 'pa'),
-            'pal' 		=> array('name' => 'ProductManagementBundle:ProductAttributeLocalization', 'alias' => 'pal'),
-            'pav' 		=> array('name' => 'ProductManagementBundle:ProductAttributeValues', 'alias' => 'pav'),
-            'pc' 		=> array('name' => 'ProductManagementBundle:ProductCategory', 'alias' => 'pc'),
-			'pcl' 		=> array('name' => 'ProductManagementBundle:ProductCategoryLocalization', 'alias' => 'pcl'),
-			'pl' 		=> array('name' => 'ProductManagementBundle:ProductLocalization', 'alias' => 'pl'),
-			'pos' 		=> array('name' => 'ProductManagementBundle:ProductsOfSite', 'alias' => 'pos'),
-            'rp' 		=> array('name' => 'ProductManagementBundle:RelatedProduct', 'alias' => 'rp'),
-            'vp' 		=> array('name' => 'ProductManagementBundle:VolumePricing', 'alias' => 'vp'),
+            'apl' => array('name' => 'ProductManagementBundle:ActiveProductLocale', 'alias' => 'apl'),
+            'apcl' => array('name' => 'ProductManagementBundle:ActiveProductCategoryLocale', 'alias' => 'apcl'),
+            'aop' => array('name' => 'ProductManagementBundle:AttributesOfProduct', 'alias' => 'aop'),
+            'aopc' => array('name' => 'ProductManagementBundle:AttributesOfProductCategory', 'alias' => 'aopc'),
+            'b' => array('name' => 'ProductManagementBundle:Brand', 'alias' => 'b'),
+            'cop' => array('name' => 'ProductManagementBundle:CategoriesOfProduct', 'alias' => 'cop'),
+            'f' => array('name' => 'FileManagementBundle:File', 'alias' => 'f'),
+            'fop' => array('name' => 'ProductManagementBundle:FilesOfProduct', 'alias' => 'fop'),
+            'l' => array('name' => 'MultiLanguageSupportBundle:Language', 'alias' => 'l'),
+            'p' => array('name' => 'ProductManagementBundle:Product', 'alias' => 'p'),
+            'pa' => array('name' => 'ProductManagementBundle:ProductAttribute', 'alias' => 'pa'),
+            'pal' => array('name' => 'ProductManagementBundle:ProductAttributeLocalization', 'alias' => 'pal'),
+            'pav' => array('name' => 'ProductManagementBundle:ProductAttributeValues', 'alias' => 'pav'),
+            'pc' => array('name' => 'ProductManagementBundle:ProductCategory', 'alias' => 'pc'),
+            'pcl' => array('name' => 'ProductManagementBundle:ProductCategoryLocalization', 'alias' => 'pcl'),
+            'pl' => array('name' => 'ProductManagementBundle:ProductLocalization', 'alias' => 'pl'),
+            'pos' => array('name' => 'ProductManagementBundle:ProductsOfSite', 'alias' => 'pos'),
+            'rp' => array('name' => 'ProductManagementBundle:RelatedProduct', 'alias' => 'rp'),
+            'vp' => array('name' => 'ProductManagementBundle:VolumePricing', 'alias' => 'vp'),
         );
     }
 
@@ -81,14 +83,15 @@ class ProductManagementModel extends CoreModel{
      * @version         1.0.0
      *
      */
-    public function __destruct(){
+    public function __destruct()
+    {
         foreach ($this as $property => $value) {
             $this->$property = null;
         }
     }
 
     /**
-     * @name            addAttributesToProduct()
+     * @name            addAttributesToProduct ()
      *
      * @since           1.1.7
      * @version         1.5.3
@@ -100,37 +103,38 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->getProductAttribute()
      * @use             $this->isAttributeAssociatedWithProduct()
      *
-     * @param           array           $collection  Contains an array with two keys: attribute, and sort_order
-     * @param           mixed           $product
+     * @param           array $collection Contains an array with two keys: attribute, and sort_order
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addAttributesToProduct($collection, $product){
+    public function addAttributesToProduct($collection, $product)
+    {
         $timeStamp = time();
 
-		$validAttributes = array();
+        $validAttributes = array();
         foreach ($collection as $attr) {
-			$response = $this->getProductAttribute($attr['attribute']);
-			if(!$response->error->exist){
-				$validAttributes[]['attr'] = $response->result->set;
-				$validAttributes[]['sort_order'] = $attr['sort_order'];
-			}
+            $response = $this->getProductAttribute($attr['attribute']);
+            if (!$response->error->exist) {
+                $validAttributes[]['attr'] = $response->result->set;
+                $validAttributes[]['sort_order'] = $attr['sort_order'];
+            }
         }
-		unset($collection);
+        unset($collection);
         /** issue an error only if there is no valid file entries */
         if (count($validAttributes) < 1) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $collection parameter must be an array collection', 'E:S:001');
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $collection parameter must be an array collection', 'E:S:001');
         }
         unset($count);
         $response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
         $aopCcollection = array();
         $count = 0;
-		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($validAttributes as $item) {
             /** If no entity is provided as product we need to check if it does exist */
             $aopCollection = array();
@@ -149,18 +153,19 @@ class ProductManagementModel extends CoreModel{
                 $count++;
             }
         }
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($aopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($aopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
+
     /**
      * @name            addFilesToProduct ()
      *
      * @since           1.0.2
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
@@ -170,54 +175,55 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->resetResponse()
      * @use             $this->getProduct()
      *
-     * @param           array           $collection
-     * @param           mixed           $product
+     * @param           array $collection
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addFilesToProduct($collection, $product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function addFilesToProduct($collection, $product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $fileModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
         $fopCollection = array();
         $count = 0;
-		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($collection as $file) {
-			$response = $fileModel->getFile($file['file']);
-			if($response->error->exist){
-				return $response;
-			}
-			$file['file'] = $response->result->set;
+            $response = $fileModel->getFile($file['file']);
+            if ($response->error->exist) {
+                return $response;
+            }
+            $file['file'] = $response->result->set;
             if (!$this->isFileAssociatedWithProduct($file['file'], $product, true)) {
-				$fop = new BundleEntity\FilesOfProduct();
-				$fop->setFile($file['file'])->setProduct($product)->setDateAdded($now);
-				if (!is_null($file['sort_order'])) {
-					$fop->setSortOrder($file['sort_order']);
-				} else {
-					$fop->setSortOrder($this->getMaxSortOrderOfProductFile($product, true) + 1);
-				}
-				$fop->setType($file['file']->getType());
-				/** persist entry */
-				$this->em->persist($fop);
-				$fopCollection[] = $fop;
-				$count++;
-			}
+                $fop = new BundleEntity\FilesOfProduct();
+                $fop->setFile($file['file'])->setProduct($product)->setDateAdded($now);
+                if (!is_null($file['sort_order'])) {
+                    $fop->setSortOrder($file['sort_order']);
+                } else {
+                    $fop->setSortOrder($this->getMaxSortOrderOfProductFile($product, true) + 1);
+                }
+                $fop->setType($file['file']->getType());
+                /** persist entry */
+                $this->em->persist($fop);
+                $fopCollection[] = $fop;
+                $count++;
+            }
         }
 
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($fopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($fopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
 
     /**
-     * @name            addLocalesToProduct()
+     * @name            addLocalesToProduct ()
      *
      * @since           1.2.3
      * @version         1.5.3
@@ -226,103 +232,107 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->isLocaleAssociatedWithProduct()
      * @use             $this->getProduct()
      *
-     * @param           array       $locales
-     * @param           mixed       $product
+     * @param           array $locales
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addLocalesToProduct($locales, $product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function addLocalesToProduct($locales, $product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
-		if (count($locales) < 1) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $locales parameter must be an array collection', 'E:S:001');
-		}
+        if (count($locales) < 1) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $locales parameter must be an array collection', 'E:S:001');
+        }
 
         $aplCollection = array();
         $count = 0;
         /** Start persisting locales */
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
         foreach ($locales as $locale) {
             $response = $mlsModel->getLanguage($locale);
-			if($response->error->exist){
-				return $response;
-			}
-			$locale = $response->result->set;
+            if ($response->error->exist) {
+                return $response;
+            }
+            $locale = $response->result->set;
             if (!$this->isLocaleAssociatedWithProduct($locale, $product, true)) {
-				$apl = new BundleEntity\ActiveProductLocale();
-				$apl->setLocale($locale)->setProduct($product);
+                $apl = new BundleEntity\ActiveProductLocale();
+                $apl->setLocale($locale)->setProduct($product);
 
-				/** persist entry */
-				$this->em->persist($apl);
-				$aplCollection[] = $apl;
-				$count++;
+                /** persist entry */
+                $this->em->persist($apl);
+                $aplCollection[] = $apl;
+                $count++;
             }
         }
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
+
     /**
      * @name            addLocalesToProductCategory ()
      *
      * @since           1.2.3
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
-	 *
+     *
      * @use             $this->createException()
      * @use             $this->isLocaleAssociatedWithProduct()
      *
-     * @param           array           $locales
-     * @param           mixed           $category
+     * @param           array $locales
+     * @param           mixed $category
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addLocalesToProductCategory($locales, $category){
-		$timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
+    public function addLocalesToProductCategory($locales, $category)
+    {
+        $timeStamp = time();
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
 
-		if (count($locales) < 1) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $locales parameter must be an array collection', 'E:S:001');
-		}
+        if (count($locales) < 1) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $locales parameter must be an array collection', 'E:S:001');
+        }
 
-		$aplCollection = array();
-		$count = 0;
-		/** Start persisting locales */
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		foreach ($locales as $locale) {
-			$response = $mlsModel->getLanguage($locale);
-			if($response->error->exist){
-				return $response;
-			}
-			$locale = $response->result->set;
-			if (!$this->isLocaleAssociatedWithProductCategory($locale, $category, true)) {
-				$apl = new BundleEntity\ActiveProductCategoryLocale();
-				$apl->setLocale($locale)->setCategory($category);
+        $aplCollection = array();
+        $count = 0;
+        /** Start persisting locales */
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        foreach ($locales as $locale) {
+            $response = $mlsModel->getLanguage($locale);
+            if ($response->error->exist) {
+                return $response;
+            }
+            $locale = $response->result->set;
+            if (!$this->isLocaleAssociatedWithProductCategory($locale, $category, true)) {
+                $apl = new BundleEntity\ActiveProductCategoryLocale();
+                $apl->setLocale($locale)->setCategory($category);
 
-				/** persist entry */
-				$this->em->persist($apl);
-				$aplCollection[] = $apl;
-				$count++;
-			}
-		}
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+                /** persist entry */
+                $this->em->persist($apl);
+                $aplCollection[] = $apl;
+                $count++;
+            }
+        }
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
+
     /**
      * @name            addProductsToCategory ()
      *
@@ -335,27 +345,28 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->isProductAssociatedWithCategory()
      * @use             $this->resetResponse()
      *
-     * @param           array           $collection 		Contains an array with two keys: file, and sortorder
-     * @param           mixed           $category
+     * @param           array $collection Contains an array with two keys: file, and sortorder
+     * @param           mixed $category
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addProductsToCategory(array $collection, $category){
+    public function addProductsToCategory(array $collection, $category)
+    {
         $timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
         $copCollection = array();
         $count = 0;
-		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($collection as $product) {
             $response = $this->getProduct($product['product']);
-			if($response->error->exist){
-				return $response;
-			}
-			$productEntity = $response->result->set;
+            if ($response->error->exist) {
+                return $response;
+            }
+            $productEntity = $response->result->set;
             /** Check if association exists */
             if ($this->isProductAssociatedWithCategory($productEntity, $category, true)) {
                 break;
@@ -370,47 +381,49 @@ class ProductManagementModel extends CoreModel{
             }
             /** persist entry */
             $this->em->persist($cop);
-			$copCollection[] = $cop;
+            $copCollection[] = $cop;
             $count++;
         }
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($copCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($copCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
+
     /**
-     * @name            addProductToCategories()
+     * @name            addProductToCategories ()
      *
      * @since           1.2.5
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      * @use             $this->resetResponse()
      *
-     * @param           mixed           $product
-     * @param           array           $collection
+     * @param           mixed $product
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addProductToCategories($product, $collection){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function addProductToCategories($product, $collection)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $productCollection = array();
         $count = 0;
-		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($collection as $category) {
             $response = $this->getProductCategory($category);
-			if($response->error->exist){
-				break;
-			}
+            if ($response->error->exist) {
+                break;
+            }
             if ($this->isProductAssociatedWithCategory($product, $category, true)) {
                 break;
             }
@@ -427,12 +440,13 @@ class ProductManagementModel extends CoreModel{
             $productCollection[] = $cop;
             $count++;
         }
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
+
     /**
      * @name            addProductCategoriesToLocale ()
      *
@@ -442,28 +456,29 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->isLocaleAssociatedWithProductCategory()
      *
-     * @param           array       $categories
-     * @param           mixed       $locale
+     * @param           array $categories
+     * @param           mixed $locale
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addProductCategoriesToLocale($categories, $locale){
-		$timeStamp = time();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		$response = $mlsModel->getLanguage($locale);
-		if($response->error->exist){
-			return $response;
-		}
-		$locale = $response->result->set;
+    public function addProductCategoriesToLocale($categories, $locale)
+    {
+        $timeStamp = time();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $response = $mlsModel->getLanguage($locale);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $locale = $response->result->set;
         $aplCollection = array();
         $count = 0;
         /** Start persisting locales */
         foreach ($categories as $category) {
             $response = $this->getProductCategory($category);
-            if($response->error->exist){
-				break;
-			}
-			$category = $response->result->set;
+            if ($response->error->exist) {
+                break;
+            }
+            $category = $response->result->set;
             if ($this->isLocaleAssociatedWithProductCategory($locale, $category, true)) {
                 break;
             }
@@ -475,11 +490,11 @@ class ProductManagementModel extends CoreModel{
             $aplCollection[] = $apl;
             $count++;
         }
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
 
     /**
@@ -491,45 +506,47 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->resetResponse()
      *
-     * @param           array           $products
-     * @param           mixed           $locale
+     * @param           array $products
+     * @param           mixed $locale
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addProductsToLocale($products, $locale){
-		$timeStamp = time();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		$response = $mlsModel->getLanguage($locale);
-		if($response->error->exist){
-			return $response;
-		}
-		$locale = $response->result->set;
-		$aplCollection = array();
-		$count = 0;
-		/** Start persisting locales */
-		foreach ($products as $product) {
-			$response = $this->getProduct($product);
-			if($response->error->exist){
-				break;
-			}
-			$category = $response->result->set;
-			if ($this->isLocaleAssociatedWithProduct($locale, $product, true)) {
-				break;
-			}
-			$apl = new BundleEntity\ActiveProductLocale();
-			$apl->setLocale($locale)->setProduct($category);
+    public function addProductsToLocale($products, $locale)
+    {
+        $timeStamp = time();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $response = $mlsModel->getLanguage($locale);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $locale = $response->result->set;
+        $aplCollection = array();
+        $count = 0;
+        /** Start persisting locales */
+        foreach ($products as $product) {
+            $response = $this->getProduct($product);
+            if ($response->error->exist) {
+                break;
+            }
+            $category = $response->result->set;
+            if ($this->isLocaleAssociatedWithProduct($locale, $product, true)) {
+                break;
+            }
+            $apl = new BundleEntity\ActiveProductLocale();
+            $apl->setLocale($locale)->setProduct($category);
 
-			/** persist entry */
-			$this->em->persist($apl);
-			$aplCollection[] = $apl;
-			$count++;
-		}
-		if($count > 0){
-			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+            /** persist entry */
+            $this->em->persist($apl);
+            $aplCollection[] = $apl;
+            $count++;
+        }
+        if ($count > 0) {
+            $this->em->flush();
+            return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
     }
+
     /**
      * @name            countProducts ()
      *
@@ -539,29 +556,30 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           mixed           $filter
+     * @param           mixed $filter
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function countProducts($filter = null){
-		$timeStamp = time();
+    public function countProducts($filter = null)
+    {
+        $timeStamp = time();
         $wStr = '';
-		$qStr = 'SELECT COUNT('.$this->entity['p']['alias'].')'
-                .' FROM '.$this->entity['p']['name'].' '.$this->entity['p']['alias'];
+        $qStr = 'SELECT COUNT(' . $this->entity['p']['alias'] . ')'
+            . ' FROM ' . $this->entity['p']['name'] . ' ' . $this->entity['p']['alias'];
 
         if ($filter != null) {
             $filterStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE ' . $filterStr;
+            $wStr .= ' WHERE ' . $filterStr;
         }
 
-		$qStr .= $wStr;
+        $qStr .= $wStr;
         $q = $this->em->createQuery($qStr);
         $result = $q->getSingleScalarResult();
-		$count = 0;
-		if(!$result){
-			$count = $result;
-		}
-		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        $count = 0;
+        if (!$result) {
+            $count = $result;
+        }
+        return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
     }
 
     /**
@@ -575,185 +593,191 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->resetResponse()
      *
-     * @param           mixed           $category
-     * @param           array           $filter
+     * @param           mixed $category
+     * @param           array $filter
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function countProductsOfCategory($category, $filter = null){
-		$timeStamp = time();
+    public function countProductsOfCategory($category, $filter = null)
+    {
+        $timeStamp = time();
 
         $response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
         $wStr = '';
 
-		$qStr = 'SELECT COUNT('.$this->entity['cop']['alias'].')'
-			. ' FROM ' . $this->entity['cop']['name'].' '.$this->entity['cop']['alias'];
+        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . ')'
+            . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias'];
 
         $filter[] = array(
             'glue' => 'and',
             'condition' => array(
                 array(
                     'glue' => 'and',
-                    'condition' => array('column' => $this->entity['cop']['alias'].'.category', 'comparison' => '=', 'value' => $category->getId()),
+                    'condition' => array('column' => $this->entity['cop']['alias'] . '.category', 'comparison' => '=', 'value' => $category->getId()),
                 )
             )
         );
 
         if ($filter != null) {
             $fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE ' . $fStr;
+            $wStr .= ' WHERE ' . $fStr;
         }
-		$qStr .= $wStr;
+        $qStr .= $wStr;
         $q = $this->em->createQuery($qStr);
 
         $result = $q->getSingleScalarResult();
 
-		$count = 0;
-		if(!$result){
-			$count = $result;
-		}
-		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        $count = 0;
+        if (!$result) {
+            $count = $result;
+        }
+        return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
     }
-	/**
-	 * @name            deleteBrand()
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->deleteProductCategories()
-	 *
-	 * @param           mixed 			$brand
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteBrand($brand){
-		return $this->deleteBrands(array($brand));
-	}
 
-	/**
-	 * @name            deleteBrands()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteBrands($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countDeleted = 0;
-		foreach($collection as $entry){
-			if($entry instanceof BundleEntity\Brand){
-				$this->em->remove($entry);
-				$countDeleted++;
-			}
-			else{
-				$response = $this->getBrand($entry);
-				if(!$response->error->exist){
-					$this->em->remove($response->result->set);
-					$countDeleted++;
-				}
-			}
-		}
-		if($countDeleted < 0){
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-		}
-		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-	}
+    /**
+     * @name            deleteBrand ()
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use                $this->deleteProductCategories()
+     *
+     * @param           mixed $brand
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteBrand($brand)
+    {
+        return $this->deleteBrands(array($brand));
+    }
 
-	/**
-	 * @name            doesBrandExist()
-	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getBrand()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed           $brand
-	 * @param           bool            $bypass
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function doesBrandExist($brand, $bypass = false){
-		$response = $this->getBrand($brand);
-		$exist = true;
-		if($response->error->exist){
-			$exist = false;
-			$response->result->set = false;
-		}
-		if($bypass){
-			return $exist;
-		}
-		return $response;
-	}
-	/**
-	 * @name            deleteProductAttribute()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->deleteProductAttributes()
-	 *
-	 * @param           mixed 			$attribute
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteProductAttribute($attribute){
-		return $this->deleteProductAttributes(array($attribute));
-	}
+    /**
+     * @name            deleteBrands ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteBrands($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countDeleted = 0;
+        foreach ($collection as $entry) {
+            if ($entry instanceof BundleEntity\Brand) {
+                $this->em->remove($entry);
+                $countDeleted++;
+            } else {
+                $response = $this->getBrand($entry);
+                if (!$response->error->exist) {
+                    $this->em->remove($response->result->set);
+                    $countDeleted++;
+                }
+            }
+        }
+        if ($countDeleted < 0) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+        }
+        $this->em->flush();
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            deleteProductAttributes()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteProductAttributes($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countDeleted = 0;
-		foreach($collection as $entry){
-			if($entry instanceof BundleEntity\ProductAttribute){
-				$this->em->remove($entry);
-				$countDeleted++;
-			}
-			else{
-				$response = $this->getProductAttribute($entry);
-				if(!$response->error->exist){
-					$this->em->remove($response->result->set);
-					$countDeleted++;
-				}
-			}
-		}
-		if($countDeleted < 0){
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-		}
-		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-	}
+    /**
+     * @name            doesBrandExist ()
+     *
+     * @since           1.0.5
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     *
+     * @use             $this->getBrand()
+     * @use             $this->resetResponse()
+     *
+     * @param           mixed $brand
+     * @param           bool $bypass
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function doesBrandExist($brand, $bypass = false)
+    {
+        $response = $this->getBrand($brand);
+        $exist = true;
+        if ($response->error->exist) {
+            $exist = false;
+            $response->result->set = false;
+        }
+        if ($bypass) {
+            return $exist;
+        }
+        return $response;
+    }
+
+    /**
+     * @name            deleteProductAttribute ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use                $this->deleteProductAttributes()
+     *
+     * @param           mixed $attribute
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteProductAttribute($attribute)
+    {
+        return $this->deleteProductAttributes(array($attribute));
+    }
+
+    /**
+     * @name            deleteProductAttributes ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteProductAttributes($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countDeleted = 0;
+        foreach ($collection as $entry) {
+            if ($entry instanceof BundleEntity\ProductAttribute) {
+                $this->em->remove($entry);
+                $countDeleted++;
+            } else {
+                $response = $this->getProductAttribute($entry);
+                if (!$response->error->exist) {
+                    $this->em->remove($response->result->set);
+                    $countDeleted++;
+                }
+            }
+        }
+        if ($countDeleted < 0) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+        }
+        $this->em->flush();
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+    }
 
     /**
      * @name            deleteAllAttributeValuesOfAttribute ()
@@ -764,222 +788,230 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->resetResponse();
      *
-     * @param           mixed           $attribute
-     * @param           mixed           $product
+     * @param           mixed $attribute
+     * @param           mixed $product
      *
      * @return          array           $response
      */
-    public function deleteAllAttributeValuesOfProductByAttribute($attribute, $product){
-		$timeStamp = time();
-		$response = $this->getProductAttribute($attribute);
-		if($response->error->exist){
-			return $response;
-		}
-		$attribute = $response->result->set;
+    public function deleteAllAttributeValuesOfProductByAttribute($attribute, $product)
+    {
+        $timeStamp = time();
+        $response = $this->getProductAttribute($attribute);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $attribute = $response->result->set;
         $response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $qStr = 'DELETE FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias']
             . ' WHERE ' . $this->entity['pav']['alias'] . '.attribute = ' . $attribute->getId()
             . ' AND ' . $this->entity['pav']['alias'] . '.product = ' . $product->getId();
         $query = $this->em->createQuery($qStr);
         $query->getResult();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
     }
 
-	/**
-	 * @name            deleteProductCategory()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->deleteProductCategories()
-	 *
-	 * @param           mixed 			$category
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteProductCategory($category){
-		return $this->deleteProductCategories(array($category));
-	}
-
-	/**
-	 * @name            deleteProductCategories()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteProductCategories($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countDeleted = 0;
-		foreach($collection as $entry){
-			if($entry instanceof BundleEntity\ProductCategory){
-				$this->em->remove($entry);
-				$countDeleted++;
-			}
-			else{
-				$response = $this->getProductCategory($entry);
-				if(!$response->error->exist){
-					$this->em->remove($response->result->set);
-					$countDeleted++;
-				}
-			}
-		}
-		if($countDeleted < 0){
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-		}
-		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            deleteProduct()
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->deleteProductCategories()
-	 *
-	 * @param           mixed 			$product
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteProduct($product){
-		return $this->deleteProducts(array($product));
-	}
-
-	/**
-	 * @name            deleteProducts()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteProducts($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countDeleted = 0;
-		foreach($collection as $entry){
-			if($entry instanceof BundleEntity\Product){
-				$this->em->remove($entry);
-				$countDeleted++;
-			}
-			else{
-				$response = $this->getProduct($entry);
-				if(!$response->error->exist){
-					$this->em->remove($response->result->set);
-					$countDeleted++;
-				}
-			}
-		}
-		if($countDeleted < 0){
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-		}
-		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            deleteVolumePricing()
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->deleteVolumePricings()
-	 *
-	 * @param           mixed 			$pricing
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteVolumePricing($pricing){
-		return $this->deleteVolumePricings(array($pricing));
-	}
-
-	/**
-	 * @name            deleteVolumePricings()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function deleteVolumePricings($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countDeleted = 0;
-		foreach($collection as $entry){
-			if($entry instanceof BundleEntity\VolumePricing){
-				$this->em->remove($entry);
-				$countDeleted++;
-			}
-			else{
-				$response = $this->getVolumePricing($entry);
-				if(!$response->error->exist){
-					$this->em->remove($response->result->set);
-					$countDeleted++;
-				}
-			}
-		}
-		if($countDeleted < 0){
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-		}
-		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-	}
     /**
-     * @name            doesProductAttributeExist()
+     * @name            deleteProductCategory ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use                $this->deleteProductCategories()
+     *
+     * @param           mixed $category
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteProductCategory($category)
+    {
+        return $this->deleteProductCategories(array($category));
+    }
+
+    /**
+     * @name            deleteProductCategories ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteProductCategories($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countDeleted = 0;
+        foreach ($collection as $entry) {
+            if ($entry instanceof BundleEntity\ProductCategory) {
+                $this->em->remove($entry);
+                $countDeleted++;
+            } else {
+                $response = $this->getProductCategory($entry);
+                if (!$response->error->exist) {
+                    $this->em->remove($response->result->set);
+                    $countDeleted++;
+                }
+            }
+        }
+        if ($countDeleted < 0) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+        }
+        $this->em->flush();
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            deleteProduct ()
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use                $this->deleteProductCategories()
+     *
+     * @param           mixed $product
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteProduct($product)
+    {
+        return $this->deleteProducts(array($product));
+    }
+
+    /**
+     * @name            deleteProducts ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteProducts($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countDeleted = 0;
+        foreach ($collection as $entry) {
+            if ($entry instanceof BundleEntity\Product) {
+                $this->em->remove($entry);
+                $countDeleted++;
+            } else {
+                $response = $this->getProduct($entry);
+                if (!$response->error->exist) {
+                    $this->em->remove($response->result->set);
+                    $countDeleted++;
+                }
+            }
+        }
+        if ($countDeleted < 0) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+        }
+        $this->em->flush();
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            deleteVolumePricing ()
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use                $this->deleteVolumePricings()
+     *
+     * @param           mixed $pricing
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteVolumePricing($pricing)
+    {
+        return $this->deleteVolumePricings(array($pricing));
+    }
+
+    /**
+     * @name            deleteVolumePricings ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteVolumePricings($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countDeleted = 0;
+        foreach ($collection as $entry) {
+            if ($entry instanceof BundleEntity\VolumePricing) {
+                $this->em->remove($entry);
+                $countDeleted++;
+            } else {
+                $response = $this->getVolumePricing($entry);
+                if (!$response->error->exist) {
+                    $this->em->remove($response->result->set);
+                    $countDeleted++;
+                }
+            }
+        }
+        if ($countDeleted < 0) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+        }
+        $this->em->flush();
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            doesProductAttributeExist ()
      *
      * @since           1.0.5
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      *
      * @use             $this->getProductAttribute()
      * @use             $this->resetResponse()
      *
-     * @param           mixed           $attribute
-     * @param           bool            $bypass
+     * @param           mixed $attribute
+     * @param           bool $bypass
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function doesProductAttributeExist($attribute, $bypass = false){
+    public function doesProductAttributeExist($attribute, $bypass = false)
+    {
         $response = $this->getProductAttribute($attribute);
-		$exist = true;
-		if($response->error->exist){
-			$exist = false;
-			$response->result->set = false;
-		}
-		if($bypass){
-			return $exist;
-		}
+        $exist = true;
+        if ($response->error->exist) {
+            $exist = false;
+            $response->result->set = false;
+        }
+        if ($bypass) {
+            return $exist;
+        }
         return $response;
     }
 
     /**
-     * @name            doesProductAttributeValueExist()
+     * @name            doesProductAttributeValueExist ()
      *                  Checks if entry exists in database.
      *
      * @since           1.2.2
@@ -990,82 +1022,87 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->getAttributeValueOfProduct()
      *
-     * @param           mixed       $attribute
-     * @param           mixed       $product
-     * @param           mixed       $language
-     * @param           bool        $bypass
+     * @param           mixed $attribute
+     * @param           mixed $product
+     * @param           mixed $language
+     * @param           bool $bypass
      *
      * @return          mixed       $response
      */
-    public function doesProductAttributeValueExist($attribute, $product, $language, $bypass = false){
+    public function doesProductAttributeValueExist($attribute, $product, $language, $bypass = false)
+    {
         $exist = false;
         $response = $this->getAttributeValueOfProduct($attribute, $product, $language);
-        if (!$response->error->exist){
+        if (!$response->error->exist) {
             $exist = true;
         }
         if ($bypass) {
             return $exist;
         }
-		$response->result->set = $exist;
+        $response->result->set = $exist;
         return $response;
     }
 
-	/**
-	 * @name            doesProductExist()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProductAttribute()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed           $product
-	 * @param           bool            $bypass
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function doesProductExist($product, $bypass = false){
-		$response = $this->getProduct($product);
-		$exist = true;
-		if($response->error->exist){
-			$exist = false;
-			$response->result->set = false;
-		}
-		if($bypass){
-			return $exist;
-		}
-		return $response;
-	}
-	/**
-	 * @name            doesProductCategoryExist()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProductAttribute()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed           $category
-	 * @param           bool            $bypass
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function doesProductCategoryExist($category, $bypass = false){
-		$response = $this->getProductCategory($category);
-		$exist = true;
-		if($response->error->exist){
-			$exist = false;
-			$response->result->set = false;
-		}
-		if($bypass){
-			return $exist;
-		}
-		return $response;
-	}
+    /**
+     * @name            doesProductExist ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     *
+     * @use             $this->getProductAttribute()
+     * @use             $this->resetResponse()
+     *
+     * @param           mixed $product
+     * @param           bool $bypass
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function doesProductExist($product, $bypass = false)
+    {
+        $response = $this->getProduct($product);
+        $exist = true;
+        if ($response->error->exist) {
+            $exist = false;
+            $response->result->set = false;
+        }
+        if ($bypass) {
+            return $exist;
+        }
+        return $response;
+    }
+
+    /**
+     * @name            doesProductCategoryExist ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     *
+     * @use             $this->getProductAttribute()
+     * @use             $this->resetResponse()
+     *
+     * @param           mixed $category
+     * @param           bool $bypass
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function doesProductCategoryExist($category, $bypass = false)
+    {
+        $response = $this->getProductCategory($category);
+        $exist = true;
+        if ($response->error->exist) {
+            $exist = false;
+            $response->result->set = false;
+        }
+        if ($bypass) {
+            return $exist;
+        }
+        return $response;
+    }
+
     /**
      * @name            getAttributeValueOfProduct ()
      *
@@ -1076,33 +1113,34 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->createException()
      * @use             $this->resetResponse()
      *
-     * @param           mixed           $attribute
-     * @param           mixed           $product
-     * @param           mixed           $language
+     * @param           mixed $attribute
+     * @param           mixed $product
+     * @param           mixed $language
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getAttributeValueOfProduct($attribute, $product, $language){
-		$timeStamp = time();
-		$response = $this->getProductAttribute($attribute);
-		if($response->error->exist){
-			return $response;
-		}
-		$attribute = $response->result->set;
+    public function getAttributeValueOfProduct($attribute, $product, $language)
+    {
+        $timeStamp = time();
+        $response = $this->getProductAttribute($attribute);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $attribute = $response->result->set;
 
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		$resposne = $mlsModel->getLanguage($language);
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $resposne = $mlsModel->getLanguage($language);
 
-		if($response->error->exist){
-			return $response;
-		}
-		$language = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $language = $response->result->set;
 
         $qStr = 'SELECT DISTINCT ' . $this->entity['pav']['alias'] . ', ' . $this->entity['pa']['alias']
             . ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias']
@@ -1115,47 +1153,50 @@ class ProductManagementModel extends CoreModel{
         $query->setMaxResults(1);
         $query->setFirstResult(0);
         $result = $query->getResult();
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
-	/**
-	 * @name            getBrand()
-	 *
-	 * @since           1.5.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed           $brand
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getBrand($brand){
-		$timeStamp = time();
-		if($brand instanceof BundleEntity\Brand){
-			return new ModelResponse($brand, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-		}
-		$result = null;
-		switch($brand){
-			case is_numeric($brand):
-				$result = $this->em->getRepository($this->entity['b']['name'])->findOneBy(array('id' => $brand));
-				break;
-			case is_string($brand):
-				$result = $this->em->getRepository($this->entity['b']['name'])->findOneBy(array('name' => $brand));
-				break;
-		}
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+    /**
+     * @name            getBrand ()
+     *
+     * @since           1.5.3
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $brand
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getBrand($brand)
+    {
+        $timeStamp = time();
+        if ($brand instanceof BundleEntity\Brand) {
+            return new ModelResponse($brand, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        }
+        $result = null;
+        switch ($brand) {
+            case is_numeric($brand):
+                $result = $this->em->getRepository($this->entity['b']['name'])->findOneBy(array('id' => $brand));
+                break;
+            case is_string($brand):
+                $result = $this->em->getRepository($this->entity['b']['name'])->findOneBy(array('name' => $brand));
+                break;
+        }
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
+
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
     /**
      * @name            getMaxSortOrderOfAttributeInProduct ()
      *
@@ -1164,18 +1205,19 @@ class ProductManagementModel extends CoreModel{
      * @author          Can Berkol
      *
      *
-     * @param           mixed           $product            id, entity, sku, url_key
-     * @param           bool            $bypass             if set to true return integer instead of response
+     * @param           mixed $product id, entity, sku, url_key
+     * @param           bool $bypass if set to true return integer instead of response
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getMaxSortOrderOfAttributeInProduct($product, $bypass = false){
+    public function getMaxSortOrderOfAttributeInProduct($product, $bypass = false)
+    {
         $timeStamp = time();
         $response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $qStr = 'SELECT MAX(' . $this->entity['aop']['alias'] . ') FROM ' . $this->entity['aop']['name']
             . ' WHERE ' . $this->entity['aop']['alias'] . '.product = ' . $product->getId();
 
@@ -1185,7 +1227,7 @@ class ProductManagementModel extends CoreModel{
         if ($bypass) {
             return $result;
         }
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
 
     /**
@@ -1194,36 +1236,36 @@ class ProductManagementModel extends CoreModel{
      * @since           1.0.3
      * @version         1.5.3
      * @author          Can Berkol
-
      *
-     * @param           mixed 			$product
-     * @param           bool 			$bypass
+     * @param           mixed $product
+     * @param           bool $bypass
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getMaxSortOrderOfProductFile($product, $bypass = false){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function getMaxSortOrderOfProductFile($product, $bypass = false)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
-        $qStr = 'SELECT MAX('.$this->entity['fop']['alias'].'.sort_order) FROM '
-            . $this->entity['fop']['name'].' '.$this->entity['fop']['alias']
-            .' WHERE '.$this->entity['fop']['alias'].'.product = '.$product->getId();
+        $qStr = 'SELECT MAX(' . $this->entity['fop']['alias'] . '.sort_order) FROM '
+            . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias']
+            . ' WHERE ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId();
 
         $query = $this->em->createQuery($qStr);
         $result = $query->getSingleScalarResult();
 
-		if ($bypass) {
-			return $result;
-		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        if ($bypass) {
+            return $result;
+        }
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
 
     /**
-     * @name            getMaxSortOrderOfProductInCategory()
+     * @name            getMaxSortOrderOfProductInCategory ()
      *
      * @since           1.0.3
      * @version         1.5.3
@@ -1232,31 +1274,33 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->resetResponse()
      * @use             $this->validateAndGetProductCategory()
      *
-     * @param           mixed           $category
-     * @param           bool            $bypass
+     * @param           mixed $category
+     * @param           bool $bypass
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getMaxSortOrderOfProductInCategory($category, $bypass = false){
-		$timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
+    public function getMaxSortOrderOfProductInCategory($category, $bypass = false)
+    {
+        $timeStamp = time();
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
         $qStr = 'SELECT MAX(' . $this->entity['cop']['alias'] . ') FROM ' . $this->entity['cop']['name']
             . ' WHERE ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
 
         $query = $this->em->createQuery($qStr);
         $result = $query->getSingleScalarResult();
 
-		if ($bypass){
-			return $result;
-		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        if ($bypass) {
+            return $result;
+        }
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
+
     /**
-     * @name            getMostRecentFileOfProduct()
+     * @name            getMostRecentFileOfProduct ()
      *
      * @since           1.2.6
      * @version         1.5.3
@@ -1264,17 +1308,18 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->listFilesOfProducts()
      *
-     * @param           mixed 			$product
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getMostRecentFileOfProduct($product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function getMostRecentFileOfProduct($product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $filter[] = array(
             'glue' => 'and',
             'condition' => array(
@@ -1289,8 +1334,9 @@ class ProductManagementModel extends CoreModel{
         if ($response->error->exist) {
             return $response;
         }
-		return new ModelResponse($response->result->set, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        return new ModelResponse($response->result->set, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
+
     /**
      * @name            getParentOfProductCategory ()
      *
@@ -1300,23 +1346,25 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           mixed 			$category
+     * @param           mixed $category
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getParentOfProductCategory($category){
+    public function getParentOfProductCategory($category)
+    {
         $response = $this->getProductCategory($category);
 
         if (!$response->error->exist) {
-			$response->result->set = $response->result->set->getParent();
-			if(is_null($response->result->set)){
-				$response->error->exist = true;
-			}
-		}
+            $response->result->set = $response->result->set->getParent();
+            if (is_null($response->result->set)) {
+                $response->error->exist = true;
+            }
+        }
         return $response;
     }
+
     /**
-     * @name            getProduct()
+     * @name            getProduct ()
      *
      * @since           1.0.1
      * @version         1.5.3
@@ -1326,206 +1374,216 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           mixed           $product
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-	public function getProduct($product){
-		$timeStamp = time();
-		if($product instanceof BundleEntity\Product){
-			return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-		}
-		$result = null;
-		switch($product){
-			case is_numeric($product):
-				$result = $this->em->getRepository($this->entity['p']['name'])->findOneBy(array('id' => $product));
-				break;
-			case is_string($product):
-				$result = $this->em->getRepository($this->entity['p']['name'])->findOneBy(array('sku' => $product));
-				if(is_null($result)){
-					$response = $this->getProductByUrlKey($product);
-					if(!$response->error->exist){
-						$result = $response->result->set;
-					}
-				}
-				unset($response);
-				break;
-		}
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
+    public function getProduct($product)
+    {
+        $timeStamp = time();
+        if ($product instanceof BundleEntity\Product) {
+            return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        }
+        $result = null;
+        switch ($product) {
+            case is_numeric($product):
+                $result = $this->em->getRepository($this->entity['p']['name'])->findOneBy(array('id' => $product));
+                break;
+            case is_string($product):
+                $result = $this->em->getRepository($this->entity['p']['name'])->findOneBy(array('sku' => $product));
+                if (is_null($result)) {
+                    $response = $this->getProductByUrlKey($product);
+                    if (!$response->error->exist) {
+                        $result = $response->result->set;
+                    }
+                }
+                unset($response);
+                break;
+        }
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            getProductByUrlKey()
-	 *
-	 * @since           1.5.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed 			$urlKey
-	 * @param			mixed			$language
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getProductByUrlKey($urlKey, $language = null){
-		$timeStamp = time();
-		if(!is_string($urlKey)){
-			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pl']['alias'].'.url_key', 'comparison' => '=', 'value' => $urlKey),
-				)
-			)
-		);
-		if(!is_null($language)){
-			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-			$response = $mModel->getLanguage($language);
-			if(!$response->error->exist){
-				$filter[] = array(
-					'glue' => 'and',
-					'condition' => array(
-						array(
-							'glue' => 'and',
-							'condition' => array('column' => $this->entity['pl']['alias'].'.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
-						)
-					)
-				);
-			}
-		}
-		$response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
-
-		return $response;
-	}
-	/**
-	 * @name            getProductAttribute()
-	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed           $attr
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getProductAttribute($attr){
-		$timeStamp = time();
-		if($attr instanceof BundleEntity\ProductAttribute){
-			return new ModelResponse($attr, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-		}
-		$result = null;
-		switch($attr){
-			case is_numeric($attr):
-				$result = $this->em->getRepository($this->entity['pa']['name'])->findOneBy(array('id' => $attr));
-				break;
-			case is_string($attr):
-				$response = $this->getProductAttributeByUrlKey($attr);
-				if(!$response->error->exist){
-					$result = $response->result->set;
-				}
-				unset($response);
-				break;
-		}
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
-
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            getProductAttributeByUrlKey()
-	 *
-	 * @since           1.5.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed 			$urlKey
-	 * @param			mixed			$language
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getProductAttributeByUrlKey($urlKey, $language = null){
-		$timeStamp = time();
-		if(!is_string($urlKey)){
-			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pal']['alias'].'.url_key', 'comparison' => '=', 'value' => $urlKey),
-				)
-			)
-		);
-		if(!is_null($language)){
-			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-			$response = $mModel->getLanguage($language);
-			if(!$response->error->exist){
-				$filter[] = array(
-					'glue' => 'and',
-					'condition' => array(
-						array(
-							'glue' => 'and',
-							'condition' => array('column' => $this->entity['pal']['alias'].'.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
-						)
-					)
-				);
-			}
-		}
-		$response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
-
-		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
-
-		return $response;
-	}
     /**
-     * @name            getProductAttributeValue()
+     * @name            getProductByUrlKey ()
+     *
+     * @since           1.5.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->listProducts()
+     * @use             $this->createException()
+     *
+     * @param           mixed $urlKey
+     * @param            mixed $language
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getProductByUrlKey($urlKey, $language = null)
+    {
+        $timeStamp = time();
+        if (!is_string($urlKey)) {
+            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pl']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+                )
+            )
+        );
+        if (!is_null($language)) {
+            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+            $response = $mModel->getLanguage($language);
+            if (!$response->error->exist) {
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['pl']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+                        )
+                    )
+                );
+            }
+        }
+        $response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
+
+        $response->stats->execution->start = $timeStamp;
+        $response->stats->execution->end = time();
+
+        return $response;
+    }
+
+    /**
+     * @name            getProductAttribute ()
+     *
+     * @since           1.0.1
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $attr
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getProductAttribute($attr)
+    {
+        $timeStamp = time();
+        if ($attr instanceof BundleEntity\ProductAttribute) {
+            return new ModelResponse($attr, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        }
+        $result = null;
+        switch ($attr) {
+            case is_numeric($attr):
+                $result = $this->em->getRepository($this->entity['pa']['name'])->findOneBy(array('id' => $attr));
+                break;
+            case is_string($attr):
+                $response = $this->getProductAttributeByUrlKey($attr);
+                if (!$response->error->exist) {
+                    $result = $response->result->set;
+                }
+                unset($response);
+                break;
+        }
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
+
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            getProductAttributeByUrlKey ()
+     *
+     * @since           1.5.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->listProducts()
+     * @use             $this->createException()
+     *
+     * @param           mixed $urlKey
+     * @param            mixed $language
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getProductAttributeByUrlKey($urlKey, $language = null)
+    {
+        $timeStamp = time();
+        if (!is_string($urlKey)) {
+            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pal']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+                )
+            )
+        );
+        if (!is_null($language)) {
+            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+            $response = $mModel->getLanguage($language);
+            if (!$response->error->exist) {
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['pal']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+                        )
+                    )
+                );
+            }
+        }
+        $response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
+
+        $response->stats->execution->start = $timeStamp;
+        $response->stats->execution->end = time();
+
+        return $response;
+    }
+
+    /**
+     * @name            getProductAttributeValue ()
      *
      * @since           1.0.5
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      *
      * @use             $this->createException()
      * @use             $this->resetResponse()
      *
-     * @param           integer         $id
+     * @param           integer $id
      *
      * @return          mixed           $response
      */
-    public function getProductAttributeValue($id){
-		$timeStamp = time();
+    public function getProductAttributeValue($id)
+    {
+        $timeStamp = time();
         $result = $this->em->getRepository($this->entity['pav']['name'])
-                           ->findOneBy(array('id' => $id));
+            ->findOneBy(array('id' => $id));
 
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
+
     /**
-     * @name            getProductBySku()
+     * @name            getProductBySku ()
      *
      * @since           1.0.3
      * @version         1.5.3
@@ -1533,130 +1591,135 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->getProduct()
      *
-     * @param           string          $sku
+     * @param           string $sku
      *
      * @return          mixed           $response
      */
-    public function getProductBySku($sku){
+    public function getProductBySku($sku)
+    {
         return $this->getProduct($sku);
     }
 
-	/**
-	 * @name            getProductCategory()
-	 *
-	 * @since           1.0.1
-	 * @version         1.5.9
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed           $category
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getProductCategory($category){
-		$timeStamp = time();
-		if($category instanceof BundleEntity\ProductCategory){
-			return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-		}
-		$result = null;
-		switch($category){
-			case is_numeric($category):
-				$result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('id' => $category));
-				break;
-			case is_string($category):
-				$result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('sku' => $category));
-				if(is_null($result)){
-					$response = $this->getProductCategoryByUrlKey($category);
-					if(!$response->error->exist){
-						$result = $response->result->set;
-					}
-				}
-				unset($response);
-				break;
-		}
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
+    /**
+     * @name            getProductCategory ()
+     *
+     * @since           1.0.1
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $category
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getProductCategory($category)
+    {
+        $timeStamp = time();
+        if ($category instanceof BundleEntity\ProductCategory) {
+            return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        }
+        $result = null;
+        switch ($category) {
+            case is_numeric($category):
+                $result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('id' => $category));
+                break;
+            case is_string($category):
+                $result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('sku' => $category));
+                if (is_null($result)) {
+                    $response = $this->getProductCategoryByUrlKey($category);
+                    if (!$response->error->exist) {
+                        $result = $response->result->set;
+                    }
+                }
+                unset($response);
+                break;
+        }
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            getProductCategoryByUrlKey()
-	 *
-	 * @since           1.5.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed 			$urlKey
-	 * @param			mixed			$language
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getProductCategoryByUrlKey($urlKey, $language = null){
-		$timeStamp = time();
-		if(!is_string($urlKey)){
-			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pcl']['alias'].'.url_key', 'comparison' => '=', 'value' => $urlKey),
-				)
-			)
-		);
-		if(!is_null($language)){
-			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-			$response = $mModel->getLanguage($language);
-			if(!$response->error->exist){
-				$filter[] = array(
-					'glue' => 'and',
-					'condition' => array(
-						array(
-							'glue' => 'and',
-							'condition' => array('column' => $this->entity['pcl']['alias'].'.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
-						)
-					)
-				);
-			}
-		}
-		$response = $this->listProductCategories($filter, null, array('start' => 0, 'count' => 1));
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
+    /**
+     * @name            getProductCategoryByUrlKey ()
+     *
+     * @since           1.5.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->listProducts()
+     * @use             $this->createException()
+     *
+     * @param           mixed $urlKey
+     * @param            mixed $language
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getProductCategoryByUrlKey($urlKey, $language = null)
+    {
+        $timeStamp = time();
+        if (!is_string($urlKey)) {
+            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pcl']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+                )
+            )
+        );
+        if (!is_null($language)) {
+            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+            $response = $mModel->getLanguage($language);
+            if (!$response->error->exist) {
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['pcl']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+                        )
+                    )
+                );
+            }
+        }
+        $response = $this->listProductCategories($filter, null, array('start' => 0, 'count' => 1));
 
-		return $response;
-	}
+        $response->stats->execution->start = $timeStamp;
+        $response->stats->execution->end = time();
+
+        return $response;
+    }
 
     /**
      * @name            getRandomCategoryOfProduct ()
      *
      * @since           1.3.6
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
-     * @param           mixed 			$product
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function getRandomCategoryOfProduct($product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function getRandomCategoryOfProduct($product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
         $response = $this->listCategoriesOfProduct($product);
         if ($response->error->exist) {
@@ -1668,162 +1731,172 @@ class ProductManagementModel extends CoreModel{
         $random = rand(0, $i - 1);
         $category = $categoriesOfProduct[$random];
         unset($categoriesOfProduct);
-		return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
-	/**
-	 * @name            getVolumePricing()
-	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           integer         $pricing
-	 *
-	 * @return          mixed           $response
-	 */
-	public function getVolumePricing($pricing){
-		$timeStamp = time();
 
-		$result = $this->em->getRepository($this->entity['vp']['name'])
-			->findOneBy(array('id' => $pricing));
+    /**
+     * @name            getVolumePricing ()
+     *
+     * @since           1.0.5
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     * @use             $this->resetResponse()
+     *
+     * @param           integer $pricing
+     *
+     * @return          mixed           $response
+     */
+    public function getVolumePricing($pricing)
+    {
+        $timeStamp = time();
 
-		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
-		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            getVolumePricingOfProductWithMaximumQuantity ()
-	 *
-	 * @since           1.4.4
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listVolumePricingsOfProduct()
-	 *
-	 * @param  			mixed 			$product
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getVolumePricingOfProductWithMaximumQuantity($product){
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		return $this->listVolumePricingsOfProduct($product, array(), array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
-	}
-	/**
-	 * @name            incrementCountViewOfProduct ()
-	 *
-	 * @since           1.3.8
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->getProduct()
-	 * @use             $this->updateProduct()
-	 *
-	 * @param   		mixed 			$product
-	 * @param   		int 			$count
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function incrementCountViewOfProduct($product, $count){
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		$product->setCountView($product->getCountView() + $count);
-		return $this->updateProduct($product);
-	}
-	/**
-	 * @name            insertBrand()
-	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->insertBrands()
-	 *
-	 * @param           mixed 				$brand
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function insertBrand($brand){
-		return $this->insertBrands(array($brand));
-	}
+        $result = $this->em->getRepository($this->entity['vp']['name'])
+            ->findOneBy(array('id' => $pricing));
 
-	/**
-	 * @name            insertBrands()
-	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function insertBrands($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countInserts = 0;
-		$insertedItems = array();
-		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
-		foreach ($collection as $data) {
-			if ($data instanceof BundleEntity\Brand) {
-				$entity = $data;
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
-			} else if (is_object($data)) {
-				$entity = new BundleEntity\Brand;
-				if (!property_exists($data, 'date_added')) {
-					$data->date_added = $now;
-				}
-				if (!property_exists($data, 'date_updated')) {
-					$data->date_updated = nnow;
-				}
-				if (!property_exists($data, 'count_children')) {
-					$data->count_children = 0;
-				}
-				foreach ($data as $column => $value) {
-					$localeSet = false;
-					$set = 'set' . $this->translateColumnName($column);
-					switch ($column) {
-						default:
-							$entity->$set($value);
-							break;
-					}
-					if ($localeSet) {
-						$localizations[$countInserts]['entity'] = $entity;
-					}
-				}
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+        }
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-				$countInserts++;
-			}
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+    /**
+     * @name            getVolumePricingOfProductWithMaximumQuantity ()
+     *
+     * @since           1.4.4
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->listVolumePricingsOfProduct()
+     *
+     * @param            mixed $product
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getVolumePricingOfProductWithMaximumQuantity($product)
+    {
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        return $this->listVolumePricingsOfProduct($product, array(), array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
+    }
+
+    /**
+     * @name            incrementCountViewOfProduct ()
+     *
+     * @since           1.3.8
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->getProduct()
+     * @use             $this->updateProduct()
+     *
+     * @param        mixed $product
+     * @param        int $count
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function incrementCountViewOfProduct($product, $count)
+    {
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $product->setCountView($product->getCountView() + $count);
+        return $this->updateProduct($product);
+    }
+
+    /**
+     * @name            insertBrand ()
+     *
+     * @since           1.0.5
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->insertBrands()
+     *
+     * @param           mixed $brand
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function insertBrand($brand)
+    {
+        return $this->insertBrands(array($brand));
+    }
+
+    /**
+     * @name            insertBrands ()
+     *
+     * @since           1.0.5
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function insertBrands($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countInserts = 0;
+        $insertedItems = array();
+        $now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\Brand) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+                $countInserts++;
+            } else if (is_object($data)) {
+                $entity = new BundleEntity\Brand;
+                if (!property_exists($data, 'date_added')) {
+                    $data->date_added = $now;
+                }
+                if (!property_exists($data, 'date_updated')) {
+                    $data->date_updated = nnow;
+                }
+                if (!property_exists($data, 'count_children')) {
+                    $data->count_children = 0;
+                }
+                foreach ($data as $column => $value) {
+                    $localeSet = false;
+                    $set = 'set' . $this->translateColumnName($column);
+                    switch ($column) {
+                        default:
+                            $entity->$set($value);
+                            break;
+                    }
+                    if ($localeSet) {
+                        $localizations[$countInserts]['entity'] = $entity;
+                    }
+                }
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+
+                $countInserts++;
+            }
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
     /**
      * @name            insertProduct ()
      *
@@ -1833,16 +1906,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->insertProducts()
      *
-     * @param           mixed 			$product
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProduct($product){
+    public function insertProduct($product)
+    {
         return $this->insertProducts(array($product));
     }
 
     /**
-     * @name            insertProductAttribute()
+     * @name            insertProductAttribute ()
      *
      * @since           1.0.1
      * @version         1.5.3
@@ -1850,78 +1924,80 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->insertProductAttributes()
      *
-     * @param           mixed			$attribute
+     * @param           mixed $attribute
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProductAttribute($attribute){
+    public function insertProductAttribute($attribute)
+    {
         return $this->insertProductAttributes(array($attribute));
     }
 
     /**
-     * @name            insertProductAttributeLocalizations()
-	 *
+     * @name            insertProductAttributeLocalizations ()
+     *
      * @since           1.1.3
      * @version         1.5.5
      * @author          Can Berkol
      *
      * @use             $this->createException()
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-	public function insertProductAttributeLocalizations($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countInserts = 0;
-		$insertedItems = array();
-		foreach($collection as $data){
-			if($data instanceof BundleEntity\ProductAttributeLocalization){
-				$entity = $data;
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
-			}
-			else{
-				$attribute = $data['entity'];
-				foreach($data['localizations'] as $locale => $translation){
-					$entity = new BundleEntity\ProductAttributeLocalization();
-					$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-					$response = $lModel->getLanguage($locale);
-					if($response->error->exist){
-						return $response;
-					}
-					$entity->setLanguage($response->result->set);
-					unset($response);
-					$entity->setAttribute($attribute);
-					foreach($translation as $column => $value){
-						$set = 'set'.$this->translateColumnName($column);
-						switch($column){
-							default:
-								if(is_object($value) || is_array($value)){
-									$value = json_encode($value);
-								}
-								$entity->$set($value);
-								break;
-						}
-					}
-					$this->em->persist($entity);
-					$insertedItems[] = $entity;
-					$countInserts++;
-				}
-			}
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+    public function insertProductAttributeLocalizations($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countInserts = 0;
+        $insertedItems = array();
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\ProductAttributeLocalization) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+                $countInserts++;
+            } else {
+                $attribute = $data['entity'];
+                foreach ($data['localizations'] as $locale => $translation) {
+                    $entity = new BundleEntity\ProductAttributeLocalization();
+                    $lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+                    $response = $lModel->getLanguage($locale);
+                    if ($response->error->exist) {
+                        return $response;
+                    }
+                    $entity->setLanguage($response->result->set);
+                    unset($response);
+                    $entity->setAttribute($attribute);
+                    foreach ($translation as $column => $value) {
+                        $set = 'set' . $this->translateColumnName($column);
+                        switch ($column) {
+                            default:
+                                if (is_object($value) || is_array($value)) {
+                                    $value = json_encode($value);
+                                }
+                                $entity->$set($value);
+                                break;
+                        }
+                    }
+                    $this->em->persist($entity);
+                    $insertedItems[] = $entity;
+                    $countInserts++;
+                }
+            }
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
     /**
-     * @name            insertProductAttributeValue()
+     * @name            insertProductAttributeValue ()
      *
      * @since           1.1.7
      * @version         1.5.3
@@ -1929,16 +2005,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->insertProductAttributeValues()
      *
-     * @param           mixed			$value
+     * @param           mixed $value
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProductAttributeValue($value){
+    public function insertProductAttributeValue($value)
+    {
         return $this->insertProductAttributeValues(array($value));
     }
 
     /**
-     * @name            insertProductAttributeValues()
+     * @name            insertProductAttributeValues ()
      *
      * @since           1.1.7
      * @version         1.5.3
@@ -1946,15 +2023,16 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProductAttributeValues($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function insertProductAttributeValues($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countInserts = 0;
         $insertedItems = array();
         foreach ($collection as $data) {
@@ -1963,8 +2041,7 @@ class ProductManagementModel extends CoreModel{
                 $this->em->persist($entity);
                 $insertedItems[] = $entity;
                 $countInserts++;
-            }
-			else if (is_object($data)) {
+            } else if (is_object($data)) {
                 $entity = new BundleEntity\ProductAttributeValues;
                 if (isset($data->id)) {
                     unset($data->id);
@@ -1975,25 +2052,25 @@ class ProductManagementModel extends CoreModel{
                         case 'language':
                             $lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
                             $response = $lModel->getLanguage($value);
-                            if($response->error->exist){
-								return $response;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $lModel);
                             break;
                         case 'attribute':
                             $response = $this->getProductAttribute($value);
-							if($response->error->exist){
-								return $response;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
                             break;
                         case 'product':
                             $response = $this->getProduct($value, 'id');
-							if($response->error->exist){
-								return $response;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response);
                             break;
                         default:
@@ -2007,14 +2084,15 @@ class ProductManagementModel extends CoreModel{
                 $countInserts++;
             }
         }
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
     /**
-     * @name            insertProductAttributes()
+     * @name            insertProductAttributes ()
      *                  Inserts one or more product attributes into database.
      *
      * @since           1.0.5
@@ -2023,15 +2101,16 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 				$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProductAttributes($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function insertProductAttributes($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countInserts = 0;
         $countLocalizations = 0;
         $insertedItems = array();
@@ -2042,8 +2121,7 @@ class ProductManagementModel extends CoreModel{
                 $this->em->persist($entity);
                 $insertedItems[] = $entity;
                 $countInserts++;
-            }
-			else if (is_object($data)) {
+            } else if (is_object($data)) {
                 $entity = new BundleEntity\ProductAttribute;
                 if (!property_exists($data, 'date_added')) {
                     $data->date_added = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
@@ -2063,10 +2141,10 @@ class ProductManagementModel extends CoreModel{
                         case 'site':
                             $sModel = $this->kernel->getContainer()->get('sitemanagement.model');
                             $response = $sModel->getSite($value);
-                            if($response->error->exist){
-								return $response;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $sModel);
                             break;
                         default:
@@ -2083,22 +2161,22 @@ class ProductManagementModel extends CoreModel{
                 $countInserts++;
             }
         }
-		if ($countInserts > 0) {
-			$this->em->flush();
-		}
-		/** Now handle localizations */
-		if ($countInserts > 0 && $countLocalizations > 0) {
-			$response = $this->insertProductAttributeLocalizations($localizations);
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+        if ($countInserts > 0) {
+            $this->em->flush();
+        }
+        /** Now handle localizations */
+        if ($countInserts > 0 && $countLocalizations > 0) {
+            $response = $this->insertProductAttributeLocalizations($localizations);
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
 
     /**
-     * @name            insertProductCategory()
+     * @name            insertProductCategory ()
      *
      * @since           1.0.5
      * @version         1.5.3
@@ -2106,16 +2184,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->insertProductCategories()
      *
-     * @param           mixed 				$category
+     * @param           mixed $category
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProductCategory($category){
+    public function insertProductCategory($category)
+    {
         return $this->insertProductCategories(array($category));
     }
 
     /**
-     * @name            insertProductCategories()
+     * @name            insertProductCategories ()
      *
      * @since           1.0.5
      * @version         1.5.3
@@ -2123,20 +2202,21 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProductCategories($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function insertProductCategories($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countInserts = 0;
         $countLocalizations = 0;
         $insertedItems = array();
         $localizations = array();
-		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\ProductCategory) {
                 $entity = $data;
@@ -2169,27 +2249,27 @@ class ProductManagementModel extends CoreModel{
                         case 'preview_image':
                             $fModel = $this->kernel->getContainer()->get('filemanagement.model');
                             $response = $fModel->getFile($value);
-                            if($response->error->exist){
-								break;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                break;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $fModel);
                             break;
                         case 'parent':
-							$response = $this->getProductCategory($value, 'id');
-							if($response->error->exist){
-								break;
-							}
-							$entity->$set($response->result->set);
+                            $response = $this->getProductCategory($value, 'id');
+                            if ($response->error->exist) {
+                                break;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $fModel);
                             break;
                         case 'site':
                             $sModel = $this->kernel->getContainer()->get('sitemanagement.model');
                             $response = $sModel->getSite($value, 'id');
-							if($response->error->exist){
-								return $response;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $sModel);
                             break;
                         default:
@@ -2206,18 +2286,19 @@ class ProductManagementModel extends CoreModel{
                 $countInserts++;
             }
         }
-		/** Now handle localizations */
-		if ($countInserts > 0 && $countLocalizations > 0) {
-			$response = $this->insertProductCategoryLocalizations($localizations);
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+        /** Now handle localizations */
+        if ($countInserts > 0 && $countLocalizations > 0) {
+            $response = $this->insertProductCategoryLocalizations($localizations);
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
     /**
-     * @name            insertProductCategoryLocalizations()
+     * @name            insertProductCategoryLocalizations ()
      *
      * @since           1.1.8
      * @version         1.5.5
@@ -2225,144 +2306,146 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-	public function insertProductCategoryLocalizations($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countInserts = 0;
-		$insertedItems = array();
-		foreach($collection as $data){
-			if($data instanceof BundleEntity\ProductCategoryLocalization){
-				$entity = $data;
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
-			}
-			else{
-				$cat = $data['entity'];
-				foreach($data['localizations'] as $locale => $translation){
-					$entity = new BundleEntity\ProductCategoryLocalization();
-					$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-					$response = $lModel->getLanguage($locale);
-					if($response->error->exist){
-						return $response;
-					}
-					$entity->setLanguage($response->result->set);
-					unset($response);
-					$entity->setCategory($cat);
-					foreach($translation as $column => $value){
-						$set = 'set'.$this->translateColumnName($column);
-						switch($column){
-							default:
-								if(is_object($value) || is_array($value)){
-									$value = json_encode($value);
-								}
-								$entity->$set($value);
-								break;
-						}
-					}
-					$this->em->persist($entity);
-					$insertedItems[] = $entity;
-					$countInserts++;
-				}
-			}
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+    public function insertProductCategoryLocalizations($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countInserts = 0;
+        $insertedItems = array();
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\ProductCategoryLocalization) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+                $countInserts++;
+            } else {
+                $cat = $data['entity'];
+                foreach ($data['localizations'] as $locale => $translation) {
+                    $entity = new BundleEntity\ProductCategoryLocalization();
+                    $lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+                    $response = $lModel->getLanguage($locale);
+                    if ($response->error->exist) {
+                        return $response;
+                    }
+                    $entity->setLanguage($response->result->set);
+                    unset($response);
+                    $entity->setCategory($cat);
+                    foreach ($translation as $column => $value) {
+                        $set = 'set' . $this->translateColumnName($column);
+                        switch ($column) {
+                            default:
+                                if (is_object($value) || is_array($value)) {
+                                    $value = json_encode($value);
+                                }
+                                $entity->$set($value);
+                                break;
+                        }
+                    }
+                    $this->em->persist($entity);
+                    $insertedItems[] = $entity;
+                    $countInserts++;
+                }
+            }
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
     /**
      * @name            insertProductLocalizations ()
-	 *
-	 * @since           1.1.8
-	 * @version         1.5.6
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function insertProductLocalizations($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countInserts = 0;
-		$insertedItems = array();
-		foreach($collection as $data){
-			if($data instanceof BundleEntity\ProductLocalization){
-				$entity = $data;
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
-			}
-			else{
-				$product = $data['entity'];
-				foreach($data['localizations'] as $locale => $translation){
-					$entity = new BundleEntity\ProductLocalization();
-					$lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-					$response = $lModel->getLanguage($locale);
-					if($response->error->exist){
-						return $response;
-					}
-					$entity->setLanguage($response->result->set);
-					unset($response);
-					$entity->setProduct($product);
-					foreach($translation as $column => $value){
-						$set = 'set'.$this->translateColumnName($column);
-						switch($column){
-							default:
-								$entity->$set($value);
-								break;
-						}
-					}
-					$this->em->persist($entity);
-					$insertedItems[] = $entity;
-					$countInserts++;
-				}
-			}
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
+     *
+     * @since           1.1.8
+     * @version         1.5.6
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function insertProductLocalizations($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countInserts = 0;
+        $insertedItems = array();
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\ProductLocalization) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+                $countInserts++;
+            } else {
+                $product = $data['entity'];
+                foreach ($data['localizations'] as $locale => $translation) {
+                    $entity = new BundleEntity\ProductLocalization();
+                    $lModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+                    $response = $lModel->getLanguage($locale);
+                    if ($response->error->exist) {
+                        return $response;
+                    }
+                    $entity->setLanguage($response->result->set);
+                    unset($response);
+                    $entity->setProduct($product);
+                    foreach ($translation as $column => $value) {
+                        $set = 'set' . $this->translateColumnName($column);
+                        switch ($column) {
+                            default:
+                                $entity->$set($value);
+                                break;
+                        }
+                    }
+                    $this->em->persist($entity);
+                    $insertedItems[] = $entity;
+                    $countInserts++;
+                }
+            }
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
     /**
-     * @name            insertProducts()
+     * @name            insertProducts ()
      *
      * @since           1.1.7
-     * @version         1.5.7
-	 *
+     * @version         1.5.3
+     *
      * @author          Can Berkol
-     * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function insertProducts($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function insertProducts($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countInserts = 0;
         $countLocalizations = 0;
         $insertedItems = array();
         $localizations = array();
-		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\Product) {
                 $entity = $data;
@@ -2399,10 +2482,10 @@ class ProductManagementModel extends CoreModel{
                     switch ($column) {
                         case 'brand':
                             $response = $this->getBrand($value);
-                            if($response->error->exist){
-								break;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                break;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response);
                             break;
                         case 'local':
@@ -2413,28 +2496,28 @@ class ProductManagementModel extends CoreModel{
                         case 'preview_file':
                             $fModel = $this->kernel->getContainer()->get('filemanagement.model');
                             $response = $fModel->getFile($value);
-							if($response->error->exist){
-								break;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                break;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $fModel);
                             break;
                         case 'site':
                             $sModel = $this->kernel->getContainer()->get('sitemanagement.model');
                             $response = $sModel->getSite($value, 'id');
-							if($response->error->exist){
-								return $response;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $sModel);
                             break;
                         case 'supplier':
                             $sModel = $this->kernel->getContainer()->get('stockmanagement.model');
                             $response = $sModel->getSupplier($value);
-							if($response->error->exist){
-								break;
-							}
-							$entity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                break;
+                            }
+                            $entity->$set($response->result->set);
                             unset($response, $sModel);
                             break;
                         default:
@@ -2456,105 +2539,108 @@ class ProductManagementModel extends CoreModel{
             $this->em->flush();
             $this->insertProductLocalizations($localizations);
         }
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
 
-	}
-	/**
-	 * @name            insertVolumePricing ()
-	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->insertVolumePricings()
-	 *
-	 * @param           mixed 			$volumePricing
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function insertVolumePricing($volumePricing){
-		return $this->insertVolumePricings(array($volumePricing));
-	}
+    }
 
-	/**
-	 * @name            insertVolumePricings().
-	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 				$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function insertVolumePricings($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countInserts = 0;
-		$insertedItems = array();
-		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
-		foreach ($collection as $data) {
-			if ($data instanceof BundleEntity\VolumePricing) {
-				$entity = $data;
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
-			}
-			else if (is_object($data)) {
-				$entity = new BundleEntity\VolumePricing;
-				if (isset($data->id)) {
-					unset($data->id);
-				}
-				if (!property_exists($data, 'date_added')) {
-					$data->date_added = $now;
-				}
-				if (!property_exists($data, 'date_updated')) {
-					$data->date_updated = $now;
-				}
-				if (!property_exists($data, 'limit_direction')) {
-					$data->date_updated = 'xm';
-				}
-				foreach ($data as $column => $value) {
-					$set = 'set' . $this->translateColumnName($column);
-					switch ($column) {
-						case 'product':
-							$response = $this->getProduct($value);
-							if ($response->error->exist) {
-								return $response;
-							}
-							$entity->$set($response->result->set);
-							unset($response, $sModel);
-							break;
-						default:
-							$entity->$set($value);
-							break;
-					}
-				}
-				$this->em->persist($entity);
-				$insertedItems[] = $entity;
-				$countInserts++;
-			}
-		}
-		if($countInserts > 0){
-			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-	}
     /**
-     * @name            isAttributeAssociatedWithProduct()
+     * @name            insertVolumePricing ()
+     *
+     * @since           1.3.2
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->insertVolumePricings()
+     *
+     * @param           mixed $volumePricing
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function insertVolumePricing($volumePricing)
+    {
+        return $this->insertVolumePricings(array($volumePricing));
+    }
+
+    /**
+     * @name            insertVolumePricings ().
+     *
+     * @since           1.3.2
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function insertVolumePricings($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countInserts = 0;
+        $insertedItems = array();
+        $now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\VolumePricing) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+                $countInserts++;
+            } else if (is_object($data)) {
+                $entity = new BundleEntity\VolumePricing;
+                if (isset($data->id)) {
+                    unset($data->id);
+                }
+                if (!property_exists($data, 'date_added')) {
+                    $data->date_added = $now;
+                }
+                if (!property_exists($data, 'date_updated')) {
+                    $data->date_updated = $now;
+                }
+                if (!property_exists($data, 'limit_direction')) {
+                    $data->date_updated = 'xm';
+                }
+                foreach ($data as $column => $value) {
+                    $set = 'set' . $this->translateColumnName($column);
+                    switch ($column) {
+                        case 'product':
+                            $response = $this->getProduct($value);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $entity->$set($response->result->set);
+                            unset($response, $sModel);
+                            break;
+                        default:
+                            $entity->$set($value);
+                            break;
+                    }
+                }
+                $this->em->persist($entity);
+                $insertedItems[] = $entity;
+                $countInserts++;
+            }
+        }
+        if ($countInserts > 0) {
+            $this->em->flush();
+            return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            isAttributeAssociatedWithProduct ()
      *
      * @since           1.1.7
      * @version         1.5.3
@@ -2562,26 +2648,27 @@ class ProductManagementModel extends CoreModel{
      *
      * @user            $this->createException
      *
-     * @param           mixed 		$attribute
-     * @param           mixed 		$product
-	 *
-     * @param           bool 		$bypass
+     * @param           mixed $attribute
+     * @param           mixed $product
+     *
+     * @param           bool $bypass
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function isAttributeAssociatedWithProduct($attribute, $product, $bypass = false){
-		$timeStamp = time();
-		$response = $this->getProductAttribute($attribute);
-		if($response->error->exist){
-			return $response;
-		}
-		$attribute = $response->result->set;
+    public function isAttributeAssociatedWithProduct($attribute, $product, $bypass = false)
+    {
+        $timeStamp = time();
+        $response = $this->getProductAttribute($attribute);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $attribute = $response->result->set;
 
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $found = false;
 
         $qStr = 'SELECT COUNT(' . $this->entity['aop']['alias'] . ')'
@@ -2592,101 +2679,102 @@ class ProductManagementModel extends CoreModel{
 
         $result = $q->getSingleScalarResult();
 
-		if ($result > 0) {
-			$found = true;
-		}
-		if ($bypass) {
-			return $found;
-		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        if ($result > 0) {
+            $found = true;
+        }
+        if ($bypass) {
+            return $found;
+        }
+        return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 
-	}
-	/**
-	 * @name            isFileAssociatedWithBlogPost()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.9
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed       $file
-	 * @param           mixed       $product
-	 * @param           bool        $bypass     true or false
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function isFileAssociatedWithProduct($file, $product, $bypass = false){
-		$timeStamp = time();
-		$fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
+    }
 
-		$response = $fModel->getFile($file);
-		if($response->error->exist){
-			return $response;
-		}
-		$post = $response->result->set;
+    /**
+     * @name            isFileAssociatedWithBlogPost ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $file
+     * @param           mixed $product
+     * @param           bool $bypass true or false
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function isFileAssociatedWithProduct($file, $product, $bypass = false)
+    {
+        $timeStamp = time();
+        $fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
-		$response = $this->getProduct($product);
+        $response = $fModel->getFile($file);
+        if ($response->error->exist) {
+            return $response;
+        }
 
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $response = $this->getProduct($product);
 
-		$found = false;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
-		$qStr = 'SELECT COUNT(' . $this->entity['fop']['alias'].'.file' . ')'
-			. ' FROM ' . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias']
-			. ' WHERE ' . $this->entity['fop']['alias'] . '.file = ' . $file->getId()
-			. ' AND ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId();
-		$query = $this->em->createQuery($qStr);
+        $found = false;
 
-		$result = $query->getSingleScalarResult();
+        $qStr = 'SELECT COUNT(' . $this->entity['fop']['alias'] . '.file' . ')'
+            . ' FROM ' . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias']
+            . ' WHERE ' . $this->entity['fop']['alias'] . '.file = ' . $file->getId()
+            . ' AND ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId();
+        $query = $this->em->createQuery($qStr);
 
-		if ($result > 0) {
-			$found = true;
-		}
-		if ($bypass) {
-			return $found;
-		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $result = $query->getSingleScalarResult();
+
+        if ($result > 0) {
+            $found = true;
+        }
+        if ($bypass) {
+            return $found;
+        }
+        return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
     /**
      * @name            isLocaleAssociatedWithProduct ()
      *
      * @since           1.2.3
-     * @version         1.5.9
-	 *
+     * @version         1.5.3
+     *
      * @author          Can Berkol
-     * @author          Said İmamoğlu
      *
      * @user            $this->createException
      *
-     * @param           mixed 		$locale
-     * @param           mixed 		$product
-     * @param           bool 		$bypass
+     * @param           mixed $locale
+     * @param           mixed $product
+     * @param           bool $bypass
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function isLocaleAssociatedWithProduct($locale, $product, $bypass = false){
-		$timeStamp = time();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+    public function isLocaleAssociatedWithProduct($locale, $product, $bypass = false)
+    {
+        $timeStamp = time();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
-		$response = $mlsModel->getLanguage($locale);
-		if($response->error->exist){
-			return $response;
-		}
+        $response = $mlsModel->getLanguage($locale);
+        if ($response->error->exist) {
+            return $response;
+        }
         $locale = $response->result->set;
 
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $found = false;
 
-        $qStr = 'SELECT COUNT(' . $this->entity['apl']['alias'].'.product' . ')'
+        $qStr = 'SELECT COUNT(' . $this->entity['apl']['alias'] . '.product' . ')'
             . ' FROM ' . $this->entity['apl']['name'] . ' ' . $this->entity['apl']['alias']
             . ' WHERE ' . $this->entity['apl']['alias'] . '.locale = ' . $locale->getId()
             . ' AND ' . $this->entity['apl']['alias'] . '.product = ' . $product->getId();
@@ -2694,112 +2782,114 @@ class ProductManagementModel extends CoreModel{
 
         $result = $query->getSingleScalarResult();
 
-		if ($result > 0) {
-			$found = true;
-		}
-		if ($bypass) {
-			return $found;
-		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        if ($result > 0) {
+            $found = true;
+        }
+        if ($bypass) {
+            return $found;
+        }
+        return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
 
-	/**
-	 * @name            isLocaleAssociatedWithProductCategory ()
-	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @user            $this->createException
-	 *
-	 * @param           mixed 		$locale
-	 * @param           mixed 		$category
-	 * @param           bool 		$bypass
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function isLocaleAssociatedWithProductCategory($locale, $category, $bypass = false){
-		$timeStamp = time();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+    /**
+     * @name            isLocaleAssociatedWithProductCategory ()
+     *
+     * @since           1.2.3
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     *
+     * @user            $this->createException
+     *
+     * @param           mixed $locale
+     * @param           mixed $category
+     * @param           bool $bypass
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function isLocaleAssociatedWithProductCategory($locale, $category, $bypass = false)
+    {
+        $timeStamp = time();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
-		$response = $mlsModel->getLanguage($locale);
-		if($response->error->exist){
-			return $response;
-		}
-		$locale = $response->result->set;
+        $response = $mlsModel->getLanguage($locale);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $locale = $response->result->set;
 
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
-		$found = false;
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
+        $found = false;
 
-		$qStr = 'SELECT COUNT(' . $this->entity['apcl']['alias'] . ')'
-			. ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
-			. ' WHERE ' . $this->entity['apcl']['alias'] . '.locale = ' . $locale->getId()
-			. ' AND ' . $this->entity['apcl']['alias'] . '.category = ' . $category->getId();
-		$query = $this->em->createQuery($qStr);
+        $qStr = 'SELECT COUNT(' . $this->entity['apcl']['alias'] . ')'
+            . ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
+            . ' WHERE ' . $this->entity['apcl']['alias'] . '.locale = ' . $locale->getId()
+            . ' AND ' . $this->entity['apcl']['alias'] . '.category = ' . $category->getId();
+        $query = $this->em->createQuery($qStr);
 
-		$result = $query->getSingleScalarResult();
+        $result = $query->getSingleScalarResult();
 
-		if ($result > 0) {
-			$found = true;
-		}
-		if ($bypass) {
-			return $found;
-		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        if ($result > 0) {
+            $found = true;
+        }
+        if ($bypass) {
+            return $found;
+        }
+        return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            isProductAssociatedWithCategory()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @user            $this->createException
-	 *
-	 * @param           mixed 		$product
-	 * @param           mixed 		$category
-	 * @param           bool 		$bypass
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function isProductAssociatedWithCategory($product, $category, $bypass = false){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    /**
+     * @name            isProductAssociatedWithCategory ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     *
+     * @user            $this->createException
+     *
+     * @param           mixed $product
+     * @param           mixed $category
+     * @param           bool $bypass
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function isProductAssociatedWithCategory($product, $category, $bypass = false)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
-		$found = false;
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
+        $found = false;
 
-		$qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . ')'
-			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
-			. ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId()
-			. ' AND ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
-		$query = $this->em->createQuery($qStr);
+        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . ')'
+            . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+            . ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId()
+            . ' AND ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
+        $query = $this->em->createQuery($qStr);
 
-		$result = $query->getSingleScalarResult();
+        $result = $query->getSingleScalarResult();
 
-		if ($result > 0) {
-			$found = true;
-		}
-		if ($bypass) {
-			return $found;
-		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        if ($result > 0) {
+            $found = true;
+        }
+        if ($bypass) {
+            return $found;
+        }
+        return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
      * @name            listActiveLocalesOfProduct ()
@@ -2810,17 +2900,18 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           mixed $product 		entity
+     * @param           mixed $product entity
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listActiveLocalesOfProduct($product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function listActiveLocalesOfProduct($product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $qStr = 'SELECT ' . $this->entity['apl']['alias']
             . ' FROM ' . $this->entity['apl']['name'] . ' ' . $this->entity['apl']['alias']
             . ' WHERE ' . $this->entity['apl']['alias'] . '.product = ' . $product->getId();
@@ -2836,54 +2927,56 @@ class ProductManagementModel extends CoreModel{
             }
         }
         unset($unique);
-		$totalRows = count($locales);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $totalRows = count($locales);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            listActiveLocalesOfProductCategory()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed 		$category 		entity
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listActiveLocalesOfProductCategory($category){
-		$timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
-		$qStr = 'SELECT ' . $this->entity['apcl']['alias']
-			. ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
-			. ' WHERE ' . $this->entity['apcl']['alias'] . '.category = ' . $category->getId();
-		$query = $this->em->createQuery($qStr);
-		$result = $query->getResult();
-		$locales = array();
-		$unique = array();
-		foreach ($result as $entry) {
-			$id = $entry->getLocale()->getId();
-			if (!isset($unique[$id])) {
-				$locales[] = $entry->getLocale();
-				$unique[$id] = $entry->getLocale();
-			}
-		}
-		unset($unique);
-		$totalRows = count($locales);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+    /**
+     * @name            listActiveLocalesOfProductCategory ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $category entity
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listActiveLocalesOfProductCategory($category)
+    {
+        $timeStamp = time();
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
+        $qStr = 'SELECT ' . $this->entity['apcl']['alias']
+            . ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
+            . ' WHERE ' . $this->entity['apcl']['alias'] . '.category = ' . $category->getId();
+        $query = $this->em->createQuery($qStr);
+        $result = $query->getResult();
+        $locales = array();
+        $unique = array();
+        foreach ($result as $entry) {
+            $id = $entry->getLocale()->getId();
+            if (!isset($unique[$id])) {
+                $locales[] = $entry->getLocale();
+                $unique[$id] = $entry->getLocale();
+            }
+        }
+        unset($unique);
+        $totalRows = count($locales);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
     /**
      * @name            listActiveProductsOfCategory ()
      *
@@ -2893,21 +2986,22 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->getProduct()
      *
-     * @param           mixed 	$category
-     * @param           array 	$sortOrder
-     * @param           array 	$limit
+     * @param           mixed $category
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listActiveProductsOfCategory($category, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
+    public function listActiveProductsOfCategory($category, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
 
         $qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['product']['alias']
             . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
@@ -2936,61 +3030,63 @@ class ProductManagementModel extends CoreModel{
                     $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
                 }
             }
-			if($sorting){
-				$oStr = rtrim($oStr, ', ');
-				$oStr = ' ORDER BY ' . $oStr . ' ';
-			}
+            if ($sorting) {
+                $oStr = rtrim($oStr, ', ');
+                $oStr = ' ORDER BY ' . $oStr . ' ';
+            }
         }
-		$qStr .= $oStr;
+        $qStr .= $oStr;
         $query = $this->em->createQuery($qStr);
         $result = $query->getResult();
         if (count($result) < 1) {
 
         }
-		$collection = array();
-		foreach ($result as $item) {
-			$collection[] = $item->getProduct()->getId();
-		}
-		unset($result);
-		$filter = array();
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['p']['alias'] . '.id', 'comparison' => 'in', 'value' => $collection),
-				),
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['p']['alias'] . '.status', 'comparison' => '=', 'value' => 'a'),
-				)
-			)
-		);
-		return $this->listProducts($filter, $sortOrder, $limit);
+        $collection = array();
+        foreach ($result as $item) {
+            $collection[] = $item->getProduct()->getId();
+        }
+        unset($result);
+        $filter = array();
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['p']['alias'] . '.id', 'comparison' => 'in', 'value' => $collection),
+                ),
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['p']['alias'] . '.status', 'comparison' => '=', 'value' => 'a'),
+                )
+            )
+        );
+        return $this->listProducts($filter, $sortOrder, $limit);
     }
+
     /**
-     * @name            listAttributesOfProduct()
+     * @name            listAttributesOfProduct ()
      *
      * @since           1.0.5
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      *
      * @use             $this->getProduct()
      *
-     * @param           mixed 			$product
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $product
+     * @param           array $sortOrder
+     * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listAttributesOfProduct($product, $sortOrder = null, $limit = null){
+    public function listAttributesOfProduct($product, $sortOrder = null, $limit = null)
+    {
         $timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $qStr = 'SELECT ' . $this->entity['aop']['alias'] . ', ' . $this->entity['aop']['alias']
             . ' FROM ' . $this->entity['aop']['name'] . ' ' . $this->entity['aop']['alias']
             . ' JOIN ' . $this->entity['aop']['alias'] . '.attribute ' . $this->entity['pa']['alias']
@@ -3004,74 +3100,18 @@ class ProductManagementModel extends CoreModel{
                         $column = $this->entity['aop']['alias'] . '.' . $column;
                         break;
                 }
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
 
         $qStr .= $oStr;
 
         $q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->addLimit($q, $limit);
 
         $result = $q->getResult();
-
-        $totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-
-    /**
-     * @name            listAttributesOfProductCategory()
-     *
-     * @since           1.2.4
-     * @version         1.5.8
-     * @author          Can Berkol
-     * @author          Said İmamoğlu
-     *
-     * @use             $this->createException()
-     *
-     * @param           mixed 			$category
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
-     *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-    public function listAttributesOfProductCategory($category, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
-		$qStr = 'SELECT ' . $this->entity['aopc']['alias'] . ', ' . $this->entity['aopc']['alias']
-			. ' FROM ' . $this->entity['aopc']['name'] . ' ' . $this->entity['aopc']['alias']
-			. ' JOIN ' . $this->entity['aopc']['alias'] . '.attribute ' . $this->entity['pa']['alias']
-			. ' WHERE ' . $this->entity['aopc']['alias'] . '.category = ' . $category->getId();
-
-		$oStr = '';
-		if ($sortOrder != null) {
-			foreach ($sortOrder as $column => $direction) {
-				switch ($column) {
-					default:
-						$column = $this->entity['aopc']['alias'] . '.' . $column;
-						break;
-				}
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
-		}
-
-		$qStr .= $oStr;
-
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
-
-		$result = $q->getResult();
         $entities = array();
         foreach ($result as $entity) {
             $id = $entity->getAttribute()->getId();
@@ -3088,28 +3128,85 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listAllAttributeValuesOfProduct()
+     * @name            listAttributesOfProductCategory ()
+     *
+     * @since           1.2.4
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $category
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listAttributesOfProductCategory($category, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
+        $qStr = 'SELECT ' . $this->entity['aopc']['alias'] . ', ' . $this->entity['aopc']['alias']
+            . ' FROM ' . $this->entity['aopc']['name'] . ' ' . $this->entity['aopc']['alias']
+            . ' JOIN ' . $this->entity['aopc']['alias'] . '.attribute ' . $this->entity['pa']['alias']
+            . ' WHERE ' . $this->entity['aopc']['alias'] . '.category = ' . $category->getId();
+
+        $oStr = '';
+        if ($sortOrder != null) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    default:
+                        $column = $this->entity['aopc']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+
+        $qStr .= $oStr;
+
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+
+        $result = $q->getResult();
+
+        $totalRows = count($result);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            listAllAttributeValuesOfProduct ()
      *
      * @since           1.1.5
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      *
      * @use             $this->getProduct()
      *
-     * @param           mixed 			$product
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $product
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listAllAttributeValuesOfProduct($product, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+    public function listAllAttributeValuesOfProduct($product, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $qStr = 'SELECT ' . $this->entity['pav']['alias'] . ', ' . $this->entity['pa']['alias']
             . ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias']
             . ' JOIN ' . $this->entity['pav']['alias'] . '.attribute ' . $this->entity['pa']['alias']
@@ -3126,25 +3223,25 @@ class ProductManagementModel extends CoreModel{
                         $column = $this->entity['aop']['alias'] . '.' . $column;
                         break;
                 }
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
 
-		$qStr .= $oStr;
+        $qStr .= $oStr;
 
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
 
         $result = $q->getResult();
 
-		$totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $totalRows = count($result);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
      * @name            listAllChildProductCategories ()
@@ -3155,12 +3252,13 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductCategories()
      *
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listAllChildProductCategories($sortOrder = null, $limit = null){
+    public function listAllChildProductCategories($sortOrder = null, $limit = null)
+    {
         $column = $this->entity['pc']['alias'] . '.parent';
         $condition = array('column' => $column, 'comparison' => 'notnull', 'value' => null);
         $filter[] = array(
@@ -3185,21 +3283,22 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->getProduct()
      *
-     * @param           mixed 			$product
-     * @param           mixed 			$type
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $product
+     * @param           mixed $type
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listAttributeValuesOfProduct($product, $type, $sortOrder = null, $limit = null){
+    public function listAttributeValuesOfProduct($product, $type, $sortOrder = null, $limit = null)
+    {
         $this->resetResponse();
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
         $qStr = 'SELECT ' . $this->entity['pav']['alias'] . ', ' . $this->entity['pa']['alias']
             . ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias']
@@ -3217,143 +3316,146 @@ class ProductManagementModel extends CoreModel{
                         $column = $this->entity['aop']['alias'] . '.' . $column;
                         break;
                 }
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
 
         $qStr .= $oStr;
 
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
 
-		$result = $q->getResult();
-		$totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            listBrands()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.9
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$filter
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listBrands($filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
-		$oStr = $wStr = $gStr = $fStr = '';
+        $result = $q->getResult();
+        $totalRows = count($result);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-		$qStr = 'SELECT '.$this->entity['b']['alias'].', '.$this->entity['b']['alias']
-			.' FROM '.$this->entity['b']['name'].' '.$this->entity['b']['alias'];
+    /**
+     * @name            listBrands ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listBrands($filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $oStr = $wStr = $gStr = $fStr = '';
 
-		if(!is_null($sortOrder)){
-			foreach($sortOrder as $column => $direction){
-				switch ($column) {
-					case 'id':
-					case 'name':
-					case 'date_added':
-					case 'date_updated':
-						$column = $this->entity['p']['alias'] . '.' . $column;
-						break;
-				}
-				$oStr .= ' '.$column.' '.strtoupper($direction).', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY '.$oStr.' ';
-		}
+        $qStr = 'SELECT ' . $this->entity['b']['alias'] . ', ' . $this->entity['b']['alias']
+            . ' FROM ' . $this->entity['b']['name'] . ' ' . $this->entity['b']['alias'];
 
-		if(!is_null($filter)){
-			$fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE '.$fStr;
-		}
+        if (!is_null($sortOrder)) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'name':
+                    case 'date_added':
+                    case 'date_updated':
+                        $column = $this->entity['p']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
 
-		$qStr .= $wStr.$gStr.$oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
 
-		$result = $q->getResult();
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
 
-		$entities = array();
-		foreach($result as $entry){
-			$id = $entry->getAttribute()->getId();
-			if(!isset($unique[$id])){
-				$entities[$id] = $entry->getAttribute();
-			}
-		}
-		$totalRows = count($entities);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            listCategoriesOfProduct(
-	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->getProduct()
-	 * @use             $this->listProductCategories()
-	 *
-	 * @param           mixed 			$product
-	 * @param           array 			$filter
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listCategoriesOfProduct($product, $filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		$response  = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		$qStr = 'SELECT ' . $this->entity['cop']['alias']
-			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
-			. ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId();
-		$q = $this->em->createQuery($qStr);
-		$result = $q->getResult();
+        $result = $q->getResult();
 
-		$catsOfProduct= array();
-		if (count($result) > 0) {
-			foreach ($result as $cop) {
-				$catsOfProduct[] = $cop->getCategory()->getId();
-			}
-		}
-		if (count($catsOfProduct) < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		$columnI = $this->entity['pc']['alias'] . '.id';
-		$conditionI = array('column' => $columnI, 'comparison' => 'in', 'value' => $catsOfProduct);
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => $conditionI,
-				)
-			)
-		);
-		return $this->listProductCategories($filter, $sortOrder, $limit);
-	}
+        $entities = array();
+        foreach ($result as $entry) {
+            $id = $entry->getAttribute()->getId();
+            if (!isset($unique[$id])) {
+                $entities[] = $entry->getAttribute();
+            }
+        }
+        $totalRows = count($entities);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            listCategoriesOfProduct (
+     *
+     * @since           1.0.1
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     * @use             $this->getProduct()
+     * @use             $this->listProductCategories()
+     *
+     * @param           mixed $product
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listCategoriesOfProduct($product, $filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $qStr = 'SELECT ' . $this->entity['cop']['alias']
+            . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+            . ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId();
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
+
+        $catsOfProduct = array();
+        if (count($result) > 0) {
+            foreach ($result as $cop) {
+                $catsOfProduct[] = $cop->getCategory()->getId();
+            }
+        }
+        if (count($catsOfProduct) < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        $columnI = $this->entity['pc']['alias'] . '.id';
+        $conditionI = array('column' => $columnI, 'comparison' => 'in', 'value' => $catsOfProduct);
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => $conditionI,
+                )
+            )
+        );
+        return $this->listProductCategories($filter, $sortOrder, $limit);
+    }
 
     /**
      * @name            listChildCategoriesOfProductCategory ()
@@ -3364,15 +3466,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductCategories()
      *
-     * @param           mixed 				$category
-     * @param           array 				$sortOrder
-     * @param           array 				$limit
+     * @param           mixed $category
+     * @param           array $sortOrder
+     * @param           array $limit
      *
-	 * @return			BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return            BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listChildCategoriesOfProductCategory($category, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-
+    public function listChildCategoriesOfProductCategory($category, $sortOrder = null, $limit = null)
+    {
+        if ($category instanceof BundleEntity\ProductCategory) {
+            $category = $category->getId();
+        }
         $column = $this->entity['pc']['alias'] . '.parent';
         $condition = array('column' => $column, 'comparison' => 'eq', 'value' => $category);
         $filter[] = array(
@@ -3388,7 +3492,7 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listChildCategoriesOfProductCategoryWithPreviewImage()
+     * @name            listChildCategoriesOfProductCategoryWithPreviewImage ()
      *
      * @since           1.2.9
      * @version         1.5.3
@@ -3396,18 +3500,19 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductCategories()
      *
-     * @param           mixed 			$category
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $category
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listChildCategoriesOfProductCategoryWithPreviewImage($category, $sortOrder = null, $limit = null){
+    public function listChildCategoriesOfProductCategoryWithPreviewImage($category, $sortOrder = null, $limit = null)
+    {
         $response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
 
         $column = $this->entity['pc']['alias'] . '.parent';
         $condition = array('column' => $column, 'comparison' => 'eq', 'value' => $category);
@@ -3444,12 +3549,13 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           array 		$sortOrder
-     * @param           array 		$limit
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listCustomizableProducts($sortOrder = null, $limit = null){
+    public function listCustomizableProducts($sortOrder = null, $limit = null)
+    {
         $column = $this->entity['p']['alias'] . '.is_customizable';
         $condition = array('column' => $column, 'comparison' => '=', 'value' => 'y');
         $filter[] = array(
@@ -3463,144 +3569,150 @@ class ProductManagementModel extends CoreModel{
         );
         return $this->listProducts($filter, $sortOrder, $limit);
     }
-	/**
-	 * @name            listFeaturedParentProductCategories ()
-	 *
-	 * @since           1.3.7
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listProductCategories()
-	 *
-	 * @param   		array 			$filter
-	 * @param   		array 			$sortOrder
-	 * @param   		array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listFeaturedParentProductCategories($filter = null, $sortOrder = null, $limit = null){
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pc']['alias'] . '.is_featured', 'comparison' => '=', 'value' => 'y'),
-				),
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pc']['alias'] . '.parent', 'comparison' => 'isnull', 'value' => null),
-				),
-			)
-		);
-		return $this->listProductCategories($filter, $sortOrder, $limit);
-	}
-	/**
-	 * @name            listFilesOfProduct()
-	 *
-	 * @since           1.1.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @throws          $this->createException()
-	 *
-	 * @param           mixed 		$product
-	 * @param           array 		$filter
-	 * @param           array 		$sortOrder
-	 * @param           array 		$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listFilesOfProduct($product, $filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
 
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		$oStr = $wStr = $gStr = '';
+    /**
+     * @name            listFeaturedParentProductCategories ()
+     *
+     * @since           1.3.7
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->listProductCategories()
+     *
+     * @param        array $filter
+     * @param        array $sortOrder
+     * @param        array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listFeaturedParentProductCategories($filter = null, $sortOrder = null, $limit = null)
+    {
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pc']['alias'] . '.is_featured', 'comparison' => '=', 'value' => 'y'),
+                ),
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pc']['alias'] . '.parent', 'comparison' => 'isnull', 'value' => null),
+                ),
+            )
+        );
+        return $this->listProductCategories($filter, $sortOrder, $limit);
+    }
 
-		$qStr = 'SELECT '.$this->entity['fop']['alias']
-			.' FROM '.$this->entity['fop']['name'].' '.$this->entity['fop']['alias'];
-		/**
-		 * Prepare ORDER BY part of query.
-		 */
-		if ($sortOrder != null) {
-			foreach ($sortOrder as $column => $direction) {
-				switch ($column) {
-					default:
-						$oStr .= ' '.$this->entity['fop']['alias'].'.'.$column.' '.$direction.', ';
-						break;
-				}
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['fop']['alias'].'.id', 'comparison' => '=', 'value' => $product->getId()),
-				)
-			)
-		);
-		if(!is_null($filter)){
-			$fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE '.$fStr;
-		}
+    /**
+     * @name            listFilesOfProduct ()
+     *
+     * @since           1.1.3
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @throws          $this->createException()
+     *
+     * @param           mixed $product
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listFilesOfProduct($product, $filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
 
-		$qStr .= $wStr.$gStr.$oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $oStr = $wStr = $gStr = '';
 
-		$result = $q->getResult();
+        $qStr = 'SELECT ' . $this->entity['fop']['alias']
+            . ' FROM ' . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias'];
+        /**
+         * Prepare ORDER BY part of query.
+         */
+        if ($sortOrder != null) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    default:
+                        $oStr .= ' ' . $this->entity['fop']['alias'] . '.' . $column . ' ' . $direction . ', ';
+                        break;
+                }
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['fop']['alias'] . '.product', 'comparison' => '=', 'value' => $product->getId()),
+                )
+            )
+        );
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
 
-		$totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+
+        $result = $q->getResult();
+
+        $totalRows = count($result);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
     /**
      * @name            listNotCustomizableProducts ()
      *
      * @since           1.0.5
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      *
      * @uses            $this->listProducts()
      *
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listNotCustomizableProducts($sortOrder = null, $limit = null){
-		$column = $this->entity['p']['alias'] . '.is_customizable';
-		$condition = array('column' => $column, 'comparison' => '=', 'value' => 'n');
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => $condition,
-				)
-			)
-		);
-		return $this->listProducts($filter, $sortOrder, $limit);
+    public function listNotCustomizableProducts($sortOrder = null, $limit = null)
+    {
+        $column = $this->entity['p']['alias'] . '.is_customizable';
+        $condition = array('column' => $column, 'comparison' => '=', 'value' => 'n');
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => $condition,
+                )
+            )
+        );
+        return $this->listProducts($filter, $sortOrder, $limit);
     }
 
     /**
-     * @name            listOutOfStockProducts()
+     * @name            listOutOfStockProducts ()
      *
      * @since           1.0.4
      * @version         1.5.3
@@ -3609,12 +3721,13 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->listProducts()
      * @use             $this->createException
      *
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listOutOfStockProducts($sortOrder = null, $limit = null){
+    public function listOutOfStockProducts($sortOrder = null, $limit = null)
+    {
         $column = $this->entity['product']['alias'] . '.quantity';
         $condition = array('column' => $column, 'comparison' => '<', 'value' => 1);
         $filter[] = array(
@@ -3638,12 +3751,13 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductCategories()
      *
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listParentOnlyProductCategories($sortOrder = null, $limit = null){
+    public function listParentOnlyProductCategories($sortOrder = null, $limit = null)
+    {
         $column = $this->entity['pc']['alias'] . '.parent';
         $condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
         $filter[] = array(
@@ -3659,24 +3773,25 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listParentOnlyProductCategoriesOfLevel()
+     * @name            listParentOnlyProductCategoriesOfLevel ()
      *
      * @since           1.0.8
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @uses            $this->listProductCategories()
      *
-     * @param           integer 		$level
-     * @param           array 			$filter
-     * @param           mixed 			$sortOrder
-     * @param           mixed 			$limit
+     * @param           integer $level
+     * @param           array $filter
+     * @param           mixed $sortOrder
+     * @param           mixed $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listParentOnlyProductCategoriesOfLevel($level = 1, $filter = null, $sortOrder = null, $limit = null){
+    public function listParentOnlyProductCategoriesOfLevel($level = 1, $filter = null, $sortOrder = null, $limit = null)
+    {
         $column = $this->entity['pc']['alias'] . '.parent';
         $condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
         $filter[] = array(
@@ -3696,7 +3811,7 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listProductsPricedBetween()
+     * @name            listProductsPricedBetween ()
      *
      * @since           1.0.4
      * @version         1.5.3
@@ -3704,18 +3819,19 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsPriced()
      *
-     * @param           array 			$amounts
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $amounts
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsPricedBetween($amounts, $sortOrder = null, $limit = null){
+    public function listProductsPricedBetween($amounts, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsPriced($amounts, 'between', $sortOrder, $limit);
     }
 
     /**
-     * @name            listProductAttributes()
+     * @name            listProductAttributes ()
      *
      * @since           1.0.5
      * @version         1.5.3
@@ -3723,96 +3839,98 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$filter
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-	public function listProductAttributes($filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
-		$oStr = $wStr = $gStr = $fStr = '';
+    public function listProductAttributes($filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT '.$this->entity['pa']['alias'].', '.$this->entity['pa']['alias']
-			.' FROM '.$this->entity['pal']['name'].' '.$this->entity['pal']['alias']
-			.' JOIN '.$this->entity['pal']['alias'].'.attribute '.$this->entity['pa']['alias'];
+        $qStr = 'SELECT ' . $this->entity['pa']['alias'] . ', ' . $this->entity['pal']['alias']
+            . ' FROM ' . $this->entity['pal']['name'] . ' ' . $this->entity['pal']['alias']
+            . ' JOIN ' . $this->entity['pal']['alias'] . '.attribute ' . $this->entity['pa']['alias'];
 
-		if(!is_null($sortOrder)){
-			foreach($sortOrder as $column => $direction){
-				switch($column){
-					case 'id':
-					case 'sort_order':
-					case 'date_added':
-					case 'date_updated':
-					case 'date_removed':
-					case 'site':
-						$column = $this->entity['pa']['alias'].'.'.$column;
-						break;
-					case 'name':
-					case 'url_key':
-						$column = $this->entity['pal']['alias'].'.'.$column;
-						break;
-				}
-				$oStr .= ' '.$column.' '.strtoupper($direction).', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY '.$oStr.' ';
-		}
+        if (!is_null($sortOrder)) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                    case 'date_removed':
+                    case 'site':
+                        $column = $this->entity['pa']['alias'] . '.' . $column;
+                        break;
+                    case 'name':
+                    case 'url_key':
+                        $column = $this->entity['pal']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
 
-		if(!is_null($filter)){
-			$fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE '.$fStr;
-		}
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
 
-		$qStr .= $wStr.$gStr.$oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
 
-		$result = $q->getResult();
+        $result = $q->getResult();
 
-		$entities = array();
-		foreach($result as $entry){
-			$id = $entry->getAttribute()->getId();
-			if(!isset($entities[$id])){
-				$entities[$id] = $entry->getAttribute();
-			}
-		}
-		$totalRows = count($entities);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $entities = array();
+        foreach ($result as $entry) {
+            $id = $entry->getAttribute()->getId();
+            if (!isset($unique[$id])) {
+                $entities[] = $entry->getAttribute();
+            }
+        }
+        $totalRows = count($entities);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
      * @name            listProductAttributeValues ()
      *
      * @since           1.2.2
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
-     * @param           array 		$filter
-     * @param           array 		$sortOrder
-     * @param           array 		$limit
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductAttributeValues($filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
+    public function listProductAttributeValues($filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
         $oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT ' . $this->entity['pav']['alias']
-                . ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias'];
+        $qStr = 'SELECT ' . $this->entity['pav']['alias']
+            . ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias'];
 
         if ($sortOrder != null) {
             foreach ($sortOrder as $column => $direction) {
@@ -3825,8 +3943,8 @@ class ProductManagementModel extends CoreModel{
                 }
                 $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
 
         if ($filter != null) {
@@ -3837,171 +3955,174 @@ class ProductManagementModel extends CoreModel{
         $qStr .= $wStr . $gStr . $oStr;
 
         $q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->addLimit($q, $limit);
 
         $result = $q->getResult();
 
         $attributes = array();
-		foreach($result as $entry){
-			$id = $entry->getAttribute()->getId();
-			if(!isset($attributes[$id])){
-				$attributes[$id] = $entry->getAttribute();
-			}
-		}
-		$totalRows = count($attributes);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($attributes, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $unique = array();
+        foreach ($result as $entry) {
+            $id = $entry->getAttribute()->getId();
+            if (!isset($unique[$id])) {
+                $attributes[] = $entry->getAttribute();
+            }
+        }
+        $totalRows = count($attributes);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($attributes, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            listProductCategories()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.9
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$filter
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductCategories($filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
-		$oStr = $wStr = $gStr = $fStr = '';
-
-		$qStr = 'SELECT '.$this->entity['pc']['alias'].', '.$this->entity['pcl']['alias']
-			.' FROM '.$this->entity['pcl']['name'].' '.$this->entity['pcl']['alias']
-			.' JOIN '.$this->entity['pcl']['alias'].'.category '.$this->entity['pc']['alias'];
-
-		if(!is_null($sortOrder)){
-			foreach($sortOrder as $column => $direction){
-				switch($column){
-					case 'id':
-					case 'sort_order':
-					case 'date_added':
-					case 'date_updated':
-					case 'date_removed':
-					case 'site':
-					case 'parent':
-					case 'count_children':
-						$column = $this->entity['pc']['alias'].'.'.$column;
-						break;
-					case 'name':
-					case 'url_key':
-						$column = $this->entity['pcl']['alias'].'.'.$column;
-						break;
-				}
-				$oStr .= ' '.$column.' '.strtoupper($direction).', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY '.$oStr.' ';
-		}
-
-		if(!is_null($filter)){
-			$fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE '.$fStr;
-		}
-
-		$qStr .= $wStr.$gStr.$oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
-
-		$result = $q->getResult();
-
-		$entities = array();
-		foreach($result as $entry){
-			$id = $entry->getCategory()->getId();
-			if(!isset($entities[$id])){
-				$entities[$id] = $entry->getCategory();
-			}
-		}
-		$totalRows = count($entities);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-
-	/**
-	 * @name            listProductCategoriesOfParentHavingLevel()
-	 *
-	 * @since           1.0.3
-	 * @since           1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listProductCategories()
-	 *
-	 * @param   		mixed 			$category
-	 * @param   		int 			$level
-	 * @param   		array 			$filter
-	 * @param   		array 			$sortOrder
-	 * @param   		array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductCategoriesOfParentHavingLevel($category, $level, $filter = null, $sortOrder = null, $limit = null){
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->getEntityDefinition('pc', 'alias') . '.parent', 'comparison' => '=', 'value' => $category),
-				),
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->getEntityDefinition('pc', 'alias') . '.level', 'comparison' => '=', 'value' => $level),
-				),
-			)
-		);
-		return $this->listProductCategories($filter, $sortOrder, $limit);
-	}
-	/**
-	 * @name            listProductAttributeValuesOfProduct()
-	 *
-	 * @since           1.4.4
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed 		$product
-	 * @param           array 		$filter
-	 * @param           array 		$sortOrder
-	 * @param           array 		$limit
-	 *
-	 * @return          array           $response
-	 */
-	public function listProductAttributeValuesOfProduct($product, $filter = null, $sortOrder = null, $limit = null){
-		$response = $this->getProduct($product);
-		if($product->error->exist){
-			return $product;
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pav']['alias'] . '.product', 'comparison' => '=', 'value' => $product->getId()),
-				)
-			)
-		);
-		return $this->listProductAttributeValues($filter);
-	}
     /**
-     * @name            listProductCategoriesOfLevel()
+     * @name            listProductCategories ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductCategories($filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $oStr = $wStr = $gStr = $fStr = '';
+
+        $qStr = 'SELECT ' . $this->entity['pc']['alias'] . ', ' . $this->entity['pcl']['alias']
+            . ' FROM ' . $this->entity['pcl']['name'] . ' ' . $this->entity['pcl']['alias']
+            . ' JOIN ' . $this->entity['pcl']['alias'] . '.category ' . $this->entity['pc']['alias'];
+
+        if (!is_null($sortOrder)) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                    case 'date_removed':
+                    case 'site':
+                    case 'parent':
+                    case 'count_children':
+                        $column = $this->entity['pc']['alias'] . '.' . $column;
+                        break;
+                    case 'name':
+                    case 'url_key':
+                        $column = $this->entity['pcl']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
+
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+        $result = $q->getResult();
+        $entities = array();
+        foreach ($result as $entry) {
+            $id = $entry->getCategory()->getId();
+            if (!isset($entities[$id])) {
+                $entities[$id] = $entry->getCategory();
+            }
+        }
+        $totalRows = count($entities);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            listProductCategoriesOfParentHavingLevel ()
+     *
+     * @since           1.0.3
+     * @since           1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->listProductCategories()
+     *
+     * @param        mixed $category
+     * @param        int $level
+     * @param        array $filter
+     * @param        array $sortOrder
+     * @param        array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductCategoriesOfParentHavingLevel($category, $level, $filter = null, $sortOrder = null, $limit = null)
+    {
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->getEntityDefinition('pc', 'alias') . '.parent', 'comparison' => '=', 'value' => $category),
+                ),
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->getEntityDefinition('pc', 'alias') . '.level', 'comparison' => '=', 'value' => $level),
+                ),
+            )
+        );
+        return $this->listProductCategories($filter, $sortOrder, $limit);
+    }
+
+    /**
+     * @name            listProductAttributeValuesOfProduct ()
+     *
+     * @since           1.4.4
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param           mixed $product
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          array           $response
+     */
+    public function listProductAttributeValuesOfProduct($product, $filter = null, $sortOrder = null, $limit = null)
+    {
+        $response = $this->getProduct($product);
+        if ($product->error->exist) {
+            return $product;
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pav']['alias'] . '.product', 'comparison' => '=', 'value' => $product->getId()),
+                )
+            )
+        );
+        return $this->listProductAttributeValues($filter);
+    }
+
+    /**
+     * @name            listProductCategoriesOfLevel ()
      *
      * @since           1.1.9
      * @version         1.5.3
@@ -4009,17 +4130,18 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductCategoriesOfLevel()
      *
-     * @param           integer 		$level
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           integer $level
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductCategoriesOfLevel($level = 1, $sortOrder = null, $limit = null){
-		$conditions[] = array(
-			'glue' => 'or',
-			'condition' => array('column' => $this->entity['pc']['alias'] . '.level', 'comparison' => '=', 'value' => $level),
-		);
+    public function listProductCategoriesOfLevel($level = 1, $sortOrder = null, $limit = null)
+    {
+        $conditions[] = array(
+            'glue' => 'or',
+            'condition' => array('column' => $this->entity['pc']['alias'] . '.level', 'comparison' => '=', 'value' => $level),
+        );
 
         $filter[] = array(
             'glue' => 'and',
@@ -4028,88 +4150,88 @@ class ProductManagementModel extends CoreModel{
         return $response = $this->listProductCategories($filter, $sortOrder, $limit);
     }
 
-	/**
-	 * @name            listProducts()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.9
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$filter
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProducts($filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
-		$oStr = $wStr = $gStr = $fStr = '';
+    /**
+     * @name            listProducts ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProducts($filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT '.$this->entity['p']['alias'].', '.$this->entity['pl']['alias']
-			.' FROM '.$this->entity['pl']['name'].' '.$this->entity['pl']['alias']
-			.' JOIN '.$this->entity['pl']['alias'].'.product '.$this->entity['p']['alias'];
+        $qStr = 'SELECT ' . $this->entity['p']['alias'] . ', ' . $this->entity['pl']['alias']
+            . ' FROM ' . $this->entity['pl']['name'] . ' ' . $this->entity['pl']['alias']
+            . ' JOIN ' . $this->entity['pl']['alias'] . '.product ' . $this->entity['p']['alias'];
 
-		if(!is_null($sortOrder)){
-			foreach($sortOrder as $column => $direction){
-				switch ($column) {
-					case 'id':
-					case 'quantity':
-					case 'price':
-					case 'count_view':
-					case 'sku':
-					case 'sort_order':
-					case 'date_added':
-					case 'date_updated':
-					case 'count_like':
-					case 'site':
-						$column = $this->entity['p']['alias'] . '.' . $column;
-						break;
-					case 'name':
-					case 'description':
-					case 'meta_keywords':
-					case 'meta_description':
-						$column = $this->entity['pl']['alias'] . '.' . $column;
-						break;
-				}
-				$oStr .= ' '.$column.' '.strtoupper($direction).', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY '.$oStr.' ';
-		}
+        if (!is_null($sortOrder)) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'quantity':
+                    case 'price':
+                    case 'count_view':
+                    case 'sku':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                    case 'count_like':
+                    case 'site':
+                        $column = $this->entity['p']['alias'] . '.' . $column;
+                        break;
+                    case 'name':
+                    case 'description':
+                    case 'meta_keywords':
+                    case 'meta_description':
+                        $column = $this->entity['pl']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
 
-		if(!is_null($filter)){
-			$fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE '.$fStr;
-		}
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
 
-		$qStr .= $wStr.$gStr.$oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
 
-		$result = $q->getResult();
+        $result = $q->getResult();
 
-		$entities = array();
-		foreach($result as $entry){
-			$id = $entry->getProduct()->getId();
-			if(!isset($unique[$id])){
-				$entities[$id] = $entry->getProduct();
-			}
-		}
-		$totalRows = count($entities);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $entities = array();
+        foreach ($result as $entry) {
+            $id = $entry->getProduct()->getId();
+            if (!isset($entities[$id])) {
+                $entities[$id] = $entry->getProduct();
+            }
+        }
+        $totalRows = count($entities);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
-     * @name            listProductsAdded()
+     * @name            listProductsAdded ()
      *
      * @since           1.0.3
      * @version         1.5.3
@@ -4117,14 +4239,15 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           mixed 			$date
-     * @param           string 			$eq 			after, before, between
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $date
+     * @param           string $eq after, before, between
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsAdded($date, $eq, $sortOrder = null, $limit = null){
+    public function listProductsAdded($date, $eq, $sortOrder = null, $limit = null)
+    {
         // $eqOpts = array('after', 'before', 'between', 'on');
         $column = $this->entity['p']['alias'] . '.date_added';
 
@@ -4150,8 +4273,7 @@ class ProductManagementModel extends CoreModel{
                     )
                 )
             );
-        }
-		else {
+        } else {
             $filter[] = array(
                 'glue' => 'and',
                 'condition' => array(
@@ -4178,37 +4300,19 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsAdded()
      *
-     * @param           mixed 			$date
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $date
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsAddedAfter($date, $sortOrder = null, $limit = null){
+    public function listProductsAddedAfter($date, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsAdded($date, 'after', $sortOrder, $limit);
     }
 
-	/**
-	 * @name            listProductsAddedBefore()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsAdded()
-	 *
-	 * @param           mixed 			$date
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductsAddedBefore($date, $sortOrder = null, $limit = null){
-		return $this->listProductsAdded($date, 'before', $sortOrder, $limit);
-	}
-
     /**
-     * @name            listProductsAddedBetween()
+     * @name            listProductsAddedBefore ()
      *
      * @since           1.0.3
      * @version         1.5.3
@@ -4216,13 +4320,34 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsAdded()
      *
-     * @param           array 			$dates
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
+     * @param           mixed $date
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsAddedBetween($dates, $sortOrder = null, $limit = null){
+    public function listProductsAddedBefore($date, $sortOrder = null, $limit = null)
+    {
+        return $this->listProductsAdded($date, 'before', $sortOrder, $limit);
+    }
+
+    /**
+     * @name            listProductsAddedBetween ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @uses            $this->listProductsAdded()
+     *
+     * @param           array $dates
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsAddedBetween($dates, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsAdded($dates, 'between', $sortOrder, $limit);
     }
 
@@ -4235,13 +4360,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsAdded()
      *
-     * @param           mixed 			$date
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
+     * @param           mixed $date
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsAddedOn($date, $sortOrder = null, $limit = null){
+    public function listProductsAddedOn($date, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsAdded($date, 'on', $sortOrder, $limit);
     }
 
@@ -4254,22 +4380,26 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->getProductCategory()
      *
-     * @param           mixed 			$categories
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $categories
+     * @param           array $sortOrder
+     * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsInCategory(array $categories, $sortOrder = null, $limit = null){
+    public function listProductsInCategory(array $categories, $sortOrder = null, $limit = null)
+    {
         $timeStamp = time();
         $catIds = array();
         foreach ($categories as $category) {
             $response = $this->getProductCategory($category);
-			if($response->error->exist){
-				continue;
-			}
-			$category = $response->result->set;
-			$catIds = $category->getId();
+            if ($response->error->exist) {
+                continue;
+            }
+            $category = $response->result->set;
+            $catIds[] = $category->getId();
+        }
+        if (empty($catIds)) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
         }
         $catIds = implode(',', $catIds);
 
@@ -4292,22 +4422,22 @@ class ProductManagementModel extends CoreModel{
                         $column = $this->entity['p']['alias'] . '.' . $column;
                         break;
                 }
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
-		$qStr .= $oStr;
+        $qStr .= $oStr;
         $q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->addLimit($q, $limit);
         $result = $q->getResult();
 
         $totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
      * @name            listProductsInLocales ()
@@ -4318,23 +4448,24 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$locales
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $locales
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsInLocales(array $locales, $sortOrder = null, $limit = null){
-		$timeStamp = time();
+    public function listProductsInLocales(array $locales, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
         $langIds = array();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
         foreach ($locales as $locale) {
             $response = $mlsModel->getLanguage($locale);
-			if($response->error->exist){
-				break;
-			}
-			$locale = $response->result->set;
-			$langIds[] = $locale;
+            if ($response->error->exist) {
+                break;
+            }
+            $locale = $response->result->set;
+            $langIds[] = $locale;
         }
         $langIds = implode(',', $langIds);
 
@@ -4357,94 +4488,95 @@ class ProductManagementModel extends CoreModel{
                         $column = $this->entity['p']['alias'] . '.' . $column;
                         break;
                 }
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
         $qStr .= $oStr;
         $q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->addLimit($q, $limit);
         $result = $q->getResult();
         $products = array();
         foreach ($result as $cop) {
             $products[] = $cop->getProduct();
         }
 
-		$totalRows = count($products);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        $totalRows = count($products);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
 
-	/**
-	 * @name            listProductCategoriesInLocales ()
-	 *
-	 * @since           1.3.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$locales
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductCategoriesInLocales (array $locales, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		$langIds = array();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		foreach ($locales as $locale) {
-			$response = $mlsModel->getLanguage($locale);
-			if($response->error->exist){
-				break;
-			}
-			$locale = $response->result->set;
-			$langIds[] = $locale;
-		}
-		$langIds = implode(',', $langIds);
+    /**
+     * @name            listProductCategoriesInLocales ()
+     *
+     * @since           1.3.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $locales
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductCategoriesInLocales(array $locales, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        $langIds = array();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        foreach ($locales as $locale) {
+            $response = $mlsModel->getLanguage($locale);
+            if ($response->error->exist) {
+                break;
+            }
+            $locale = $response->result->set;
+            $langIds[] = $locale;
+        }
+        $langIds = implode(',', $langIds);
 
-		$qStr = 'SELECT ' . $this->entity['apcl']['alias'] . ', ' . $this->entity['l']['alias'] . ', ' . $this->entity['p']['alias']
-			. ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
-			. ' JOIN ' . $this->entity['apcl']['alias'] . '.category ' . $this->entity['p']['alias']
-			. ' WHERE ' . $this->entity['apcl']['alias'] . '.locale IN (' . $langIds . ')';
+        $qStr = 'SELECT ' . $this->entity['apcl']['alias'] . ', ' . $this->entity['l']['alias'] . ', ' . $this->entity['p']['alias']
+            . ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
+            . ' JOIN ' . $this->entity['apcl']['alias'] . '.category ' . $this->entity['p']['alias']
+            . ' WHERE ' . $this->entity['apcl']['alias'] . '.locale IN (' . $langIds . ')';
 
-		$oStr = '';
-		if ($sortOrder != null) {
-			foreach ($sortOrder as $column => $direction) {
-				switch ($column) {
-					case 'id':
-					case 'url_key':
-					case 'sort_order':
-					case 'date_added':
-					case 'date_updated':
-						$column = $this->entity['p']['alias'] . '.' . $column;
-						break;
-				}
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
-		}
-		$qStr .= $oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
-		$result = $q->getResult();
+        $oStr = '';
+        if ($sortOrder != null) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'url_key':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                        $column = $this->entity['p']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+        $qStr .= $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+        $result = $q->getResult();
 
-		$categories = array();
-		foreach ($result as $cop) {
-			$categories[] = $cop->getCategory();
-		}
+        $categories = array();
+        foreach ($result as $cop) {
+            $categories[] = $cop->getCategory();
+        }
 
-		$totalRows = count($categories);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($categories, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $totalRows = count($categories);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($categories, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 
     /**
      * @name            listProductsLiked ()
@@ -4455,14 +4587,15 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           mixed 			$likes
-     * @param           string 			$eq 		less, more, between
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $likes
+     * @param           string $eq less, more, between
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsLiked($likes, $eq, $sortOrder = null, $limit = null){
+    public function listProductsLiked($likes, $eq, $sortOrder = null, $limit = null)
+    {
         //$eq_opts = array('less', 'more', 'between');
 
         $column = $this->entity['p']['alias'] . '.count_like';
@@ -4513,13 +4646,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsLiked()
      *
-     * @param           array 			$likes
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $likes
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsLikedBetween($likes, $sortOrder = null, $limit = null){
+    public function listProductsLikedBetween($likes, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsLiked($likes, 'between', $sortOrder, $limit);
     }
 
@@ -4532,13 +4666,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsLiked()
      *
-     * @param           integer 		$likes
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           integer $likes
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsLikedLessThan($likes, $sortOrder = null, $limit = null){
+    public function listProductsLikedLessThan($likes, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsLiked($likes, 'less', $sortOrder, $limit);
     }
 
@@ -4551,72 +4686,76 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsLiked()
      *
-     * @param           integer 		$likes
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @param           integer $likes
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsLikedMoreThan($likes, $sortOrder = null, $limit = null){
+    public function listProductsLikedMoreThan($likes, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsLiked($likes, 'more', $sortOrder, $limit);
     }
-	/**
-	 * @name            listProductsOfBrand()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed 			$brand
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductsOfBrand($brand, $sortOrder = null, $limit = null){
-		$response = $this->getBrand($brand);
-		if($response->error->exist){
-			return $response;
-		}
-		$brand = $response->result->set;
-		$column = $this->entity['p']['alias'] . '.brand';
-		$condition = array('column' => $column, 'comparison' => '=', 'value' => $brand->getId());
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => $condition,
-				)
-			)
-		);
-		return $this->listProducts($filter, $sortOrder, $limit);
-	}
+
+    /**
+     * @name            listProductsOfBrand ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @uses            $this->listProducts()
+     *
+     * @param           mixed $brand
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsOfBrand($brand, $sortOrder = null, $limit = null)
+    {
+        $response = $this->getBrand($brand);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $brand = $response->result->set;
+        $column = $this->entity['p']['alias'] . '.brand';
+        $condition = array('column' => $column, 'comparison' => '=', 'value' => $brand->getId());
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => $condition,
+                )
+            )
+        );
+        return $this->listProducts($filter, $sortOrder, $limit);
+    }
+
     /**
      * @name            listProductsOfCategory ()
      *
      * @since           1.0.9
-     * @version         1.5.9
+     * @version         1.5.3
      * @author          Can Berkol
-     * @author          Said İmamoğlu
      *
      * @use             $this->getProduct()
      *
-     * @param           mixed 			$category
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $category
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsOfCategory($category, $sortOrder = null, $limit = null){
+    public function listProductsOfCategory($category, $sortOrder = null, $limit = null)
+    {
         $timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
 
         $qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['p']['alias']
             . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
@@ -4642,12 +4781,12 @@ class ProductManagementModel extends CoreModel{
                             $column = $this->entity['cop']['alias'] . '.' . $column;
                             break;
                     }
-					$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                    $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
                 }
             }
             if ($sorting) {
-				$oStr = rtrim($oStr, ', ');
-				$oStr = ' ORDER BY ' . $oStr . ' ';
+                $oStr = rtrim($oStr, ', ');
+                $oStr = ' ORDER BY ' . $oStr . ' ';
             }
         }
         $qStr .= $oStr;
@@ -4668,7 +4807,7 @@ class ProductManagementModel extends CoreModel{
                 )
             )
         );
-		return $this->listProducts($filter, $sortOrder, $limit);
+        return $this->listProducts($filter, $sortOrder, $limit);
     }
 
     /**
@@ -4676,29 +4815,30 @@ class ProductManagementModel extends CoreModel{
      *
      * @since           1.2.3
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
-     * @param           mixed 			$category
-     * @param           array 			$locales
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $category
+     * @param           array $locales
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsOfCategoryInLocales($category, array $locales, $sortOrder = null, $limit = null){
+    public function listProductsOfCategoryInLocales($category, array $locales, $sortOrder = null, $limit = null)
+    {
         $timeStamp = time();
         $langIds = array();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
         foreach ($locales as $locale) {
             $response = $mlsModel->getLanguage($locale);
-			if($response->error->exist){
-				continue;
-			}
-			$langIds[] = $response->result->set->getId();
+            if ($response->error->exist) {
+                continue;
+            }
+            $langIds[] = $response->result->set->getId();
         }
         $langIds = implode(',', $langIds);
 
@@ -4706,20 +4846,20 @@ class ProductManagementModel extends CoreModel{
         if ($response->error->exist) {
             return $response;
         }
-		$products = $response->result->set;
+        $products = $response->result->set;
         $productIdCollection = array();
         $productCollection = array();
         foreach ($products as $productEntity) {
             $productIdCollection[] = $productEntity->getId();
             $productCollection[$productEntity->getId()] = $productEntity;
         }
-        $productIdCollection = implode(',',$productIdCollection);
+        $productIdCollection = implode(',', $productIdCollection);
 
         $qStr = 'SELECT ' . $this->entity['apl']['alias']
             . ' FROM ' . $this->entity['apl']['name'] . ' ' . $this->entity['apl']['alias']
             . ' JOIN ' . $this->entity['apl']['alias'] . '.product ' . $this->entity['p']['alias']
             . ' WHERE ' . $this->entity['apl']['alias'] . '.locale IN (' . $langIds . ')'
-            . ' AND '. $this->entity['apl']['alias'] . '.product IN (' . $productIdCollection . ')';
+            . ' AND ' . $this->entity['apl']['alias'] . '.product IN (' . $productIdCollection . ')';
 
         $oStr = '';
         if ($sortOrder != null) {
@@ -4735,34 +4875,35 @@ class ProductManagementModel extends CoreModel{
                         $column = $this->entity['p']['alias'] . '.' . $column;
                         break;
                 }
-				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
             }
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY ' . $oStr . ' ';
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
         }
-		$qStr .= $oStr;
+        $qStr .= $oStr;
         $q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->addLimit($q, $limit);
         $result = $q->getResult();
 
-		$totalRows = 0;
-		if(!is_null($result)){
-			$products = array();
-			foreach ($result as $cop) {
-				$products[] = $cop->getProduct();
-			}
-			$totalRows = count($products);
-		}
+        $totalRows = 0;
+        if (!is_null($result)) {
+            $products = array();
+            foreach ($result as $cop) {
+                $products[] = $cop->getProduct();
+            }
+            $totalRows = count($products);
+        }
 
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 
 
-	}
+    }
+
     /**
-     * @name            listProductsOfSite()
+     * @name            listProductsOfSite ()
      *
      * @since           1.0.3
      * @version         1.5.3
@@ -4770,19 +4911,20 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           mixed 			$site
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $site
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsOfSite($site, $sortOrder = null, $limit = null){
-		$SMMModel = new SMMService\SiteManagementModel($this->kernel);
+    public function listProductsOfSite($site, $sortOrder = null, $limit = null)
+    {
+        $SMMModel = new SMMService\SiteManagementModel($this->kernel);
         $response = $SMMModel->getSite($site);
-		if($response->error->exist){
-			return $response;
-		}
-		$site = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $site = $response->result->set;
         $column = $this->entity['p']['alias'] . '.site';
         $condition = array('column' => $column, 'comparison' => '=', 'value' => $site->getId());
         $filter[] = array(
@@ -4806,14 +4948,15 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           mixed 			$date
-     * @param           string 			$eq
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $date
+     * @param           string $eq
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsUpdated($date, $eq, $sortOrder = null, $limit = null){
+    public function listProductsUpdated($date, $eq, $sortOrder = null, $limit = null)
+    {
         // $eq_opts = array('after', 'before', 'between', 'on');
         $column = $this->entity['p']['alias'] . '.date_added';
 
@@ -4854,7 +4997,7 @@ class ProductManagementModel extends CoreModel{
                 )
             );
         }
-       return $this->listProducts($filter, $sortOrder, $limit);
+        return $this->listProducts($filter, $sortOrder, $limit);
     }
 
     /**
@@ -4866,72 +5009,76 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsUpdated()
      *
-     * @param           array 			$date
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $date
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsUpdatedAfter($date, $sortOrder = null, $limit = null){
+    public function listProductsUpdatedAfter($date, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsUpdated($date, 'after', $sortOrder, $limit);
     }
 
     /**
      * @name            listProductsUpdatedBefore ()
-	 *
+     *
      * @since           1.0.3
      * @version         1.5.3
      * @author          Can Berkol
      *
      * @uses            $this->listProductsUpdated()
      *
-     * @param           array 			$date
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
+     * @param           array $date
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsUpdatedBefore($date, $sortOrder = null, $limit = null){
+    public function listProductsUpdatedBefore($date, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsUpdated($date, 'before', $sortOrder, $limit);
     }
 
-	/**
-	 * @name            listProductsUpdatedBetween()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsUpdated()
-	 *
-	 * @param           array 			$date
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductsUpdatedBetween($date, $sortOrder = null, $limit = null){
-		return $this->listProductsUpdated($date, 'between', $sortOrder, $limit);
-	}
+    /**
+     * @name            listProductsUpdatedBetween ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @uses            $this->listProductsUpdated()
+     *
+     * @param           array $date
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsUpdatedBetween($date, $sortOrder = null, $limit = null)
+    {
+        return $this->listProductsUpdated($date, 'between', $sortOrder, $limit);
+    }
 
-	/**
-	 * @name            listProductsUpdatedOn()
-	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsUpdated()
-	 *
-	 * @param           array 			$date
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listProductsUpdatedOn($date, $sortOrder = null, $limit = null){
-		return $this->listProductsUpdated($date, 'on', $sortOrder, $limit);
-	}
+    /**
+     * @name            listProductsUpdatedOn ()
+     *
+     * @since           1.0.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @uses            $this->listProductsUpdated()
+     *
+     * @param           array $date
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsUpdatedOn($date, $sortOrder = null, $limit = null)
+    {
+        return $this->listProductsUpdated($date, 'on', $sortOrder, $limit);
+    }
 
     /**
      * @name            listProductsWithPrice ()
@@ -4942,15 +5089,16 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           decimal 		$price
-     * @param           string 			$eq 				after, before, between
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           decimal $price
+     * @param           string $eq after, before, between
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsWithPrice($price, $eq, $sortOrder = null, $limit = null){
-       // $eq_opts = array('more', 'less', 'between');
+    public function listProductsWithPrice($price, $eq, $sortOrder = null, $limit = null)
+    {
+        // $eq_opts = array('more', 'less', 'between');
         $column = $this->entity['p']['alias'] . '.price';
 
         if ($eq == 'more' || $eq == 'less') {
@@ -4991,7 +5139,7 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listProductsWithQuantity()
+     * @name            listProductsWithQuantity ()
      *
      * @since           1.0.5
      * @version         1.5.3
@@ -4999,14 +5147,15 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           integer 		$quantity
-     * @param           string 			$eq 			after, before, between
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           integer $quantity
+     * @param           string $eq after, before, between
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsWithQuantities($quantity, $eq, $sortOrder = null, $limit = null){
+    public function listProductsWithQuantities($quantity, $eq, $sortOrder = null, $limit = null)
+    {
         //$eq_opts = array('more', 'less', 'between');
 
         $column = $this->entity['p']['alias'] . '.quantity';
@@ -5049,7 +5198,7 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listProductsWithQuantityBetween()
+     * @name            listProductsWithQuantityBetween ()
      *
      * @since           1.0.5
      * @version         1.5.3
@@ -5057,13 +5206,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsWithQuantities()
      *
-     * @param           array 			$quantities
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $quantities
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsWithQuantityBetween($quantities, $sortOrder = null, $limit = null){
+    public function listProductsWithQuantityBetween($quantities, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsWithQuantity($quantities, 'between', $sortOrder, $limit);
     }
 
@@ -5076,13 +5226,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsQuantities()
      *
-     * @param           integer 		$quantity
-     * @param           array 			$sortOrder
-     * @param           array			$limit
+     * @param           integer $quantity
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          array           $response
      */
-    public function listProductsWithQuantityLessThan($quantity, $sortOrder = null, $limit = null){
+    public function listProductsWithQuantityLessThan($quantity, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsWithQuantity($quantity, 'less', $sortOrder, $limit);
     }
 
@@ -5095,18 +5246,19 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsQuantities()
      *
-     * @param           integer 	$quantity
-     * @param           array 		$sortOrder
-     * @param           array 		$limit
+     * @param           integer $quantity
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsWithQuantitiesMoreThan($quantity, $sortOrder = null, $limit = null){
+    public function listProductsWithQuantitiesMoreThan($quantity, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsWithQuantities($quantity, 'more', $sortOrder, $limit);
     }
 
     /**
-     * @name            listProductsWithPriceLessThan()
+     * @name            listProductsWithPriceLessThan ()
      *
      * @since           1.0.4
      * @version         1.5.3
@@ -5114,13 +5266,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsPriced()
      *
-     * @param           decimal 	$amount
-	 * @param           array 		$sortOrder
-	 * @param           array 		$limit
+     * @param           decimal $amount
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return         BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsWithPriceLessThan($amount, $sortOrder = null, $limit = null){
+    public function listProductsWithPriceLessThan($amount, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsPriced($amount, 'less', $sortOrder, $limit);
     }
 
@@ -5133,13 +5286,14 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsPriced()
      *
-     * @param           decimal 	$amount
-	 * @param           array 		$sortOrder
-	 * @param           array 		$limit
+     * @param           decimal $amount
+     * @param           array $sortOrder
+     * @param           array $limit
      *
-     * @return         	BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return            BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsWithPriceMoreThan($amount, $sortOrder = null, $limit = null){
+    public function listProductsWithPriceMoreThan($amount, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsPriced($amount, 'more', $sortOrder, $limit);
     }
 
@@ -5152,14 +5306,15 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProducts()
      *
-     * @param           mixed 			$views
-     * @param           string 			$eq
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           mixed $views
+     * @param           string $eq
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsViewed($views, $eq, $sortOrder = null, $limit = null){
+    public function listProductsViewed($views, $eq, $sortOrder = null, $limit = null)
+    {
         //$eq_opts = array('less', 'more', 'between');
         $column = $this->entity['p']['alias'] . '.count_view';
 
@@ -5201,7 +5356,7 @@ class ProductManagementModel extends CoreModel{
     }
 
     /**
-     * @name            listProductsViewedBetween()
+     * @name            listProductsViewedBetween ()
      *
      * @since           1.0.6
      * @version         1.5.3
@@ -5209,51 +5364,54 @@ class ProductManagementModel extends CoreModel{
      *
      * @uses            $this->listProductsViewed()
      *
-     * @param           array 			$views
-     * @param           array 			$sortOrder
-     * @param           array 			$limit
+     * @param           array $views
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsViewedBetween($views, $sortOrder = null, $limit = null){
+    public function listProductsViewedBetween($views, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsViewed($views, 'between', $sortOrder, $limit);
     }
 
-	/**
-	 * @name            listProductsViewedLessThan()
-	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsViewed()
-	 *
-	 * @param           array 			$views
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-    public function listProductsViewedLessThan($views, $sortOrder = null, $limit = null){
+    /**
+     * @name            listProductsViewedLessThan ()
+     *
+     * @since           1.0.6
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @uses            $this->listProductsViewed()
+     *
+     * @param           array $views
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsViewedLessThan($views, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsViewed($views, 'less', $sortOrder, $limit);
     }
 
-	/**
-	 * @name            listProductsViewedMoreThan()
-	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsViewed()
-	 *
-	 * @param           array 			$views
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-    public function listProductsViewedMoreThan($views, $sortOrder = null, $limit = null){
+    /**
+     * @name            listProductsViewedMoreThan ()
+     *
+     * @since           1.0.6
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @uses            $this->listProductsViewed()
+     *
+     * @param           array $views
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsViewedMoreThan($views, $sortOrder = null, $limit = null)
+    {
         return $this->listProductsViewed($views, 'more', $sortOrder, $limit);
     }
 
@@ -5267,30 +5425,31 @@ class ProductManagementModel extends CoreModel{
      * @use             $this->listProducts()
      * @use             $this->createException
      *
-     * @param           mixed 		$product (id, sku, or object)
-     * @param           array 		$sortOrder
-     * @param           array 		$limit
+     * @param           mixed $product (id, sku, or object)
+     * @param           array $sortOrder
+     * @param           array $limit
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listRelatedProductsOfProduct($product, $sortOrder = null, $limit = null){
+    public function listRelatedProductsOfProduct($product, $sortOrder = null, $limit = null)
+    {
         $timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $qStr = 'SELECT ' . $this->entity['rp']['alias'] . ' FROM ' . $this->entity['rp']['name'] . ' ' . $this->entity['rp']['alias']
             . ' WHERE ' . $this->entity['rp']['alias'] . '.product = ' . $product->getId();
 
         $q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
+        $q = $this->addLimit($q, $limit);
 
         $result = $q->getResult();
         $totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
         $relatedProducts = array();
         $relatedProductIds = array();
         foreach ($result as $rpObject) {
@@ -5312,46 +5471,47 @@ class ProductManagementModel extends CoreModel{
             )
         );
         return $this->listProducts($filter, $sortOrder, $limit);
-	}
+    }
 
     /**
      * @name            listValuesOfProductAttributes ()
      *
      * @since           1.2.4
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
-     * @param           mixed 			$attribute
-     * @param           mixed 			$product
-     * @param           mixed 			$language
+     * @param           mixed $attribute
+     * @param           mixed $product
+     * @param           mixed $language
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listValuesOfProductAttributes($product, $attribute, $language){
+    public function listValuesOfProductAttributes($product, $attribute, $language)
+    {
         $timeStamp = time();
         $response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
 
-		$response = $this->getProductAttribute($attribute);
-		if($response->error->exist){
-			return $response;
-		}
-		$ættribute = $response->result->set;
+        $response = $this->getProductAttribute($attribute);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $ættribute = $response->result->set;
 
-		$MLSModel = new MLSService\MultiLanguageSupportModel($this->kernel, $this->dbConnection, $this->orm);
+        $MLSModel = new MLSService\MultiLanguageSupportModel($this->kernel, $this->dbConnection, $this->orm);
 
-		$response = $MLSModel->getLanguage($language);
-		if($response->error->exist){
-			return $response;
-		}
-		$language = $response->result->set;
+        $response = $MLSModel->getLanguage($language);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $language = $response->result->set;
 
         $qStr = 'SELECT DISTINCT ' . $this->entity['pav']['alias'] . ', ' . $this->entity['pa']['alias']
             . ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias']
@@ -5364,198 +5524,207 @@ class ProductManagementModel extends CoreModel{
         $result = $query->getResult();
 
         $totalRows = count($result);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
-	/**
-	 * @name            listVolumePricings()
-	 *
-	 * @since           1.0.2
-	 * @version         1.5.9
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$filter
-	 * @param           array 			$sortOrder
-	 * @param           array 			$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listVolumePricings($filter = null, $sortOrder = null, $limit = null){
-		$timeStamp = time();
-		if(!is_array($sortOrder) && !is_null($sortOrder)){
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
-		$oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT '.$this->entity['vp']['alias'].', '.$this->entity['vp']['alias']
-			.' FROM '.$this->entity['vp']['name'].' '.$this->entity['vp']['alias'];
-
-		if(!is_null($sortOrder)){
-			foreach($sortOrder as $column => $direction){
-				switch ($column) {
-					case 'id':
-					case 'quantity_limit':
-					case 'price':
-					case 'discounted_price':
-					case 'sort_order':
-					case 'date_added':
-					case 'date_updated':
-						$column = $this->entity['vp']['alias'] . '.' . $column;
-						break;
-				}
-				$oStr .= ' '.$column.' '.strtoupper($direction).', ';
-			}
-			$oStr = rtrim($oStr, ', ');
-			$oStr = ' ORDER BY '.$oStr.' ';
-		}
-
-		if(!is_null($filter)){
-			$fStr = $this->prepareWhere($filter);
-			$wStr .= ' WHERE '.$fStr;
-		}
-
-		$qStr .= $wStr.$gStr.$oStr;
-		$q = $this->em->createQuery($qStr);
-		$q = $this->addLimit($q, $limit);
-
-		$result = $q->getResult();
-
-		$entities = array();
-		foreach($result as $entry){
-			$id = $entry->getVolumePricing()->getId();
-			if(!isset($entities[$id])){
-				$entities[$id] = $entry->getVolumePricing();
-			}
-		}
-		$totalRows = count($entities);
-		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
-	/**
-	 * @name            listVolumePricingsOfProduct()
-	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param   		mixed 		$product
-	 * @param   		array 		$filter
-	 * @param   		array 		$sortOrder
-	 * @param   		array 		$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listVolumePricingsOfProduct($product, $filter = array(), $sortOrder = null, $limit = null){
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->getEntityDefinition('vp', 'alias') . '.product', 'comparison' => '=', 'value' => $product->getId()),
-				)
-			)
-		);
-		return $this->listVolumePricings($filter, $sortOrder, $limit);
-	}
-	/**
-	 * @name            BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listVolumePricingsOfProductWithQuantityLowerThan()
-	 *
-	 * @param   		mixed 			$product
-	 * @param   		integer			$quantity
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listVolumePricingsOfProductWithClosestQuantity($product, $quantity){
-		return $this->listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, null, array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
-	}
-	/**
-	 * @name            listVolumePricingsOfProductWithQuantityGreaterThan()
-	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berlpş
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param   		mixed 		$product
-	 * @param   		int 		$quantity
-	 * @param   		array 		$sortOrder
-	 * @param   		array 		$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, $quantity, $sortOrder = null, $limit = null){
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->getEntityDefinition('vp', 'alias') . '.quantity_limit', 'comparison' => '>=', 'value' => $quantity),
-				),
-			)
-		);
-		return $this->listVolumePricingsOfProduct($product, $filter, $sortOrder, $limit);
-	}
-
-	/**
-	 * @name            listPricingsOfProductWithType ()
-	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param   		mixed 		$product
-	 * @param   		int 		$quantity
-	 * @param   		array 		$sortOrder
-	 * @param   		array 		$limit
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, $sortOrder = null, $limit = null){
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->getEntityDefinition('vp', 'alias') . '.quantity_limit', 'comparison' => '=<', 'value' => $quantity),
-				),
-			)
-		);
-		return $this->listVolumePricingsOfProduct($product, $filter, $sortOrder, $limit);
-	}
     /**
-     * @name            markCategoriesAsFeatured()
+     * @name            listVolumePricings ()
+     *
+     * @since           1.0.2
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $filter
+     * @param           array $sortOrder
+     * @param           array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listVolumePricings($filter = null, $sortOrder = null, $limit = null)
+    {
+        $timeStamp = time();
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $oStr = $wStr = $gStr = $fStr = '';
+
+        $qStr = 'SELECT ' . $this->entity['vp']['alias'] . ', ' . $this->entity['vp']['alias']
+            . ' FROM ' . $this->entity['vp']['name'] . ' ' . $this->entity['vp']['alias'];
+
+        if (!is_null($sortOrder)) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'quantity_limit':
+                    case 'price':
+                    case 'discounted_price':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                        $column = $this->entity['vp']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
+
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+
+        $result = $q->getResult();
+
+        $entities = array();
+        foreach ($result as $entry) {
+            $id = $entry->getVolumePricing()->getId();
+            if (!isset($unique[$id])) {
+                $entities[] = $entry->getVolumePricing();
+            }
+        }
+        $totalRows = count($entities);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
+
+    /**
+     * @name            listVolumePricingsOfProduct ()
+     *
+     * @since           1.3.2
+     * @version         1.5.3
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param        mixed $product
+     * @param        array $filter
+     * @param        array $sortOrder
+     * @param        array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listVolumePricingsOfProduct($product, $filter = array(), $sortOrder = null, $limit = null)
+    {
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->getEntityDefinition('vp', 'alias') . '.product', 'comparison' => '=', 'value' => $product->getId()),
+                )
+            )
+        );
+        return $this->listVolumePricings($filter, $sortOrder, $limit);
+    }
+
+    /**
+     * @name            BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     *
+     * @since           1.3.2
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->listVolumePricingsOfProductWithQuantityLowerThan()
+     *
+     * @param        mixed $product
+     * @param        integer $quantity
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listVolumePricingsOfProductWithClosestQuantity($product, $quantity)
+    {
+        return $this->listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, null, array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
+    }
+
+    /**
+     * @name            listVolumePricingsOfProductWithQuantityGreaterThan ()
+     *
+     * @since           1.3.2
+     * @version         1.5.3
+     *
+     * @author          Can Berlpş
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param        mixed $product
+     * @param        int $quantity
+     * @param        array $sortOrder
+     * @param        array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listVolumePricingsOfProductWithQuantityGreaterThan($product, $quantity, $sortOrder = null, $limit = null)
+    {
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->getEntityDefinition('vp', 'alias') . '.quantity_limit', 'comparison' => '>=', 'value' => $quantity),
+                ),
+            )
+        );
+        return $this->listVolumePricingsOfProduct($product, $filter, $sortOrder, $limit);
+    }
+
+    /**
+     * @name            listPricingsOfProductWithType ()
+     *
+     * @since           1.3.2
+     * @version         1.5.3
+     *
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->createException()
+     *
+     * @param        mixed $product
+     * @param        int $quantity
+     * @param        array $sortOrder
+     * @param        array $limit
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, $sortOrder = null, $limit = null)
+    {
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->getEntityDefinition('vp', 'alias') . '.quantity_limit', 'comparison' => '=<', 'value' => $quantity),
+                ),
+            )
+        );
+        return $this->listVolumePricingsOfProduct($product, $filter, $sortOrder, $limit);
+    }
+
+    /**
+     * @name            markCategoriesAsFeatured ()
      *
      * @since           1.3.1
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      *
      * @use             $this->createException()
@@ -5564,19 +5733,20 @@ class ProductManagementModel extends CoreModel{
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function markCategoriesAsFeatured($categories){
+    public function markCategoriesAsFeatured($categories)
+    {
         $timeStamp = time();
         $catIds = array();
         foreach ($categories as $category) {
-           $response = $this->getProductCategory($category);
-			if($response->error->exist){
-				continue;
-			}
-			$catIds[] = $response->result->set->getId();
+            $response = $this->getProductCategory($category);
+            if ($response->error->exist) {
+                continue;
+            }
+            $catIds[] = $response->result->set->getId();
         }
         $catIds = implode(',', $catIds);
         if (count($catIds) < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
         }
         $qStr = 'UPDATE ' . $this->entity['pc']['name'] . ' ' . $this->entity['pc']['alias']
             . ' SET ' . $this->entity['pc']['alias'] . '.is_featured = \'y\''
@@ -5585,39 +5755,40 @@ class ProductManagementModel extends CoreModel{
         $query = $this->em->createQuery($qStr);
         $result = $query->getResult();
 
-		return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
     }
 
     /**
-     * @name            relateProductsWithProduct()
+     * @name            relateProductsWithProduct ()
      *
      * @since           1.3.4
      * @version         1.5.3
      * @author          Can Berkol
      *
-     * @param           array 		$collection
-     * @param           mixed 		$product (id, sku, or object)
+     * @param           array $collection
+     * @param           mixed $product (id, sku, or object)
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function relateProductsWithProduct($collection, $product){
+    public function relateProductsWithProduct($collection, $product)
+    {
         $timeStamp = time();
         $response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $countRelated = 0;
         $relatedProducts = array();
         foreach ($collection as $item) {
-			$response = $this->getProduct($item);
-			if($response->error->exist){
-				continue;
-			}
-			$relatedProduct = $response->result->set;
+            $response = $this->getProduct($item);
+            if ($response->error->exist) {
+                continue;
+            }
+            $relatedProduct = $response->result->set;
             $relatedProductEntry = new BundleEntity\RelatedProduct;
-			$relatedProductEntry->setProduct($product);
-			$relatedProductEntry->setRelatedProduct($relatedProduct);
+            $relatedProductEntry->setProduct($product);
+            $relatedProductEntry->setRelatedProduct($relatedProduct);
             $this->em->persist($relatedProduct);
             $relatedProducts[] = $relatedProduct;
             unset($relatedProduct, $response);
@@ -5627,190 +5798,194 @@ class ProductManagementModel extends CoreModel{
         if ($countRelated > 0) {
             $this->em->flush();
         }
-		return new ModelResponse($relatedProducts, $countRelated, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        return new ModelResponse($relatedProducts, $countRelated, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
     }
 
-	/**
-	 * @name            removeCategoriesFromProduct ()
-	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array 			$categories
-	 * @param           mixed			$product
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function removeCategoriesFromProduct($categories, $product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		$idsToRemove = array();
-		foreach ($categories as $category) {
-			$response = $this->getProductCategory($category);
-			if($response->error->exist){
-				return $response;
-			}
-			$idsToRemove[] = $response->result->set->getId();
-		}
-		$in = ' IN (' . implode(',', $idsToRemove) . ')';
-		$qStr = 'DELETE FROM '.$this->entity['cop']['name'].' '.$this->entity['cop']['alias']
-			.' WHERE '.$this->entity['cop']['alias'].'.product '.$product->getId()
-			.' AND '.$this->entity['cop']['alias'].'.category '.$in;
+    /**
+     * @name            removeCategoriesFromProduct ()
+     *
+     * @since           1.0.6
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @param           array $categories
+     * @param           mixed $product
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function removeCategoriesFromProduct($categories, $product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $idsToRemove = array();
+        foreach ($categories as $category) {
+            $response = $this->getProductCategory($category);
+            if ($response->error->exist) {
+                return $response;
+            }
+            $idsToRemove[] = $response->result->set->getId();
+        }
+        $in = ' IN (' . implode(',', $idsToRemove) . ')';
+        $qStr = 'DELETE FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+            . ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId()
+            . ' AND ' . $this->entity['cop']['alias'] . '.category ' . $in;
 
-		$q = $this->em->createQuery($qStr);
-		$result = $q->getResult();
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
 
-		$deleted = true;
-		if (!$result) {
-			$deleted = false;
-		}
-		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-	}
+        $deleted = true;
+        if (!$result) {
+            $deleted = false;
+        }
+        if ($deleted) {
+            return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            removeFilesFromProduct ()
-	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array 			$files
-	 * @param           mixed			$product
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function removeFilesFromProduct($files, $product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		$idsToRemove = array();
-		$fmModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
-		foreach ($files as $file) {
-			$response = $fmModel->getFile($file);
-			if($response->error->exist){
-				continue;
-			}
-			$idsToRemove[] = $response->result->set->getId();
-		}
-		$in = ' IN (' . implode(',', $idsToRemove) . ')';
-		$qStr = 'DELETE FROM '.$this->entity['fop']['name'].' '.$this->entity['fop']['alias']
-			.' WHERE '.$this->entity['fop']['alias'].'.product '.$product->getId()
-			.' AND '.$this->entity['fop']['alias'].'.file '.$in;
+    /**
+     * @name            removeFilesFromProduct ()
+     *
+     * @since           1.0.6
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @param           array $files
+     * @param           mixed $product
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function removeFilesFromProduct($files, $product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $idsToRemove = array();
+        $fmModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
+        foreach ($files as $file) {
+            $response = $fmModel->getFile($file);
+            if ($response->error->exist) {
+                continue;
+            }
+            $idsToRemove[] = $response->result->set->getId();
+        }
+        $in = ' IN (' . implode(',', $idsToRemove) . ')';
+        $qStr = 'DELETE FROM ' . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias']
+            . ' WHERE ' . $this->entity['fop']['alias'] . '.product ' . $product->getId()
+            . ' AND ' . $this->entity['fop']['alias'] . '.file ' . $in;
 
-		$q = $this->em->createQuery($qStr);
-		$result = $q->getResult();
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
 
-		$deleted = true;
-		if (!$result) {
-			$deleted = false;
-		}
-		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-	}
+        $deleted = true;
+        if (!$result) {
+            $deleted = false;
+        }
+        if ($deleted) {
+            return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            removeLocalesFromProduct ()
-	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array 			$locales
-	 * @param           mixed			$product
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function removeLocalesFromProduct($locales, $product){
-		$timeStamp = time();
-		$response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
-		$idsToRemove = array();
-		$mModel = new MLSService\MultiLanguageSupportModel($this->kernel, $this->dbConnection, $this->orm);
-		foreach ($locales as $locale) {
-			$response = $mModel->getLanguage($locale);
-			if($response->error->exist){
-				continue;
-			}
-			$idsToRemove[] = $response->result->set->getId();
-		}
-		$in = ' IN (' . implode(',', $idsToRemove) . ')';
-		$qStr = 'DELETE FROM '.$this->entity['apl']['name'].' '.$this->entity['fop']['alias']
-			.' WHERE '.$this->entity['apl']['alias'].'.product '.$product->getId()
-			.' AND '.$this->entity['apl']['alias'].'.language '.$in;
+    /**
+     * @name            removeLocalesFromProduct ()
+     *
+     * @since           1.2.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @param           array $locales
+     * @param           mixed $product
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function removeLocalesFromProduct($locales, $product)
+    {
+        $timeStamp = time();
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $idsToRemove = array();
+        $mModel = new MLSService\MultiLanguageSupportModel($this->kernel, $this->dbConnection, $this->orm);
+        foreach ($locales as $locale) {
+            $response = $mModel->getLanguage($locale);
+            if ($response->error->exist) {
+                continue;
+            }
+            $idsToRemove[] = $response->result->set->getId();
+        }
+        $in = ' IN (' . implode(',', $idsToRemove) . ')';
+        $qStr = 'DELETE FROM ' . $this->entity['apl']['name'] . ' ' . $this->entity['fop']['alias']
+            . ' WHERE ' . $this->entity['apl']['alias'] . '.product ' . $product->getId()
+            . ' AND ' . $this->entity['apl']['alias'] . '.language ' . $in;
 
-		$q = $this->em->createQuery($qStr);
-		$result = $q->getResult();
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
 
-		$deleted = true;
-		if (!$result) {
-			$deleted = false;
-		}
-		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-	}
+        $deleted = true;
+        if (!$result) {
+            $deleted = false;
+        }
+        if ($deleted) {
+            return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            removeProductsFromCategory()
-	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array 			$products
-	 * @param           mixed			$category
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function removeProductsFromCategory($products, $category){
-		$timeStamp = time();
-		$response = $this->getProductCategory($category);
-		if($response->error->exist){
-			return $response;
-		}
-		$category = $response->result->set;
-		$idsToRemove = array();
-		foreach ($products as $product) {
-			$response = $this->getProductCategory($category);
-			if($response->error->exist){
-				continue;
-			}
-			$idsToRemove[] = $response->result->set->getId();
-		}
-		$in = ' IN (' . implode(',', $idsToRemove) . ')';
-		$qStr = 'DELETE FROM '.$this->entity['apcl']['name'].' '.$this->entity['apl']['alias']
-			.' WHERE '.$this->entity['apcl']['alias'].'.category '.$category->getId()
-			.' AND '.$this->entity['apcl']['alias'].'.language '.$in;
+    /**
+     * @name            removeProductsFromCategory ()
+     *
+     * @since           1.2.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @param           array $products
+     * @param           mixed $category
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function removeProductsFromCategory($products, $category)
+    {
+        $timeStamp = time();
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
+        $idsToRemove = array();
+        foreach ($products as $product) {
+            $response = $this->getProductCategory($category);
+            if ($response->error->exist) {
+                continue;
+            }
+            $idsToRemove[] = $response->result->set->getId();
+        }
+        $in = ' IN (' . implode(',', $idsToRemove) . ')';
+        $qStr = 'DELETE FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apl']['alias']
+            . ' WHERE ' . $this->entity['apcl']['alias'] . '.category ' . $category->getId()
+            . ' AND ' . $this->entity['apcl']['alias'] . '.language ' . $in;
 
-		$q = $this->em->createQuery($qStr);
-		$result = $q->getResult();
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
 
-		$deleted = true;
-		if (!$result) {
-			$deleted = false;
-		}
-		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-	}
+        $deleted = true;
+        if (!$result) {
+            $deleted = false;
+        }
+        if ($deleted) {
+            return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+    }
 
     /**
      * @name            removeProductCategoriesFromLocale ()
@@ -5821,29 +5996,30 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->doesProductExist()
      *
-     * @param           array 			$categories
-     * @param           mixed 			$locale
+     * @param           array $categories
+     * @param           mixed $locale
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function removeProductCategoriesFromLocale($categories, $locale){
+    public function removeProductCategoriesFromLocale($categories, $locale)
+    {
         $timeStamp = time();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		$response = $mlsModel->getLanguage($locale);
-		if($response->error->exist){
-			return $response;
-		}
-		$locale = $response->result->set;
-		$toRemove = array();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $response = $mlsModel->getLanguage($locale);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $locale = $response->result->set;
+        $toRemove = array();
         $count = 0;
         /** Start persisting files */
 
         foreach ($categories as $category) {
             $response = $this->getProductCategory($category);
-			if($response->error->exist){
-				continue;
-			}
-			$toRemove[] = $response->result->set->getId();
+            if ($response->error->exist) {
+                continue;
+            }
+            $toRemove[] = $response->result->set->getId();
             $count++;
         }
         if ($count > 0) {
@@ -5855,90 +6031,94 @@ class ProductManagementModel extends CoreModel{
 
             $query = $this->em->createQuery($qStr);
             $query->getResult();
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-	}
+            return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+    }
 
-	/**
-	 * @name            removeProductsFromLocale ()
-	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array 			$products
-	 * @param           mixed 			$locale
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function removeProductsFromLocale($products, $locale){
-		$timeStamp = time();
-		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-		$response = $mlsModel->getLanguage($locale);
-		if($response->error->exist){
-			return $response;
-		}
-		$locale = $response->result->set;
-		$toRemove = array();
-		$count = 0;
-		foreach ($products as $product) {
-			$response = $this->getProduct($product);
-			if($response->error->exist){
-				continue;
-			}
-			$toRemove[] = $response->result->set->getId();
-			$count++;
-		}
-		if ($count > 0) {
-			$ids = implode(',', $toRemove);
-			$table = $this->entity['apl']['name'] . ' ' . $this->entity['apl']['alias'];
-			$qStr = 'DELETE FROM ' . $table
-				. ' WHERE ' . $this->entity['apl']['alias'] . '.locale = ' . $locale->getId()
-				. ' AND ' . $this->entity['apl']['alias'] . '.category IN(' . $ids . ')';
+    /**
+     * @name            removeProductsFromLocale ()
+     *
+     * @since           1.2.3
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @param           array $products
+     * @param           mixed $locale
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function removeProductsFromLocale($products, $locale)
+    {
+        $timeStamp = time();
+        $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $response = $mlsModel->getLanguage($locale);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $locale = $response->result->set;
+        $toRemove = array();
+        $count = 0;
+        foreach ($products as $product) {
+            $response = $this->getProduct($product);
+            if ($response->error->exist) {
+                continue;
+            }
+            $toRemove[] = $response->result->set->getId();
+            $count++;
+        }
+        if ($count > 0) {
+            $ids = implode(',', $toRemove);
+            $table = $this->entity['apl']['name'] . ' ' . $this->entity['apl']['alias'];
+            $qStr = 'DELETE FROM ' . $table
+                . ' WHERE ' . $this->entity['apl']['alias'] . '.locale = ' . $locale->getId()
+                . ' AND ' . $this->entity['apl']['alias'] . '.category IN(' . $ids . ')';
 
-			$query = $this->em->createQuery($qStr);
-			$query->getResult();
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
-	}
-	/**
-	 * @name            unmarkCategoriesAsFeatured()
-	 *
-	 * @since           1.3.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array 			$categories
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function unmarkCategoriesAsFeatured($categories) {
-		$timeStamp = time();
-		$catIds = array();
-		foreach ($categories as $category) {
-			$response = $this->getProductCategory($category);
-			if ($response->error->exist) {
-				return $response;
-			}
-			$catIds[] = $response->result->set->getId();
-		}
-		$catIds = implode(',', $catIds);
-		if (count($catIds) < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-		}
-		$qStr = 'UPDATE ' . $this->entity['pc']['name'] . ' ' . $this->entity['pc']['alias']
-			. ' SET ' . $this->entity['pc']['alias'] . '.is_featured = \'n\''
-			. ' WHERE ' . $this->entity['pc']['alias'] . '.id IN(' . $catIds . ')';
+            $query = $this->em->createQuery($qStr);
+            $query->getResult();
+            return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+    }
 
-		$query = $this->em->createQuery($qStr);
-		$result = $query->getResult();
+    /**
+     * @name            unmarkCategoriesAsFeatured ()
+     *
+     * @since           1.3.1
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $categories
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function unmarkCategoriesAsFeatured($categories)
+    {
+        $timeStamp = time();
+        $catIds = array();
+        foreach ($categories as $category) {
+            $response = $this->getProductCategory($category);
+            if ($response->error->exist) {
+                return $response;
+            }
+            $catIds[] = $response->result->set->getId();
+        }
+        $catIds = implode(',', $catIds);
+        if (count($catIds) < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+        }
+        $qStr = 'UPDATE ' . $this->entity['pc']['name'] . ' ' . $this->entity['pc']['alias']
+            . ' SET ' . $this->entity['pc']['alias'] . '.is_featured = \'n\''
+            . ' WHERE ' . $this->entity['pc']['alias'] . '.id IN(' . $catIds . ')';
 
-		return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-	}
+        $query = $this->em->createQuery($qStr);
+        $result = $query->getResult();
+
+        return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+    }
+
     /**
      * @name            unrelateProductsFromProduct ()
      *
@@ -5946,25 +6126,26 @@ class ProductManagementModel extends CoreModel{
      * @version         1.5.3
      * @author          Can Berkol
      *
-     * @param           array 		$collection
-     * @param           mixed 		$product
+     * @param           array $collection
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function unrelateProductsFromProduct($collection, $product){
+    public function unrelateProductsFromProduct($collection, $product)
+    {
         $timeStamp = time();
         $response = $this->getProduct($product);
-		if($response->error->exist){
-			return $response;
-		}
-		$product = $response->result->set;
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
         $countUnrelated = 0;
         $unrelatedProductIds = array();
         foreach ($collection as $item) {
-			$response = $this->getProduct($item);
-			if($response->error->exist){
-				continue;
-			}
+            $response = $this->getProduct($item);
+            if ($response->error->exist) {
+                continue;
+            }
             $unrelatedProductIds[] = $response->result->set->getId();
 
             $countUnrelated++;
@@ -5978,87 +6159,91 @@ class ProductManagementModel extends CoreModel{
 
         $query->getResult();
 
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
     }
-	/**
-	 * @name            updateBrand ()
-	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateBrands()
-	 *
-	 * @param           mixed 			$brand
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function updateBrand($brand){
-		return $this->updateBrands(array($brand));
-	}
 
-	/**
-	 * @name            updateBrands()
-	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array			$collection
-	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function updateBrands($collection){
-		$timeStamp = time();
-		$countUpdates = 0;
-		$updatedItems = array();
-		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
-		foreach ($collection as $data) {
-			if ($data instanceof BundleEntity\ProductAttribute) {
-				$entity = $data;
-				$this->em->persist($entity);
-				$updatedItems[] = $entity;
-				$countUpdates++;
-			} else if (is_object($data)) {
-				if (!property_exists($data, 'id') || !is_numeric($data->id)) {
-					return $this->createException('InvalidParameter', 'Each data must contain a valid identifier id, integer', 'err.invalid.parameter.collection');
-				}
-				if (!property_exists($data, 'date_updated')) {
-					$data->date_updated = $now;
-				}
-				if (property_exists($data, 'date_added')) {
-					unset($data->date_added);
-				}
-				$response = $this->getBrand($data->id);
-				if ($response->error->exist) {
-					return $this->createException('EntityDoesNotExist', 'Brand with id ' . $data->id, 'err.invalid.entity');
-				}
-				$oldEntity = $response->result->set;
-				foreach ($data as $column => $value) {
-					$set = 'set' . $this->translateColumnName($column);
-					switch ($column) {
-						case 'id':
-							break;
-						default:
-							$oldEntity->$set($value);
-							break;
-					}
-					if ($oldEntity->isModified()) {
-						$this->em->persist($oldEntity);
-						$countUpdates++;
-						$updatedItems[] = $oldEntity;
-					}
-				}
-			}
-		}
-		if($countUpdates > 0){
-			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
-	}
+    /**
+     * @name            updateBrand ()
+     *
+     * @since           1.0.6
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->updateBrands()
+     *
+     * @param           mixed $brand
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function updateBrand($brand)
+    {
+        return $this->updateBrands(array($brand));
+    }
+
+    /**
+     * @name            updateBrands ()
+     *
+     * @since           1.0.6
+     * @version         1.5.3
+     * @author          Can Berkol
+     *
+     * @use             $this->createException()
+     *
+     * @param           array $collection
+     *
+     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function updateBrands($collection)
+    {
+        $timeStamp = time();
+        $countUpdates = 0;
+        $updatedItems = array();
+        $now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\ProductAttribute) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $updatedItems[] = $entity;
+                $countUpdates++;
+            } else if (is_object($data)) {
+                if (!property_exists($data, 'id') || !is_numeric($data->id)) {
+                    return $this->createException('InvalidParameter', 'Each data must contain a valid identifier id, integer', 'err.invalid.parameter.collection');
+                }
+                if (!property_exists($data, 'date_updated')) {
+                    $data->date_updated = $now;
+                }
+                if (property_exists($data, 'date_added')) {
+                    unset($data->date_added);
+                }
+                $response = $this->getBrand($data->id);
+                if ($response->error->exist) {
+                    return $this->createException('EntityDoesNotExist', 'Brand with id ' . $data->id, 'err.invalid.entity');
+                }
+                $oldEntity = $response->result->set;
+                foreach ($data as $column => $value) {
+                    $set = 'set' . $this->translateColumnName($column);
+                    switch ($column) {
+                        case 'id':
+                            break;
+                        default:
+                            $oldEntity->$set($value);
+                            break;
+                    }
+                    if ($oldEntity->isModified()) {
+                        $this->em->persist($oldEntity);
+                        $countUpdates++;
+                        $updatedItems[] = $oldEntity;
+                    }
+                }
+            }
+        }
+        if ($countUpdates > 0) {
+            $this->em->flush();
+            return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+    }
+
     /**
      * @name            updateProduct ()
      *
@@ -6068,11 +6253,12 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->updateProducts()
      *
-     * @param           mixed 			$product
+     * @param           mixed $product
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProduct($product){
+    public function updateProduct($product)
+    {
         return $this->updateProducts(array($product));
     }
 
@@ -6085,16 +6271,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->updateProductAttributes()
      *
-     * @param           mixed 			$attribute
+     * @param           mixed $attribute
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProductAttribute($attribute){
+    public function updateProductAttribute($attribute)
+    {
         return $this->updateProductAttributes(array($attribute));
     }
 
     /**
-     * @name            updateProductAttributes()
+     * @name            updateProductAttributes ()
      *
      * @since           1.0.6
      * @version         1.5.3
@@ -6102,16 +6289,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProductAttributes($collection){
+    public function updateProductAttributes($collection)
+    {
         $timeStamp = time();
         $countUpdates = 0;
         $updatedItems = array();
         $localizations = array();
-		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
         foreach ($collection as $data) {
             if ($data instanceof BundleEntity\ProductAttribute) {
                 $entity = $data;
@@ -6184,12 +6372,12 @@ class ProductManagementModel extends CoreModel{
                 }
             }
         }
-		if($countUpdates > 0){
-			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
-	}
+        if ($countUpdates > 0) {
+            $this->em->flush();
+            return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+    }
 
     /**
      * @name            updateProductAttributeValue ()
@@ -6200,16 +6388,17 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->updateProductAttributeValues()
      *
-     * @param           mixed 			$data
+     * @param           mixed $data
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProductAttributeValue($data) {
+    public function updateProductAttributeValue($data)
+    {
         return $this->updateProductAttributeValues(array($data));
     }
 
     /**
-     * @name            updateProductAttributeValues()
+     * @name            updateProductAttributeValues ()
      *
      * @since           1.1.6
      * @version         1.5.3
@@ -6217,15 +6406,16 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProductAttributeValues($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function updateProductAttributeValues($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countUpdates = 0;
         $updatedItems = array();
         foreach ($collection as $data) {
@@ -6234,11 +6424,10 @@ class ProductManagementModel extends CoreModel{
                 $this->em->persist($entity);
                 $updatedItems[] = $entity;
                 $countUpdates++;
-            }
-			else if (is_object($data)) {
-				if(!property_exists($data, 'id') || !is_numeric($data->id)){
-					return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
-				}
+            } else if (is_object($data)) {
+                if (!property_exists($data, 'id') || !is_numeric($data->id)) {
+                    return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
+                }
                 if (!property_exists($data, 'date_updated')) {
                     $data->date_updated = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
                 }
@@ -6246,9 +6435,9 @@ class ProductManagementModel extends CoreModel{
                     unset($data->date_added);
                 }
                 $response = $this->getProductAttributeValue($data->id);
-				if ($response->error->exist) {
-					return $this->createException('EntityDoesNotExist', 'Attribute value '.$data->id.' does not exist in database.', 'E:D:002');
-				}
+                if ($response->error->exist) {
+                    return $this->createException('EntityDoesNotExist', 'Attribute value ' . $data->id . ' does not exist in database.', 'E:D:002');
+                }
                 $oldEntity = $response->result->set;
 
                 foreach ($data as $column => $value) {
@@ -6259,7 +6448,7 @@ class ProductManagementModel extends CoreModel{
                             if ($response->error->exist) {
                                 return $response;
                             }
-							$oldEntity->$set($response->result->set);
+                            $oldEntity->$set($response->result->set);
                             unset($response);
                             break;
                         case 'language':
@@ -6268,15 +6457,15 @@ class ProductManagementModel extends CoreModel{
                             if ($response->error->exist) {
                                 return $response;
                             }
-							$oldEntity->$set($response->result->set);
+                            $oldEntity->$set($response->result->set);
                             unset($response, $lModel);
                             break;
                         case 'product':
                             $response = $this->getProduct($value);
-							if ($response->error->exist) {
-								return $response;
-							}
-							$oldEntity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $oldEntity->$set($response->result->set);
                             unset($response);
                             break;
                         case 'id':
@@ -6293,15 +6482,15 @@ class ProductManagementModel extends CoreModel{
                 }
             }
         }
-		if($countUpdates > 0){
-			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
-	}
+        if ($countUpdates > 0) {
+            $this->em->flush();
+            return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+    }
 
     /**
-     * @name            updateProductCategory()
+     * @name            updateProductCategory ()
      *
      * @since           1.0.6
      * @version         1.5.3
@@ -6309,11 +6498,12 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->updateProductCategories()
      *
-     * @param           mixed 			$category
+     * @param           mixed $category
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProductCategory($category){
+    public function updateProductCategory($category)
+    {
         return $this->updateProductCategories(array($category));
     }
 
@@ -6326,15 +6516,16 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProductCategories($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function updateProductCategories($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countUpdates = 0;
         $updatedItems = array();
         $localizations = array();
@@ -6344,11 +6535,10 @@ class ProductManagementModel extends CoreModel{
                 $this->em->persist($entity);
                 $updatedItems[] = $entity;
                 $countUpdates++;
-            }
-			else if (is_object($data)) {
-				if(!property_exists($data, 'id') || !is_numeric($data->id)){
-					return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
-				}
+            } else if (is_object($data)) {
+                if (!property_exists($data, 'id') || !is_numeric($data->id)) {
+                    return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
+                }
                 if (!property_exists($data, 'date_updated')) {
                     $data->date_updated = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
                 }
@@ -6359,43 +6549,43 @@ class ProductManagementModel extends CoreModel{
                     $data->site = 1;
                 }
                 $response = $this->getProductCategory($data->id);
-				if ($response->error->exist) {
-					return $this->createException('EntityDoesNotExist', 'Category with id / url_key '.$data->id.' does not exist in database.', 'E:D:002');
-				}
-				$oldEntity = $response->result->set;
+                if ($response->error->exist) {
+                    return $this->createException('EntityDoesNotExist', 'Category with id / url_key ' . $data->id . ' does not exist in database.', 'E:D:002');
+                }
+                $oldEntity = $response->result->set;
                 foreach ($data as $column => $value) {
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
                         case 'local':
-							foreach ($value as $langCode => $translation) {
-								$localization = $oldEntity->getLocalization($langCode, true);
-								$newLocalization = false;
-								if (!$localization) {
-									$newLocalization = true;
-									$localization = new BundleEntity\ProductCategoryLocalization();
-									$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-									$response = $mlsModel->getLanguage($langCode);
-									$localization->setLanguage($response->result->set);
-									$localization->setCategory($oldEntity);
-								}
-								foreach ($translation as $transCol => $transVal) {
-									$transSet = 'set' . $this->translateColumnName($transCol);
-									$localization->$transSet($transVal);
-								}
-								if ($newLocalization) {
-									$this->em->persist($localization);
-								}
-								$localizations[] = $localization;
-							}
-							$oldEntity->setLocalizations($localizations);
-							break;
+                            foreach ($value as $langCode => $translation) {
+                                $localization = $oldEntity->getLocalization($langCode, true);
+                                $newLocalization = false;
+                                if (!$localization) {
+                                    $newLocalization = true;
+                                    $localization = new BundleEntity\ProductCategoryLocalization();
+                                    $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+                                    $response = $mlsModel->getLanguage($langCode);
+                                    $localization->setLanguage($response->result->set);
+                                    $localization->setCategory($oldEntity);
+                                }
+                                foreach ($translation as $transCol => $transVal) {
+                                    $transSet = 'set' . $this->translateColumnName($transCol);
+                                    $localization->$transSet($transVal);
+                                }
+                                if ($newLocalization) {
+                                    $this->em->persist($localization);
+                                }
+                                $localizations[] = $localization;
+                            }
+                            $oldEntity->setLocalizations($localizations);
+                            break;
                         case 'parent':
                             if (!is_null($value)) {
                                 $response = $this->getProductCategory($value);
                                 if ($response->error->exist) {
-                                   return $response;
+                                    return $response;
                                 }
-								$oldEntity->$set($response->result->set);
+                                $oldEntity->$set($response->result->set);
                             } else {
                                 $oldEntity->$set(null);
                             }
@@ -6405,20 +6595,20 @@ class ProductManagementModel extends CoreModel{
                             if (!is_null($value)) {
                                 $fModel = $this->kernel->getContainer()->get('filemanagement.model');
                                 $response = $fModel->getFile($value);
-								if ($response->error->exist) {
-									return $response;
-								}
-								$oldEntity->$set($response->result->set);
+                                if ($response->error->exist) {
+                                    return $response;
+                                }
+                                $oldEntity->$set($response->result->set);
                                 unset($response, $fModel);
                             }
                             break;
                         case 'site':
                             $sModel = $this->kernel->getContainer()->get('sitemanagement.model');
                             $response = $sModel->getSite($value);
-							if ($response->error->exist) {
-								return $response;
-							}
-							$oldEntity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $oldEntity->$set($response->result->set);
                             unset($response, $sModel);
                             break;
                         case 'id':
@@ -6435,15 +6625,15 @@ class ProductManagementModel extends CoreModel{
                 }
             }
         }
-		if($countUpdates > 0){
-			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
-	}
+        if ($countUpdates > 0) {
+            $this->em->flush();
+            return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+    }
 
     /**
-     * @name            updateProducts()
+     * @name            updateProducts ()
      *
      * @since           1.0.1
      * @version         1.5.3
@@ -6451,15 +6641,16 @@ class ProductManagementModel extends CoreModel{
      *
      * @use             $this->createException()
      *
-     * @param           array 			$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateProducts($collection){
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
+    public function updateProducts($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
         $countUpdates = 0;
         $updatedItems = array();
         $localizations = array();
@@ -6470,9 +6661,9 @@ class ProductManagementModel extends CoreModel{
                 $updatedItems[] = $entity;
                 $countUpdates++;
             } else if (is_object($data)) {
-				if(!property_exists($data, 'id') || !is_numeric($data->id)){
-					return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
-				}
+                if (!property_exists($data, 'id') || !is_numeric($data->id)) {
+                    return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
+                }
                 if (!property_exists($data, 'date_updated')) {
                     $data->date_updated = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
                 }
@@ -6482,11 +6673,11 @@ class ProductManagementModel extends CoreModel{
                 if (!property_exists($data, 'site')) {
                     $data->site = 1;
                 }
-				$response = $this->getProduct($data->id);
-				if ($response->error->exist) {
-					return $this->createException('EntityDoesNotExist', 'Product with id / url_key / sku  '.$data->id.' does not exist in database.', 'E:D:002');
-				}
-				$oldEntity = $response->result->set;
+                $response = $this->getProduct($data->id);
+                if ($response->error->exist) {
+                    return $this->createException('EntityDoesNotExist', 'Product with id / url_key / sku  ' . $data->id . ' does not exist in database.', 'E:D:002');
+                }
+                $oldEntity = $response->result->set;
                 foreach ($data as $column => $value) {
                     $set = 'set' . $this->translateColumnName($column);
                     switch ($column) {
@@ -6516,19 +6707,19 @@ class ProductManagementModel extends CoreModel{
                         case 'site':
                             $sModel = $this->kernel->getContainer()->get('sitemanagement.model');
                             $response = $sModel->getSite($value);
-							if ($response->error->exist) {
-								return $response;
-							}
-							$oldEntity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $oldEntity->$set($response->result->set);
                             unset($response, $sModel);
                             break;
                         case 'preview_file':
                             $fModel = $this->kernel->getContainer()->get('filemanagement.model');
                             $response = $fModel->getFile($value);
-							if ($response->error->exist) {
-								return $response;
-							}
-							$oldEntity->$set($response->result->set);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $oldEntity->$set($response->result->set);
                             unset($response, $fModel);
                             break;
                         case 'id':
@@ -6545,29 +6736,30 @@ class ProductManagementModel extends CoreModel{
                 }
             }
         }
-		if($countUpdates > 0){
-			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
-	}
+        if ($countUpdates > 0) {
+            $this->em->flush();
+            return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        }
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+    }
 
     /**
      * @name            updateVolumePricing ()
      *
      * @since           1.3.2
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->updateProductAttributeValues()
      *
-     * @param           mixed 			$volumePricing
+     * @param           mixed $volumePricing
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateVolumePricing($volumePricing){
+    public function updateVolumePricing($volumePricing)
+    {
         return $this->updateVolumePricings(array($volumePricing));
     }
 
@@ -6576,101 +6768,82 @@ class ProductManagementModel extends CoreModel{
      *
      * @since           1.3.2
      * @version         1.5.3
-	 *
+     *
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
      * @use             $this->createException()
      *
-     * @param           array 		$collection
+     * @param           array $collection
      *
      * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function updateVolumePricings($collection) {
-		$timeStamp = time();
-		if (!is_array($collection)) {
-			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
-		}
-		$countUpdates = 0;
-		$updatedItems = array();
-		foreach ($collection as $data) {
-			if ($data instanceof BundleEntity\VolumePricing) {
-				$entity = $data;
-				$this->em->persist($entity);
-				$updatedItems[] = $entity;
-				$countUpdates++;
-			}
-			else if (is_object($data)) {
-				if (!property_exists($data, 'id') || !is_numeric($data->id)) {
-					return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
-				}
-				if (!property_exists($data, 'date_updated')) {
-					$data->date_updated = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
-				}
-				if (property_exists($data, 'date_added')) {
-					unset($data->date_added);
-				}
-				$response = $this->getVolumePricing($data->id);
-				if ($response->error->exist) {
-					return $this->createException('EntityDoesNotExist', 'Attribute value ' . $data->id . ' does not exist in database.', 'E:D:002');
-				}
-				$oldEntity = $response->result->set;
+    public function updateVolumePricings($collection)
+    {
+        $timeStamp = time();
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countUpdates = 0;
+        $updatedItems = array();
+        foreach ($collection as $data) {
+            if ($data instanceof BundleEntity\VolumePricing) {
+                $entity = $data;
+                $this->em->persist($entity);
+                $updatedItems[] = $entity;
+                $countUpdates++;
+            } else if (is_object($data)) {
+                if (!property_exists($data, 'id') || !is_numeric($data->id)) {
+                    return $this->createException('InvalidParameterException', 'Parameter must be an object with the "id" property and id property ​must have an integer value.', 'E:S:003');
+                }
+                if (!property_exists($data, 'date_updated')) {
+                    $data->date_updated = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+                }
+                if (property_exists($data, 'date_added')) {
+                    unset($data->date_added);
+                }
+                $response = $this->getVolumePricing($data->id);
+                if ($response->error->exist) {
+                    return $this->createException('EntityDoesNotExist', 'Attribute value ' . $data->id . ' does not exist in database.', 'E:D:002');
+                }
+                $oldEntity = $response->result->set;
 
-				foreach ($data as $column => $value) {
-					$set = 'set' . $this->translateColumnName($column);
-					switch ($column) {
-						case 'product':
-							$response = $this->getProduct($value);
-							if ($response->error->exist) {
-								return $response;
-							}
-							$oldEntity->$set($response->result->set);
-							unset($response);
-							break;
-						case 'id':
-							break;
-						default:
-							$oldEntity->$set($value);
-							break;
-					}
-					if ($oldEntity->isModified()) {
-						$this->em->persist($oldEntity);
-						$countUpdates++;
-						$updatedItems[] = $oldEntity;
-					}
-				}
-			}
-		}
-		if ($countUpdates > 0) {
-			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
-		}
+                foreach ($data as $column => $value) {
+                    $set = 'set' . $this->translateColumnName($column);
+                    switch ($column) {
+                        case 'product':
+                            $response = $this->getProduct($value);
+                            if ($response->error->exist) {
+                                return $response;
+                            }
+                            $oldEntity->$set($response->result->set);
+                            unset($response);
+                            break;
+                        case 'id':
+                            break;
+                        default:
+                            $oldEntity->$set($value);
+                            break;
+                    }
+                    if ($oldEntity->isModified()) {
+                        $this->em->persist($oldEntity);
+                        $countUpdates++;
+                        $updatedItems[] = $oldEntity;
+                    }
+                }
+            }
+        }
+        if ($countUpdates > 0) {
+            $this->em->flush();
+            return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+        }
 
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
-	}
+        return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+    }
 }
 
 /**
  * Change Log
- * **************************************
- * v1.5.9                      30.06.2015
- * Said İmamoğlu
- * **************************************
- * BF :: isFileAssociatedWithProduct() can not count query result && Namespace of fileModel updated.
- * BF :: isLocaleAssociatedWithProduct() can not count query result.
- * BF :: listProductsInCategory() entity namespace problem fixed
- * BF :: getProductCategory() entity namespace problem fixed.
- * **************************************
- * v1.5.8                      28.06.2015
- * Said İmamoğlu
- * **************************************
- * BF :: listAttributesOfProduct() attribute_of_product entity was returning.attribute entity collection returns now.
- * **************************************
- * v1.5.7                      22.06.2015
- * Said İmamoğlu
- * **************************************
- * BF :: insertProducts() entity flush before inserting localizations.
- * BF :: getProductCategoryByUrlKey() new response object support added.
  * **************************************
  * v1.5.6                      15.06.2015
  * Can Berkol
