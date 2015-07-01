@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.6
+ * @version         1.5.7
  *
- * @date            01.06.2015
+ * @date            01.07.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -4375,8 +4375,9 @@ class ProductManagementModel extends CoreModel
      * @name            listProductsInCategory ()
      *
      * @since           1.2.1
-     * @version         1.5.3
+     * @version         1.5.7
      * @author          Can Berkol
+     * @author          Said İmamoğlu
      *
      * @use             $this->getProductCategory()
      *
@@ -4431,12 +4432,18 @@ class ProductManagementModel extends CoreModel
         $q = $this->em->createQuery($qStr);
         $q = $this->addLimit($q, $limit);
         $result = $q->getResult();
-
-        $totalRows = count($result);
+        $products = array();
+        foreach($result as $entity){
+            $id = $entity->getProduct()->getId();
+            if(!isset($products[$id])){
+                $products[$id] = $entity->getProduct();
+            }
+        }
+        $totalRows = count($products);
         if ($totalRows < 1) {
             return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
         }
-        return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+        return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
 
     /**
@@ -6844,6 +6851,11 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.7                      15.06.2015
+ * Said İmamoğlu
+ * **************************************
+ * BF :: listProductsInCategory() method was returning wrong object. Fixed.
  * **************************************
  * v1.5.6                      15.06.2015
  * Can Berkol
