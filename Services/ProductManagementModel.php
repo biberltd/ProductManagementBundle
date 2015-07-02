@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.6
+ * @version         1.5.7
  *
- * @date            01.06.2015
+ * @date            02.07.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -4510,10 +4510,10 @@ class ProductManagementModel extends CoreModel
     }
 
     /**
-     * @name            listProductCategoriesInLocales ()
+     * @name            listProductCategoriesInLocales()
      *
      * @since           1.3.3
-     * @version         1.5.3
+     * @version         1.5.7
      * @author          Can Berkol
      *
      * @use             $this->createException()
@@ -4522,10 +4522,9 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductCategoriesInLocales(array $locales, $sortOrder = null, $limit = null)
-    {
+    public function listProductCategoriesInLocales(array $locales, $sortOrder = null, $limit = null){
         $timeStamp = time();
         $langIds = array();
         $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -4535,14 +4534,14 @@ class ProductManagementModel extends CoreModel
                 break;
             }
             $locale = $response->result->set;
-            $langIds[] = $locale;
+            $langIds[] = $locale->getId();
         }
         $langIds = implode(',', $langIds);
 
-        $qStr = 'SELECT ' . $this->entity['apcl']['alias'] . ', ' . $this->entity['l']['alias'] . ', ' . $this->entity['p']['alias']
-            . ' FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apcl']['alias']
-            . ' JOIN ' . $this->entity['apcl']['alias'] . '.category ' . $this->entity['p']['alias']
-            . ' WHERE ' . $this->entity['apcl']['alias'] . '.locale IN (' . $langIds . ')';
+        $qStr = 'SELECT '.$this->entity['apcl']['alias'].', '.$this->entity['p']['alias']
+            . ' FROM '.$this->entity['apcl']['name'].' '.$this->entity['apcl']['alias']
+            . ' JOIN '.$this->entity['apcl']['alias'].'.category '.$this->entity['p']['alias']
+            . ' WHERE '.$this->entity['apcl']['alias'].'.locale IN ('.$langIds.')';
 
         $oStr = '';
         if ($sortOrder != null) {
@@ -4592,10 +4591,9 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsLiked($likes, $eq, $sortOrder = null, $limit = null)
-    {
+    public function listProductsLiked($likes, $eq, $sortOrder = null, $limit = null){
         //$eq_opts = array('less', 'more', 'between');
 
         $column = $this->entity['p']['alias'] . '.count_like';
@@ -4650,7 +4648,7 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsLikedBetween($likes, $sortOrder = null, $limit = null)
     {
@@ -4670,7 +4668,7 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsLikedLessThan($likes, $sortOrder = null, $limit = null)
     {
@@ -4690,10 +4688,9 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsLikedMoreThan($likes, $sortOrder = null, $limit = null)
-    {
+    public function listProductsLikedMoreThan($likes, $sortOrder = null, $limit = null){
         return $this->listProductsLiked($likes, 'more', $sortOrder, $limit);
     }
 
@@ -4710,10 +4707,9 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listProductsOfBrand($brand, $sortOrder = null, $limit = null)
-    {
+    public function listProductsOfBrand($brand, $sortOrder = null, $limit = null){
         $response = $this->getBrand($brand);
         if ($response->error->exist) {
             return $response;
@@ -4826,7 +4822,7 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsOfCategoryInLocales($category, array $locales, $sortOrder = null, $limit = null)
     {
@@ -5053,7 +5049,7 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsUpdatedBetween($date, $sortOrder = null, $limit = null)
     {
@@ -5073,7 +5069,7 @@ class ProductManagementModel extends CoreModel
      * @param           array $sortOrder
      * @param           array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listProductsUpdatedOn($date, $sortOrder = null, $limit = null)
     {
@@ -5614,7 +5610,7 @@ class ProductManagementModel extends CoreModel
      * @param        array $sortOrder
      * @param        array $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listVolumePricingsOfProduct($product, $filter = array(), $sortOrder = null, $limit = null)
     {
@@ -5648,7 +5644,7 @@ class ProductManagementModel extends CoreModel
      * @param        mixed $product
      * @param        integer $quantity
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function listVolumePricingsOfProductWithClosestQuantity($product, $quantity)
     {
@@ -5811,7 +5807,7 @@ class ProductManagementModel extends CoreModel
      * @param           array $categories
      * @param           mixed $product
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function removeCategoriesFromProduct($categories, $product)
     {
@@ -6776,7 +6772,7 @@ class ProductManagementModel extends CoreModel
      *
      * @param           array $collection
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateVolumePricings($collection)
     {
@@ -6844,6 +6840,12 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.7                      02.07.2015
+ * Can Berkol
+ * **************************************
+ * BF :: listProductCategoriesInLocales() Instead of ids object were being collected. Fixed.
+ *
  * **************************************
  * v1.5.6                      15.06.2015
  * Can Berkol
