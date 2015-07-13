@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.5.8
+ * @version         1.5.9
  *
- * @date            12.07.2015
+ * @date            13.07.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -583,10 +583,10 @@ class ProductManagementModel extends CoreModel
     }
 
     /**
-     * @name            countProductsOfCategory ()
+     * @name            countProductsOfCategory()
      *
      * @since           1.3.3
-     * @version         1.5.3
+     * @version         1.5.9
      *
      * @author          Can Berkol
      * @author          Said İmamoğlu
@@ -598,8 +598,7 @@ class ProductManagementModel extends CoreModel
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function countProductsOfCategory($category, $filter = null)
-    {
+    public function countProductsOfCategory($category, $filter = null){
         $timeStamp = time();
 
         $response = $this->getProductCategory($category);
@@ -609,7 +608,7 @@ class ProductManagementModel extends CoreModel
         $category = $response->result->set;
         $wStr = '';
 
-        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . ')'
+        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . '.product)'
             . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias'];
 
         $filter[] = array(
@@ -2643,7 +2642,7 @@ class ProductManagementModel extends CoreModel
      * @name            isAttributeAssociatedWithProduct ()
      *
      * @since           1.1.7
-     * @version         1.5.3
+     * @version         1.5.9
      * @author          Can Berkol
      *
      * @user            $this->createException
@@ -2671,7 +2670,7 @@ class ProductManagementModel extends CoreModel
         $product = $response->result->set;
         $found = false;
 
-        $qStr = 'SELECT COUNT(' . $this->entity['aop']['alias'] . ')'
+        $qStr = 'SELECT COUNT(' . $this->entity['aop']['alias'] . '.attribute)'
             . ' FROM ' . $this->entity['aop']['name'] . ' ' . $this->entity['aop']['alias']
             . ' WHERE ' . $this->entity['aop']['alias'] . '.attribute = ' . $attribute->getId()
             . ' AND ' . $this->entity['aop']['alias'] . '.product = ' . $product->getId();
@@ -2704,8 +2703,7 @@ class ProductManagementModel extends CoreModel
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function isFileAssociatedWithProduct($file, $product, $bypass = false)
-    {
+    public function isFileAssociatedWithProduct($file, $product, $bypass = false){
         $timeStamp = time();
         $fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
@@ -2744,7 +2742,7 @@ class ProductManagementModel extends CoreModel
      * @name            isLocaleAssociatedWithProduct ()
      *
      * @since           1.2.3
-     * @version         1.5.3
+     * @version         1.5.9
      *
      * @author          Can Berkol
      *
@@ -2756,8 +2754,7 @@ class ProductManagementModel extends CoreModel
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function isLocaleAssociatedWithProduct($locale, $product, $bypass = false)
-    {
+    public function isLocaleAssociatedWithProduct($locale, $product, $bypass = false){
         $timeStamp = time();
         $mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
@@ -2858,8 +2855,7 @@ class ProductManagementModel extends CoreModel
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function isProductAssociatedWithCategory($product, $category, $bypass = false)
-    {
+    public function isProductAssociatedWithCategory($product, $category, $bypass = false){
         $timeStamp = time();
         $response = $this->getProduct($product);
         if ($response->error->exist) {
@@ -2874,7 +2870,7 @@ class ProductManagementModel extends CoreModel
         $category = $response->result->set;
         $found = false;
 
-        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . ')'
+        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . '.product)'
             . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
             . ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId()
             . ' AND ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
@@ -6889,6 +6885,12 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.5.9                      13.07.2015
+ * Can Berkol
+ * **************************************
+ * BF :: Functions with a DQL problem in using COUNT aggregate function fixed. See. 1.5.8 change log.
+ *
  * **************************************
  * v1.5.8                      12.07.2015
  * Can Berkol
