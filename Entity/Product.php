@@ -6,8 +6,8 @@
  * @author      Can Berkol
  * @author		Murat Ünal
  *
- * @version     1.0.4
- * @date        16.05.2014
+ * @version     1.0.5
+ * @date        13.07.2014
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
@@ -132,7 +132,7 @@ class Product extends CoreLocalizableEntity{
     private $site;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
 	 * @ORM\JoinColumn(name="preview_file", referencedColumnName="id", onDelete="CASCADE")
      */
     private $preview_file;
@@ -150,7 +150,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getId()
-     *                  Gets $id property.
      * .
      * @author          Murat Ünal
      * @since           1.0.0
@@ -163,9 +162,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setCountLike ()
-     *                                     Sets the count_like property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @name            setCountLike ()
      *
      * @author          Can Berkol
      *
@@ -188,7 +185,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getCountLike ()
-     *                               Returns the value of count_like property.
      *
      * @author          Can Berkol
      *
@@ -202,9 +198,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setCountView ()
-     *                                     Sets the count_view property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @name            setCountView ()
      *
      * @author          Can Berkol
      *
@@ -241,9 +235,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  set İsCustomizable()
-     *                            Sets the is_customizable property.
-     *                            Updates the data only if stored value and value to be set are different.
+     * @name            setIsCustomizable()
      *
      * @author          Can Berkol
      *
@@ -265,8 +257,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name            get İsCustomizable()
-     *                      Returns the value of is_customizable property.
+     * @name            getIsCustomizable()
      *
      * @author          Can Berkol
      *
@@ -280,9 +271,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setPreviewFile ()
-     *                                       Sets the preview_file property.
-     *                                       Updates the data only if stored value and value to be set are different.
+     * @name            setPreviewFile ()
      *
      * @author          Can Berkol
      *
@@ -305,7 +294,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getPreviewFile ()
-     *                                 Returns the value of preview_file property.
      *
      * @author          Can Berkol
      *
@@ -319,9 +307,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setPrice ()
-     *                                 Sets the price property.
-     *                                 Updates the data only if stored value and value to be set are different.
+     * @name            setPrice ()
      *
      * @author          Can Berkol
      *
@@ -344,7 +330,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getPrice ()
-     *                           Returns the value of price property.
      *
      * @author          Can Berkol
      *
@@ -358,9 +343,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setQuantity ()
-     *                                    Sets the quantity property.
-     *                                    Updates the data only if stored value and value to be set are different.
+     * @name            setQuantity ()
      *
      * @author          Can Berkol
      *
@@ -383,7 +366,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getQuantity ()
-     *                              Returns the value of quantity property.
      *
      * @author          Can Berkol
      *
@@ -397,9 +379,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setSite ()
-     *                                Sets the site property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @name            setSite ()
      *
      * @author          Can Berkol
      *
@@ -422,7 +402,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getSite ()
-     *                          Returns the value of site property.
      *
      * @author          Can Berkol
      *
@@ -436,9 +415,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setSku ()
-     *                               Sets the sku property.
-     *                               Updates the data only if stored value and value to be set are different.
+     * @name            setSku ()
      *
      * @author          Can Berkol
      *
@@ -461,7 +438,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getSku ()
-     *                         Returns the value of sku property.
      *
      * @author          Can Berkol
      *
@@ -475,9 +451,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setSortOrder ()
-     *                                     Sets the sort_order property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @name            setSortOrder ()
      *
      * @author          Can Berkol
      *
@@ -500,7 +474,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getSortOrder ()
-     *                               Returns the value of sort_order property.
      *
      * @author          Can Berkol
      *
@@ -514,9 +487,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setStatus ()
-     *                                  Sets the status property.
-     *                                  Updates the data only if stored value and value to be set are different.
+     * @name            setStatus ()
      *
      * @author          Can Berkol
      *
@@ -539,7 +510,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getStatus ()
-     *                  Returns the value of status property.
      *
      * @author          Can Berkol
      *
@@ -554,8 +524,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            setType ()
-     *                  Sets the type property.
-     *                  Updates the data only if stored value and value to be set are different.
      *
      * @author          Can Berkol
      *
@@ -578,7 +546,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getType ()
-     *                  Returns the value of type property.
      *
      * @author          Can Berkol
      *
@@ -593,8 +560,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            setSupplier ()
-     *                  Sets the supplier property.
-     *                  Updates the data only if stored value and value to be set are different.
      *
      * @author          Can Berkol
      *
@@ -617,7 +582,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getSupplier ()
-     *                              Returns the value of supplier property.
      *
      * @author          Can Berkol
      *
@@ -631,9 +595,7 @@ class Product extends CoreLocalizableEntity{
     }
 
     /**
-     * @name                  setDiscountPrice ()
-     *                                         Sets the discount_price property.
-     *                                         Updates the data only if stored value and value to be set are different.
+     * @name            setDiscountPrice ()
      *
      * @author          Can Berkol
      *
@@ -656,7 +618,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getDiscountPrice ()
-     *                  Returns the value of discount_price property.
      *
      * @author          Can Berkol
      *
@@ -671,8 +632,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            setBrand ()
-     *                  Sets the brand property.
-     *                  Updates the data only if stored value and value to be set are different.
      *
      * @author          Can Berkol
      *
@@ -710,8 +669,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            setExtraInfo()
-     *                  Sets the extra_info property.
-     *                  Updates the data only if stored value and value to be set are different.
      *
      * @author          Can Berkol
      *
@@ -734,7 +691,6 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @name            getExtraInfo()
-     *                  Returns the value of extra_info property.
      *
      * @author          Can Berkol
      *
@@ -749,6 +705,12 @@ class Product extends CoreLocalizableEntity{
 }
 /**
  * Change Log:
+ * **************************************
+ * v1.0.5                      13.07.2015
+ * Can Berkol
+ * **************************************
+ * BF ::  cascade={"persist"} added to preview_file ManyToOne
+ *
  * **************************************
  * v1.0.4                     Can Berkol
  * 16.05.2014
