@@ -6,8 +6,8 @@
  * @author      Can Berkol
  * @author		Murat Ünal
  *
- * @version     1.0.2
- * @date        12.01.2014
+ * @version     1.0.3
+ * @date        12.07.2015
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
