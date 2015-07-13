@@ -395,7 +395,7 @@ class ProductManagementModel extends CoreModel
      * @name            addProductToCategories ()
      *
      * @since           1.2.5
-     * @version         1.5.3
+     * @version         1.5.9
      *
      * @author          Can Berkol
      * @author          Said İmamoğlu
@@ -408,8 +408,7 @@ class ProductManagementModel extends CoreModel
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addProductToCategories($product, $collection)
-    {
+    public function addProductToCategories($product, $collection){
         $timeStamp = time();
         $response = $this->getProduct($product);
         if ($response->error->exist) {
@@ -422,10 +421,11 @@ class ProductManagementModel extends CoreModel
         foreach ($collection as $category) {
             $response = $this->getProductCategory($category);
             if ($response->error->exist) {
-                break;
+                continue;
             }
+			$category = $response->result->set;
             if ($this->isProductAssociatedWithCategory($product, $category, true)) {
-                break;
+				continue;
             }
             /** prepare object */
             $cop = new BundleEntity\CategoriesOfProduct();
@@ -6890,6 +6890,7 @@ class ProductManagementModel extends CoreModel
  * Can Berkol
  * **************************************
  * BF :: Functions with a DQL problem in using COUNT aggregate function fixed. See. 1.5.8 change log.
+ * BF :: addProductToCategories was tryingto set an integer insteadof ProductCategory object. Fixed.
  *
  * **************************************
  * v1.5.8                      12.07.2015
