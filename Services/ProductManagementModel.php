@@ -4377,11 +4377,7 @@ class ProductManagementModel extends CoreModel
      * @name            listProductsInCategory ()
      *
      * @since           1.2.1
-<<<<<<< HEAD
-     * @version         1.5.7
-=======
      * @version         1.5.8
->>>>>>> 4b23b6b541f73988e6a1be3f35f877ecc9800ba6
      * @author          Can Berkol
      * @author          Said İmamoğlu
      *
@@ -4393,66 +4389,6 @@ class ProductManagementModel extends CoreModel
      *
      * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-<<<<<<< HEAD
-    public function listProductsInCategory(array $categories, $sortOrder = null, $limit = null)
-    {
-        $timeStamp = time();
-        $catIds = array();
-        foreach ($categories as $category) {
-            $response = $this->getProductCategory($category);
-            if ($response->error->exist) {
-                continue;
-            }
-            $category = $response->result->set;
-            $catIds[] = $category->getId();
-        }
-        if (empty($catIds)) {
-            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-        }
-        $catIds = implode(',', $catIds);
-
-        $qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['p']['alias']
-            . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
-            . ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
-            . ' WHERE ' . $this->entity['cop']['alias'] . '.category IN (' . $catIds . ')';
-
-        $oStr = '';
-        if ($sortOrder != null) {
-            foreach ($sortOrder as $column => $direction) {
-                switch ($column) {
-                    case 'id':
-                    case 'quantity':
-                    case 'price':
-                    case 'sku':
-                    case 'sort_order':
-                    case 'date_added':
-                    case 'date_updated':
-                        $column = $this->entity['p']['alias'] . '.' . $column;
-                        break;
-                }
-                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
-            }
-            $oStr = rtrim($oStr, ', ');
-            $oStr = ' ORDER BY ' . $oStr . ' ';
-        }
-        $qStr .= $oStr;
-        $q = $this->em->createQuery($qStr);
-        $q = $this->addLimit($q, $limit);
-        $result = $q->getResult();
-        $products = array();
-        foreach($result as $entity){
-            $id = $entity->getProduct()->getId();
-            if(!isset($products[$id])){
-                $products[$id] = $entity->getProduct();
-            }
-        }
-        $totalRows = count($products);
-        if ($totalRows < 1) {
-            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
-        }
-        return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-    }
-=======
 	public function listProductsInCategory(array $categories, $sortOrder = null, $limit = null){
 		$timeStamp = time();
 		$catIds = array();
@@ -4512,7 +4448,6 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse($collection, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
->>>>>>> 4b23b6b541f73988e6a1be3f35f877ecc9800ba6
 
     /**
      * @name            listProductsInLocales ()
