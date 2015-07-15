@@ -2917,7 +2917,7 @@ class ProductManagementModel extends CoreModel
 			$id = $entry->getLocale()->getId();
 			if (!isset($unique[$id])) {
 				$locales[] = $entry->getLocale();
-				$unique[$id] = $entry->getLocale();
+				$unique[$id] = '';
 			}
 		}
 		unset($unique);
@@ -2960,7 +2960,7 @@ class ProductManagementModel extends CoreModel
 			$id = $entry->getLocale()->getId();
 			if (!isset($unique[$id])) {
 				$locales[] = $entry->getLocale();
-				$unique[$id] = $entry->getLocale();
+				$unique[$id] = '';
 			}
 		}
 		unset($unique);
@@ -3110,7 +3110,8 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entity) {
 			$id = $entity->getAttribute()->getId();
 			if (!isset($entities[$id])) {
-				$entities[$id] = $entity->getAttribute();
+                $unique[$id] = '';
+				$entities[] = $entity->getAttribute();
 			}
 		}
 		$totalRows = count($entities);
@@ -3386,6 +3387,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getAttribute()->getId();
 			if (!isset($unique[$id])) {
+                $unique[$id] = '';
 				$entities[] = $entry->getAttribute();
 			}
 		}
@@ -3888,6 +3890,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getAttribute()->getId();
 			if (!isset($unique[$id])) {
+                $unique[$id] = '';
 				$entities[] = $entry->getAttribute();
 			}
 		}
@@ -3958,6 +3961,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getAttribute()->getId();
 			if (!isset($unique[$id])) {
+                $unique[$id] = '';
 				$attributes[] = $entry;
 			}
 		}
@@ -4216,6 +4220,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getProduct()->getId();
 			if (!isset($entities[$id])) {
+                $unique[$id] = '';
 				$entities[$id] = $entry->getProduct();
 			}
 		}
@@ -4433,13 +4438,15 @@ class ProductManagementModel extends CoreModel
 		$unique = array();
 		if(count($result)){
 			foreach($result as $item){
-				if(!isset($unique[$item->getProduct->getId()])){
-					$unique[$item->getProduct()->getId()] = $item->getProduct();
+                $id = $item->getProduct()->getId();
+				if(!isset($unique[$id])){
+					$unique[$id] = '';
 					$collection[] = $item->getProduct();
 					$totalRows++;
 				}
 			}
 		}
+        unset($unique);
 		unset($result);
 		if ($totalRows < 1) {
 			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
@@ -5594,6 +5601,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getVolumePricing()->getId();
 			if (!isset($unique[$id])) {
+                $unique[$id] = '';
 				$entities[] = $entry->getVolumePricing();
 			}
 		}
