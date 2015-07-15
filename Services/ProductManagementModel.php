@@ -4371,7 +4371,7 @@ class ProductManagementModel extends CoreModel
 	 * @name            listProductsInCategory ()
 	 *
 	 * @since           1.2.1
-	 * @version         1.5.8
+	 * @version         1.6.0
 	 * @author          Can Berkol
 	 * @author          Said İmamoğlu
 	 *
@@ -4399,7 +4399,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$catIds = implode(',', $catIds);
 
-		$qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['p']['alias']
+		$qStr = 'SELECT ' . $this->entity['cop']['alias']
 			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
 			. ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
 			. ' WHERE ' . $this->entity['cop']['alias'] . '.category IN (' . $catIds . ')';
@@ -4430,10 +4430,14 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = 0;
 		$collection = array();
+		$unique = array();
 		if(count($result)){
 			foreach($result as $item){
-				$collection[$item->getProduct()->getId()] = $item->getProduct();
-				$totalRows++;
+				if(!isset($unique[$item->getProduct->getId()])){
+					$unique[$item->getProduct()->getId()] = $item->getProduct();
+					$collection[] = $item->getProduct();
+					$totalRows++;
+				}
 			}
 		}
 		unset($result);
@@ -6887,11 +6891,12 @@ class ProductManagementModel extends CoreModel
 /**
  * Change Log
  * **************************************
- * v1.6.6                      16.07.2015
+ * v1.6.0                      16.07.2015
  * Can Berkol
  * **************************************
  * BF :: getProductCategory() fixed.
  * BF :: getProductCategoryByUrlKey() fixed.
+ * BF :: listProductsInCategory() fixed.
  *
  * **************************************
  * v1.5.9                      13.07.2015
