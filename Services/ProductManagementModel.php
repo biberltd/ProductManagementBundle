@@ -1453,7 +1453,9 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		$response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
-
+        if ($response->error->exist) {
+            return $response;
+        }
 		$response->stats->execution->start = $timeStamp;
 		$response->stats->execution->end = time();
 		$response->result->set = $response->result->set[0];
@@ -4225,7 +4227,7 @@ class ProductManagementModel extends CoreModel
 			$id = $entry->getProduct()->getId();
 			if (!isset($entities[$id])) {
                 $unique[$id] = '';
-				$entities[$id] = $entry->getProduct();
+				$entities[] = $entry->getProduct();
 			}
 		}
 		$totalRows = count($entities);
