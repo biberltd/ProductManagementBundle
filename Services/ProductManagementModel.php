@@ -1410,8 +1410,9 @@ class ProductManagementModel extends CoreModel
 	 * @name            getProductByUrlKey ()
 	 *
 	 * @since           1.5.3
-	 * @version         1.5.3
+	 * @version         1.6.0
 	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->listProducts()
 	 * @use             $this->createException()
@@ -1455,6 +1456,7 @@ class ProductManagementModel extends CoreModel
 
 		$response->stats->execution->start = $timeStamp;
 		$response->stats->execution->end = time();
+		$response->result->set = $response->result->set[0];
 
 		return $response;
 	}
@@ -1500,60 +1502,7 @@ class ProductManagementModel extends CoreModel
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 
-	/**
-	 * @name            getProductAttributeByUrlKey ()
-	 *
-	 * @since           1.5.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $urlKey
-	 * @param            mixed $language
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-	 */
-	public function getProductAttributeByUrlKey($urlKey, $language = null)
-	{
-		$timeStamp = time();
-		if (!is_string($urlKey)) {
-			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
-		}
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['pal']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
-				)
-			)
-		);
-		if (!is_null($language)) {
-			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-			$response = $mModel->getLanguage($language);
-			if (!$response->error->exist) {
-				$filter[] = array(
-					'glue' => 'and',
-					'condition' => array(
-						array(
-							'glue' => 'and',
-							'condition' => array('column' => $this->entity['pal']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
-						)
-					)
-				);
-			}
-		}
-		$response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
-
-		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
-
-		return $response;
-	}
-
-	/**
+    /**
 	 * @name            getProductAttributeValue ()
 	 *
 	 * @since           1.0.5
@@ -1581,7 +1530,62 @@ class ProductManagementModel extends CoreModel
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 
-	/**
+    /**
+     * @name            getProductAttributeByUrlKey ()
+     *
+     * @since           1.5.3
+     * @version         1.6.0
+     * @author          Can Berkol
+     * @author          Said İmamoğlu
+     *
+     * @use             $this->listProducts()
+     * @use             $this->createException()
+     *
+     * @param           mixed $urlKey
+     * @param            mixed $language
+     *
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getProductAttributeByUrlKey($urlKey, $language = null)
+    {
+        $timeStamp = time();
+        if (!is_string($urlKey)) {
+            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pal']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+                )
+            )
+        );
+        if (!is_null($language)) {
+            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+            $response = $mModel->getLanguage($language);
+            if (!$response->error->exist) {
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['pal']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+                        )
+                    )
+                );
+            }
+        }
+        $response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
+
+        $response->stats->execution->start = $timeStamp;
+        $response->stats->execution->end = time();
+        $response->result->set  = $response->result->set[0];
+
+        return $response;
+    }
+
+    /**
 	 * @name            getProductBySku ()
 	 *
 	 * @since           1.0.3
@@ -6900,12 +6904,13 @@ class ProductManagementModel extends CoreModel
  * Change Log
  * **************************************
  * v1.6.0                      16.07.2015
- * Can Berkol
+ * Can Berkol & Said İmamoğlu
  * **************************************
  * BF :: getProductCategory() fixed.
  * BF :: getProductCategoryByUrlKey() fixed.
  * BF :: listProductsInCategory() fixed.
- *
+ * BF :: getProductByUrlKey() fixed. (Said)
+ * BF :: getProductAttributeByUrlKey() fixed. (Said)
  * **************************************
  * v1.5.9                      13.07.2015
  * Can Berkol
