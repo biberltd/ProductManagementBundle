@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.6.0
+ * @version         1.6.1
  *
- * @date            15.07.2015
+ * @date            21.07.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -4534,7 +4534,7 @@ class ProductManagementModel extends CoreModel
 	 * @name            listProductCategoriesInLocales()
 	 *
 	 * @since           1.3.3
-	 * @version         1.5.7
+	 * @version         1.6.1
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->createException()
@@ -4559,7 +4559,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$langIds = implode(',', $langIds);
 
-		$qStr = 'SELECT '.$this->entity['apcl']['alias'].', '.$this->entity['p']['alias']
+		$qStr = 'SELECT '.$this->entity['apcl']['alias']
 			. ' FROM '.$this->entity['apcl']['name'].' '.$this->entity['apcl']['alias']
 			. ' JOIN '.$this->entity['apcl']['alias'].'.category '.$this->entity['p']['alias']
 			. ' WHERE '.$this->entity['apcl']['alias'].'.locale IN ('.$langIds.')';
@@ -6904,6 +6904,12 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.6.1                      21.07.2015
+ * Can Berkol
+ * *************************************
+ * BF :: listProductCategoriesInLocales() was not returning all items. Fixed.
+ *
  * **************************************
  * v1.6.0                      16.07.2015
  * Can Berkol & Said İmamoğlu
