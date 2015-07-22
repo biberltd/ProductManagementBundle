@@ -10,7 +10,7 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.6.2
+ * @version         1.6.3
  *
  * @date            22.07.2015
  *
@@ -3115,7 +3115,7 @@ class ProductManagementModel extends CoreModel
 		$entities = array();
 		foreach ($result as $entity) {
 			$id = $entity->getAttribute()->getId();
-			if (!isset($entities[$id])) {
+			if (!isset($unique[$id])) {
                 $unique[$id] = '';
 				$entities[] = $entity->getAttribute();
 			}
@@ -4224,7 +4224,7 @@ class ProductManagementModel extends CoreModel
 		$entities = array();
 		foreach ($result as $entry) {
 			$id = $entry->getProduct()->getId();
-			if (!isset($entities[$id])) {
+			if (!isset($unique[$id])) {
                 $unique[$id] = '';
 				$entities[] = $entry->getProduct();
 			}
@@ -6908,6 +6908,7 @@ class ProductManagementModel extends CoreModel
  * Can Berkol
  * *************************************
  * BF :: listChildCategoriesOfProductCategoryWithPreviewImage() object was being sent to filter value.
+ * BF :: list Methods now retrn unique values.
  *
  * **************************************
  * v1.6.1                      21.07.2015
