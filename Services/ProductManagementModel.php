@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.6.1
+ * @version         1.6.2
  *
- * @date            21.07.2015
+ * @date            22.07.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -3497,7 +3497,7 @@ class ProductManagementModel extends CoreModel
 	 * @name            listChildCategoriesOfProductCategoryWithPreviewImage ()
 	 *
 	 * @since           1.2.9
-	 * @version         1.5.3
+	 * @version         1.6.3
 	 * @author          Can Berkol
 	 *
 	 * @uses            $this->listProductCategories()
@@ -3508,8 +3508,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listChildCategoriesOfProductCategoryWithPreviewImage($category, $sortOrder = null, $limit = null)
-	{
+	public function listChildCategoriesOfProductCategoryWithPreviewImage($category, $sortOrder = null, $limit = null){
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -3517,7 +3516,7 @@ class ProductManagementModel extends CoreModel
 		$category = $response->result->set;
 
 		$column = $this->entity['pc']['alias'] . '.parent';
-		$condition = array('column' => $column, 'comparison' => 'eq', 'value' => $category);
+		$condition = array('column' => $column, 'comparison' => 'eq', 'value' => $category->getId());
 		$filter[] = array(
 			'glue' => 'and',
 			'condition' => array(
@@ -6904,6 +6903,12 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.6.3                      22.07.2015
+ * Can Berkol
+ * *************************************
+ * BF :: listChildCategoriesOfProductCategoryWithPreviewImage() object was being sent to filter value.
+ *
  * **************************************
  * v1.6.1                      21.07.2015
  * Can Berkol
