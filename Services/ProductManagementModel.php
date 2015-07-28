@@ -94,7 +94,7 @@ class ProductManagementModel extends CoreModel
 	 * @name            addAttributesToProduct ()
 	 *
 	 * @since           1.1.7
-	 * @version         1.5.3
+	 * @version         1.6.4
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->createException()
@@ -141,7 +141,7 @@ class ProductManagementModel extends CoreModel
 			/** Check if association exists */
 			if (!$this->isAttributeAssociatedWithProduct($item['attr'], $product, true)) {
 				$aop = new BundleEntity\AttributesOfProduct();
-				$aop->setAttribute($item['attribute'])->setProduct($product)->setDateAdded($now)->setPriceFactorType('a');
+				$aop->setAttribute($item['attr'])->setProduct($product)->setDateAdded($now)->setPriceFactorType('a');
 				if (!is_null($item['sort_order'])) {
 					$aop->setSortOrder($item['sort_order']);
 				} else {
@@ -3680,7 +3680,68 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+	/**
+	 * @name            listLocalizationsOfProduct()
+	 *
+	 * @since           1.6.4
+	 * @version         1.6.4
+	 * @author          Can Berkol
+	 *
+	 * @use             $this->createException()
+	 *
+	 * @param           mixed $product
+	 * @param           array $sortOrder
+	 * @param           array $limit
+	 *
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listLocalizationsOfProduct($product, $sortOrder = null, $limit = null){
+		$timeStamp = time();
+		if (!is_array($sortOrder) && !is_null($sortOrder)) {
+			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+		}
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$product = $response->result->set;
+		$oStr = $wStr = $gStr = $fStr = '';
 
+		$qStr = 'SELECT ' . $this->entity['pl']['alias']
+			. ' FROM ' . $this->entity['pl']['name'] . ' ' . $this->entity['pl']['alias']
+			. ' JOIN ' . $this->entity['pl']['alias'] . '.product ' . $this->entity['p']['alias'];
+
+		if (!is_null($sortOrder)) {
+			foreach ($sortOrder as $column => $direction) {
+				switch ($column) {
+					case 'name':
+					case 'description':
+					case 'meta_keywords':
+					case 'meta_description':
+						$column = $this->entity['pl']['alias'] . '.' . $column;
+						break;
+				}
+				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+			}
+			$oStr = rtrim($oStr, ', ');
+			if(!empty($oStr)){
+				$oStr = ' ORDER BY ' . $oStr . ' ';
+			}
+		}
+
+		$wStr .= ' WHERE '.$this->entity['pl']['alias'].'.product = '.$product->getId();
+
+		$qStr .= $wStr . $gStr . $oStr;
+		$q = $this->em->createQuery($qStr);
+		$q = $this->addLimit($q, $limit);
+		$result = $q->getResult();
+
+		$totalRows = count($result);
+		if ($totalRows < 1) {
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+		}
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+	}
 	/**
 	 * @name            listNotCustomizableProducts ()
 	 *
@@ -6904,11 +6965,18 @@ class ProductManagementModel extends CoreModel
 /**
  * Change Log
  * **************************************
+ * v1.6.4                      18.07.2015
+ * Can Berkol
+ * *************************************
+ * BF :: addAttributesToProduct() 'attribute key changed to 'aatr'
+ * FR :: listLocalizationsOfProduct() method added.
+ *
+ * **************************************
  * v1.6.3                      22.07.2015
  * Can Berkol
  * *************************************
  * BF :: listChildCategoriesOfProductCategoryWithPreviewImage() object was being sent to filter value.
- * BF :: list Methods now retrn unique values.
+ * BF :: list Methods now return unique values.
  *
  * **************************************
  * v1.6.1                      21.07.2015
