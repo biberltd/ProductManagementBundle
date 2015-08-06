@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.6.3
+ * @version         1.6.5
  *
- * @date            22.07.2015
+ * @date            06.08.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -4811,10 +4811,10 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsOfCategory ()
+	 * @name            listProductsOfCategory()
 	 *
 	 * @since           1.0.9
-	 * @version         1.5.3
+	 * @version         1.6.5
 	 * @author          Can Berkol
 	 *
 	 * @use             $this->getProduct()
@@ -4825,8 +4825,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsOfCategory($category, $sortOrder = null, $limit = null)
-	{
+	public function listProductsOfCategory($category, $sortOrder = null, $limit = null){
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
@@ -4875,6 +4874,9 @@ class ProductManagementModel extends CoreModel
 			$collection[] = $item->getProduct()->getId();
 		}
 		unset($result);
+		if(count($collection) < 1){
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+		}
 		$filter[] = array(
 			'glue' => 'and',
 			'condition' => array(
@@ -6964,6 +6966,12 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.6.5                      06.08.2015
+ * Can Berkol
+ * **************************************
+ * BF :: listProductsOfCategory() now returns error if no products found.
+ *
  * **************************************
  * v1.6.4                      18.07.2015
  * Can Berkol
