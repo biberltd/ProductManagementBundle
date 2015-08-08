@@ -10,9 +10,9 @@
  *
  * @copyright       Biber Ltd. (www.biberltd.com)
  *
- * @version         1.6.5
+ * @version         1.6.7
  *
- * @date            06.08.2015
+ * @date            08.08.2015
  *
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
@@ -3971,7 +3971,7 @@ class ProductManagementModel extends CoreModel
 	 * @name            listProductAttributeValues ()
 	 *
 	 * @since           1.2.2
-	 * @version         1.5.3
+	 * @version         1.6.7
 	 *
 	 * @author          Can Berkol
 	 * @author          Said İmamoğlu
@@ -4021,21 +4021,11 @@ class ProductManagementModel extends CoreModel
 		$q = $this->addLimit($q, $limit);
 
 		$result = $q->getResult();
-
-		$attributes = array();
-		$unique = array();
-		foreach ($result as $entry) {
-			$id = $entry->getAttribute()->getId();
-			if (!isset($unique[$id])) {
-                $unique[$id] = '';
-				$attributes[] = $entry;
-			}
-		}
-		$totalRows = count($attributes);
+		$totalRows = count($result);
 		if ($totalRows < 1) {
 			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
 		}
-		return new ModelResponse($attributes, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 
 	/**
@@ -6966,6 +6956,11 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.6.7                      08.08.2015
+ * Said İmamoğlu
+ * **************************************
+ * BF :: listProductAttributeValues() now returns whole table properties.
  * **************************************
  * v1.6.5                      06.08.2015
  * Can Berkol
