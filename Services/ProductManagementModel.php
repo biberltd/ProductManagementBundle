@@ -1453,9 +1453,9 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		$response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
-        if ($response->error->exist) {
-            return $response;
-        }
+		if ($response->error->exist) {
+			return $response;
+		}
 		$response->stats->execution->start = $timeStamp;
 		$response->stats->execution->end = time();
 		$response->result->set = $response->result->set[0];
@@ -1504,7 +1504,7 @@ class ProductManagementModel extends CoreModel
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 
-    /**
+	/**
 	 * @name            getProductAttributeValue ()
 	 *
 	 * @since           1.0.5
@@ -1532,62 +1532,62 @@ class ProductManagementModel extends CoreModel
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 
-    /**
-     * @name            getProductAttributeByUrlKey ()
-     *
-     * @since           1.5.3
-     * @version         1.6.0
-     * @author          Can Berkol
-     * @author          Said İmamoğlu
-     *
-     * @use             $this->listProducts()
-     * @use             $this->createException()
-     *
-     * @param           mixed $urlKey
-     * @param            mixed $language
-     *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-    public function getProductAttributeByUrlKey($urlKey, $language = null)
-    {
-        $timeStamp = time();
-        if (!is_string($urlKey)) {
-            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
-        }
-        $filter[] = array(
-            'glue' => 'and',
-            'condition' => array(
-                array(
-                    'glue' => 'and',
-                    'condition' => array('column' => $this->entity['pal']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
-                )
-            )
-        );
-        if (!is_null($language)) {
-            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
-            $response = $mModel->getLanguage($language);
-            if (!$response->error->exist) {
-                $filter[] = array(
-                    'glue' => 'and',
-                    'condition' => array(
-                        array(
-                            'glue' => 'and',
-                            'condition' => array('column' => $this->entity['pal']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
-                        )
-                    )
-                );
-            }
-        }
-        $response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
+	/**
+	 * @name            getProductAttributeByUrlKey ()
+	 *
+	 * @since           1.5.3
+	 * @version         1.6.0
+	 * @author          Can Berkol
+	 * @author          Said İmamoğlu
+	 *
+	 * @use             $this->listProducts()
+	 * @use             $this->createException()
+	 *
+	 * @param           mixed $urlKey
+	 * @param            mixed $language
+	 *
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function getProductAttributeByUrlKey($urlKey, $language = null)
+	{
+		$timeStamp = time();
+		if (!is_string($urlKey)) {
+			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+		}
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['pal']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+				)
+			)
+		);
+		if (!is_null($language)) {
+			$mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+			$response = $mModel->getLanguage($language);
+			if (!$response->error->exist) {
+				$filter[] = array(
+					'glue' => 'and',
+					'condition' => array(
+						array(
+							'glue' => 'and',
+							'condition' => array('column' => $this->entity['pal']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+						)
+					)
+				);
+			}
+		}
+		$response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
 
-        $response->stats->execution->start = $timeStamp;
-        $response->stats->execution->end = time();
-        $response->result->set  = $response->result->set[0];
+		$response->stats->execution->start = $timeStamp;
+		$response->stats->execution->end = time();
+		$response->result->set  = $response->result->set[0];
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
+	/**
 	 * @name            getProductBySku ()
 	 *
 	 * @since           1.0.3
@@ -2892,6 +2892,52 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
+	 * @name	listActiveProducts()
+	 * @author	Said İmamoğlu
+	 * @since	1.6.8
+	 * @version	1.6.8
+	 * @param null $filter
+	 * @param null $sortOrder
+	 * @param null $limit
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listActiveProducts($filter = null,$sortOrder = null, $limit= null){
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' =>'a' ),
+		);
+		return $this->listProducts($filter,$sortOrder,$limit);
+	}
+	/**
+	 * @name	listActiveProductsOfSite()
+	 * @author	Said İmamoğlu
+	 * @since	1.6.8
+	 * @version	1.6.8
+	 * @param	$site
+	 * @param null $filter
+	 * @param null $sortOrder
+	 * @param null $limit
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listActiveProductsOfSite($site,$filter = null,$sortOrder = null, $limit= null){
+		$SMMModel = new SMMService\SiteManagementModel($this->kernel);
+		$response = $SMMModel->getSite($site);
+		if ($response->error->exist) {
+			return $response;
+		}
+		$site = $response->result->set->getId();
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.site', 'comparison' => '=', 'value' => $site ),
+		);
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' =>'a' ),
+		);
+		return $this->listProducts($filter,$sortOrder,$limit);
+	}
+
+	/**
 	 * @name            listActiveLocalesOfProduct ()
 	 *
 	 * @since           1.0.3
@@ -3116,7 +3162,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entity) {
 			$id = $entity->getAttribute()->getId();
 			if (!isset($unique[$id])) {
-                $unique[$id] = '';
+				$unique[$id] = '';
 				$entities[] = $entity->getAttribute();
 			}
 		}
@@ -3393,7 +3439,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getAttribute()->getId();
 			if (!isset($unique[$id])) {
-                $unique[$id] = '';
+				$unique[$id] = '';
 				$entities[] = $entry->getAttribute();
 			}
 		}
@@ -3681,6 +3727,23 @@ class ProductManagementModel extends CoreModel
 		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 	/**
+	 * @name	listInactiveProducts()
+	 * @author	Said İmamoğlu
+	 * @since	1.6.8
+	 * @version	1.6.8
+	 * @param null $filter
+	 * @param null $sortOrder
+	 * @param null $limit
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listInactiveProducts($filter = null,$sortOrder = null, $limit= null){
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' =>'i' ),
+		);
+		return $this->listProducts($filter,$sortOrder,$limit);
+	}
+	/**
 	 * @name            listLocalizationsOfProduct()
 	 *
 	 * @since           1.6.4
@@ -3956,7 +4019,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getAttribute()->getId();
 			if (!isset($unique[$id])) {
-                $unique[$id] = '';
+				$unique[$id] = '';
 				$entities[] = $entry->getAttribute();
 			}
 		}
@@ -4276,7 +4339,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getProduct()->getId();
 			if (!isset($unique[$id])) {
-                $unique[$id] = '';
+				$unique[$id] = '';
 				$entities[] = $entry->getProduct();
 			}
 		}
@@ -4494,7 +4557,7 @@ class ProductManagementModel extends CoreModel
 		$unique = array();
 		if(count($result)){
 			foreach($result as $item){
-                $id = $item->getProduct()->getId();
+				$id = $item->getProduct()->getId();
 				if(!isset($unique[$id])){
 					$unique[$id] = '';
 					$collection[] = $item->getProduct();
@@ -4502,7 +4565,7 @@ class ProductManagementModel extends CoreModel
 				}
 			}
 		}
-        unset($unique);
+		unset($unique);
 		unset($result);
 		if ($totalRows < 1) {
 			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
@@ -5659,7 +5722,7 @@ class ProductManagementModel extends CoreModel
 		foreach ($result as $entry) {
 			$id = $entry->getVolumePricing()->getId();
 			if (!isset($unique[$id])) {
-                $unique[$id] = '';
+				$unique[$id] = '';
 				$entities[] = $entry->getVolumePricing();
 			}
 		}
@@ -6956,6 +7019,11 @@ class ProductManagementModel extends CoreModel
 
 /**
  * Change Log
+ * **************************************
+ * v1.6.8                      26.08.2015
+ * Said İmamoğlu
+ * **************************************
+ * FR :: Listing active and inactive products implemented.
  * **************************************
  * v1.6.7                      08.08.2015
  * Said İmamoğlu
