@@ -1631,7 +1631,6 @@ class ProductManagementModel extends CoreModel
 				$result = $this->em->getRepository($this->entity['pc']['name'])->findOneBy(array('id' => $category));
 				break;
 			case is_string($category):
-
 				$response = $this->getProductCategoryByUrlKey($category);
 				if (!$response->error->exist) {
 					$result = $response->result->set;
@@ -1870,7 +1869,7 @@ class ProductManagementModel extends CoreModel
 					$data->date_added = $now;
 				}
 				if (!property_exists($data, 'date_updated')) {
-					$data->date_updated = nnow;
+					$data->date_updated = $now;
 				}
 				if (!property_exists($data, 'count_children')) {
 					$data->count_children = 0;
@@ -2232,7 +2231,7 @@ class ProductManagementModel extends CoreModel
 					$data->date_added = $now;
 				}
 				if (!property_exists($data, 'date_updated')) {
-					$data->date_updated = nnow;
+					$data->date_updated = $now;
 				}
 				if (!property_exists($data, 'count_children')) {
 					$data->count_children = 0;
