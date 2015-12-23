@@ -1882,9 +1882,6 @@ class ProductManagementModel extends CoreModel
 							$entity->$set($value);
 							break;
 					}
-					if ($localeSet) {
-						$localizations[$countInserts]['entity'] = $entity;
-					}
 				}
 				$this->em->persist($entity);
 				$insertedItems[] = $entity;
@@ -6374,7 +6371,7 @@ class ProductManagementModel extends CoreModel
 		$updatedItems = array();
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
-			if ($data instanceof BundleEntity\ProductAttribute) {
+			if ($data instanceof BundleEntity\Brand) {
 				$entity = $data;
 				$this->em->persist($entity);
 				$updatedItems[] = $entity;
