@@ -1,4 +1,12 @@
 <?php
+/**
+ * @author		Can Berkol
+ *
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
+ *
+ * @date        23.12.2015
+ */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
@@ -21,71 +29,59 @@ class Brand extends CoreEntity
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /** 
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @var string
      */
     private $name;
 
     /** 
      * @ORM\Column(type="text", nullable=true)
+     * @var string
      */
     private $logo;
 
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_updated;
 
     /** 
      * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
     public $date_removed;
 
     /** 
-     * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product", mappedBy="brand")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="brand")
+     * @var array
      */
     private $products;
 
     /**
-     * @name            getId()
-     *                      Returns the value of id property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->id
+     * @return mixed
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @name                  setLogo ()
-     *                                Sets the logo property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @param string $logo
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $logo
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setLogo($logo) {
+    public function setLogo(\string $logo) {
         if($this->setModified('logo', $logo)->isModified()) {
             $this->logo = $logo;
         }
@@ -94,37 +90,18 @@ class Brand extends CoreEntity
     }
 
     /**
-     * @name            getLogo ()
-     *                          Returns the value of logo property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->logo
+     * @return string
      */
     public function getLogo() {
         return $this->logo;
     }
 
     /**
-     * @name                  setName ()
-     *                                Sets the name property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @param string $name
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $name
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setName($name) {
+    public function setName(\string $name) {
         if($this->setModified('name', $name)->isModified()) {
             $this->name = $name;
         }
@@ -133,37 +110,18 @@ class Brand extends CoreEntity
     }
 
     /**
-     * @name            getName ()
-     *                  Returns the value of name property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->name
+     * @return string
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @name            setProducts ()
-     *                  Sets the products property.
-     *                  Updates the data only if stored value and value to be set are different.
+     * @param array $products
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $products
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setProducts($products) {
+    public function setProducts(array $products) {
         if($this->setModified('products', $products)->isModified()) {
             $this->products = $products;
         }
@@ -172,26 +130,9 @@ class Brand extends CoreEntity
     }
 
     /**
-     * @name            getProducts ()
-     *                  Returns the value of products property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->products
+     * @return array
      */
     public function getProducts() {
         return $this->products;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.1                      27.04.2015
- * TW#
- * Can Berkol
- * **************************************
- * Major ORM changes.
- */

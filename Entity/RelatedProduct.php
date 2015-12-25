@@ -1,18 +1,11 @@
 <?php
 /**
- * @name        RelatedProduct
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
- *
  * @author		Can Berkol
  *
- * @version     1.0.0
- * @date        22.05.2014
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
@@ -30,40 +23,32 @@ class RelatedProduct extends CoreEntity
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE", onUpdate="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $product;
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(
      *     name="related_product",
      *     referencedColumnName="id",
      *     nullable=false,
-     *     onDelete="CASCADE"
+     *     onDelete="CASCADE",
+     *     onUpdate="CASCADE"
      * )
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $related_product;
 
     /**
-     * @name            setProduct ()
-     *                  Sets the product property.
-     *                  Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setProduct($product) {
+    public function setProduct(\BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product) {
         if($this->setModified('product', $product)->isModified()) {
             $this->product = $product;
         }
@@ -72,37 +57,18 @@ class RelatedProduct extends CoreEntity
     }
 
     /**
-     * @name            getProduct ()
-     *                  Returns the value of product property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     public function getProduct() {
         return $this->product;
     }
 
     /**
-     * @name            setRelatedProduct ()
-     *                  Sets the related_product property.
-     *                  Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Product $related_product
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $related_product
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setRelatedProduct($related_product) {
+    public function setRelatedProduct(\BiberLtd\Bundle\ProductManagementBundle\Entity\Product $related_product) {
         if($this->setModified('related_product', $related_product)->isModified()) {
             $this->related_product = $related_product;
         }
@@ -111,25 +77,9 @@ class RelatedProduct extends CoreEntity
     }
 
     /**
-     * @name            getRelatedProduct ()
-     *                  Returns the value of related_product property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->related_product
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     public function getRelatedProduct() {
         return $this->related_product;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.0                      Can Berkol
- * 22.05.2014
- * **************************************
- * File Created
- */

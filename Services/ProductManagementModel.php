@@ -1,53 +1,38 @@
 <?php
 /**
- * @vendor          BiberLtd
- * @package         Core\Bundles\ProductManagementBundle
- * @subpackage      Services
- * @name            ProductManagementModel
+ * @author		Can Berkol
+ * @author		Said İmamoğlu
  *
- * @author          Can Berkol
- * @author          Said İmamoğlu
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @copyright       Biber Ltd. (www.biberltd.com)
- *
- * @version         1.6.7
- *
- * @date            08.08.2015
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Services;
 
-/** Extends CoreModel */
+
 use BiberLtd\Bundle\CoreBundle\CoreModel;
-/** Entities to be used */
 use BiberLtd\Bundle\CoreBundle\Responses\ModelResponse;
 use BiberLtd\Bundle\ProductManagementBundle\Entity as BundleEntity;
 use BiberLtd\Bundle\FileManagementBundle\Entity as FileBundleEntity;
 use BiberLtd\Bundle\MultiLanguageSupportBundle\Entity as MLSEntity;
 use BiberLtd\Bundle\SiteManagementBundle\Entity as SiteManagementEntity;
-/** Helper Models */
 use BiberLtd\Bundle\FileManagementBundle\Services as FMMService;
 use BiberLtd\Bundle\MultiLanguageSupportBundle\Services as MLSService;
 use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
-/** Core Service */
 use BiberLtd\Bundle\CoreBundle\Services as CoreServices;
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
 
 class ProductManagementModel extends CoreModel
 {
 	/**
-	 * @name            __construct ()
+	 * ProductManagementModel constructor.
 	 *
-	 * @author          Can Berkol
-	 *
-	 * @since           1.0.0
-	 * @version         1.5.3
-	 *
-	 * @param           object $kernel
-	 * @param           string $dbConnection
-	 * @param           string $orm
+	 * @param object $kernel
+	 * @param string $dbConnection
+	 * @param string $orm
 	 */
-	public function __construct($kernel, $dbConnection = 'default', $orm = 'doctrine')
+	public function __construct($kernel, \string $dbConnection = 'default', \string $orm = 'doctrine')
 	{
 		parent::__construct($kernel, $dbConnection, $orm);
 
@@ -69,19 +54,14 @@ class ProductManagementModel extends CoreModel
 			'pcl' => array('name' => 'ProductManagementBundle:ProductCategoryLocalization', 'alias' => 'pcl'),
 			'pl' => array('name' => 'ProductManagementBundle:ProductLocalization', 'alias' => 'pl'),
 			'pos' => array('name' => 'ProductManagementBundle:ProductsOfSite', 'alias' => 'pos'),
+			'pukh' => array('name' => 'ProductManagementBundle:ProductUrlKeyHistory', 'alias' => 'pukh'),
 			'rp' => array('name' => 'ProductManagementBundle:RelatedProduct', 'alias' => 'rp'),
 			'vp' => array('name' => 'ProductManagementBundle:VolumePricing', 'alias' => 'vp'),
 		);
 	}
 
 	/**
-	 * @name            __destruct ()
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @since           1.0.0
-	 * @version         1.0.0
-	 *
+	 * Destructor
 	 */
 	public function __destruct()
 	{
@@ -91,24 +71,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addAttributesToProduct ()
+	 * @param array $collection
+	 * @param mixed $product
 	 *
-	 * @since           1.1.7
-	 * @version         1.6.4
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->getMaxSortOrderOfAttributeInProduct()
-	 * @use             $this->getProduct()
-	 * @use             $this->getProductAttribute()
-	 * @use             $this->isAttributeAssociatedWithProduct()
-	 *
-	 * @param           array $collection Contains an array with two keys: attribute, and sort_order
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addAttributesToProduct($collection, $product)
+	public function addAttributesToProduct(array $collection, $product)
 	{
 		$timeStamp = time();
 
@@ -161,26 +129,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addFilesToProduct ()
+	 * @param array $collection
+	 * @param mixed $product
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->getMaxSortOrderOfProductFile()
-	 * @use             $this->isFileAssociatedWithProduct()
-	 * @use             $this->resetResponse()
-	 * @use             $this->getProduct()
-	 *
-	 * @param           array $collection
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addFilesToProduct($collection, $product)
+	public function addFilesToProduct(array $collection, $product)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -223,21 +177,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addLocalesToProduct ()
+	 * @param array $locales
+	 * @param mixed $product
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->isLocaleAssociatedWithProduct()
-	 * @use             $this->getProduct()
-	 *
-	 * @param           array $locales
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addLocalesToProduct($locales, $product)
+	public function addLocalesToProduct(array $locales, $product)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -278,22 +223,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addLocalesToProductCategory ()
+	 * @param array $locales
+	 * @param mixed $category
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->isLocaleAssociatedWithProduct()
-	 *
-	 * @param           array $locales
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addLocalesToProductCategory($locales, $category)
+	public function addLocalesToProductCategory(array $locales, $category)
 	{
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
@@ -334,21 +269,10 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addProductsToCategory ()
+	 * @param array $collection
+	 * @param mixed $category
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->getMaxSortOrderOfProductInCategory()
-	 * @use             $this->isProductAssociatedWithCategory()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           array $collection Contains an array with two keys: file, and sortorder
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function addProductsToCategory(array $collection, $category)
 	{
@@ -392,23 +316,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addProductToCategories ()
+	 * @param mixed $product
+	 * @param array $collection
 	 *
-	 * @since           1.2.5
-	 * @version         1.5.9
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $product
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addProductToCategories($product, $collection){
+	public function addProductToCategories($product, array $collection){
 		$timeStamp = time();
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -448,20 +361,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addProductCategoriesToLocale ()
+	 * @param array $categories
+	 * @param mixed $locale
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->isLocaleAssociatedWithProductCategory()
-	 *
-	 * @param           array $categories
-	 * @param           mixed $locale
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addProductCategoriesToLocale($categories, $locale)
+	public function addProductCategoriesToLocale(array $categories, $locale)
 	{
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -498,20 +403,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            addProductsToLocale ()
+	 * @param array $products
+	 * @param mixed $locale
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           array $products
-	 * @param           mixed $locale
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function addProductsToLocale($products, $locale)
+	public function addProductsToLocale(array $products, $locale)
 	{
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -548,19 +445,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            countProducts ()
+	 * @param array|null $filter
 	 *
-	 * @since           1.1.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $filter
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function countProducts($filter = null)
+	public function countProducts(array $filter = null)
 	{
 		$timeStamp = time();
 		$wStr = '';
@@ -583,22 +472,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            countProductsOfCategory()
+	 * @param mixed $category
+	 * @param array|null $filter
 	 *
-	 * @since           1.3.3
-	 * @version         1.5.9
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $category
-	 * @param           array $filter
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function countProductsOfCategory($category, $filter = null){
+	public function countProductsOfCategory($category, array $filter = null){
 		$timeStamp = time();
 
 		$response = $this->getProductCategory($category);
@@ -638,16 +517,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteBrand ()
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
+	 * @param mixed $brand
 	 *
-	 * @use                $this->deleteProductCategories()
-	 *
-	 * @param           mixed $brand
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteBrand($brand)
 	{
@@ -655,18 +527,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteBrands ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function deleteBrands($collection)
+	public function deleteBrands(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -693,22 +558,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            doesBrandExist ()
+	 * @param mixed $brand
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getBrand()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $brand
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesBrandExist($brand, $bypass = false)
+	public function doesBrandExist($brand, \bool $bypass = false)
 	{
 		$response = $this->getBrand($brand);
 		$exist = true;
@@ -723,17 +578,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteProductAttribute ()
+	 * @param mixed $attribute
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use                $this->deleteProductAttributes()
-	 *
-	 * @param           mixed $attribute
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteProductAttribute($attribute)
 	{
@@ -741,18 +588,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteProductAttributes ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function deleteProductAttributes($collection)
+	public function deleteProductAttributes(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -779,18 +619,10 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteAllAttributeValuesOfAttribute ()
+	 * @param mixed $attribute
+	 * @param mixed $product
 	 *
-	 * @since           1.4.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->resetResponse();
-	 *
-	 * @param           mixed $attribute
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteAllAttributeValuesOfProductByAttribute($attribute, $product)
 	{
@@ -814,17 +646,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteProductCategory ()
+	 * @param mixed $category
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use                $this->deleteProductCategories()
-	 *
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteProductCategory($category)
 	{
@@ -832,18 +656,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteProductCategories ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function deleteProductCategories($collection)
+	public function deleteProductCategories(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -887,18 +704,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteProducts ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function deleteProducts($collection)
+	public function deleteProducts(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -925,35 +735,21 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            deleteVolumePricing ()
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
+	 * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\VolumePricing $pricing
 	 *
-	 * @use                $this->deleteVolumePricings()
-	 *
-	 * @param           mixed $pricing
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function deleteVolumePricing($pricing)
+	public function deleteVolumePricing(\BiberLtd\Bundle\ProductManagementBundle\Entity\VolumePricing $pricing)
 	{
 		return $this->deleteVolumePricings(array($pricing));
 	}
 
 	/**
-	 * @name            deleteVolumePricings ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function deleteVolumePricings($collection)
+	public function deleteVolumePricings(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -980,22 +776,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            doesProductAttributeExist ()
+	 * @param mixed $attribute
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProductAttribute()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $attribute
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeExist($attribute, $bypass = false)
+	public function doesProductAttributeExist($attribute, \bool $bypass = false)
 	{
 		$response = $this->getProductAttribute($attribute);
 		$exist = true;
@@ -1010,25 +796,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            doesProductAttributeValueExist ()
-	 *                  Checks if entry exists in database.
+	 * @param mixed $attribute
+	 * @param mixed $product
+	 * @param mixed $language
+	 * @param bool $bypass
 	 *
-	 * @since           1.2.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->getAttributeValueOfProduct()
-	 *
-	 * @param           mixed $attribute
-	 * @param           mixed $product
-	 * @param           mixed $language
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeValueExist($attribute, $product, $language, $bypass = false)
+	public function doesProductAttributeValueExist($attribute, $product, $language, \bool $bypass = false)
 	{
 		$exist = false;
 		$response = $this->getAttributeValueOfProduct($attribute, $product, $language);
@@ -1043,22 +818,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            doesProductExist ()
+	 * @param mixed $product
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProductAttribute()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $product
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductExist($product, $bypass = false)
+	public function doesProductExist($product, \bool $bypass = false)
 	{
 		$response = $this->getProduct($product);
 		$exist = true;
@@ -1073,22 +838,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            doesProductCategoryExist ()
+	 * @param mixed $category
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProductAttribute()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $category
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductCategoryExist($category, $bypass = false)
+	public function doesProductCategoryExist($category, \bool $bypass = false)
 	{
 		$response = $this->getProductCategory($category);
 		$exist = true;
@@ -1103,20 +858,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getAttributeValueOfProduct ()
+	 * @param mixed $attribute
+	 * @param mixed $product
+	 * @param mixed $language
 	 *
-	 * @since           1.1.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           mixed $attribute
-	 * @param           mixed $product
-	 * @param           mixed $language
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getAttributeValueOfProduct($attribute, $product, $language)
 	{
@@ -1160,19 +906,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getBrand ()
+	 * @param mixed $brand
 	 *
-	 * @since           1.5.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $brand
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getBrand($brand)
 	{
@@ -1197,19 +933,39 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getMaxSortOrderOfAttributeInProduct ()
+	 * @param mixed $product
+	 * @param string $urlKey
 	 *
-	 * @since           1.1.7
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 *
-	 * @param           mixed $product id, entity, sku, url_key
-	 * @param           bool $bypass if set to true return integer instead of response
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfAttributeInProduct($product, $bypass = false)
+	public function getProductUrlKeyHistory($product, \string $urlKey)
+	{
+		$timeStamp = time();
+		if ($product instanceof BundleEntity\ProductUrlKeyHistory) {
+			return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		}
+		$result = null;
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$product = $response->result->set;
+
+		$result = $this->em->getRepository($this->entity['pukh']['name'])->findOneBy(array('product' => $product->getId(), 'url_key' => $urlKey));
+
+		if (is_null($result)) {
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+		}
+
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+	}
+	/**
+	 * @param mixed $product
+	 * @param bool $bypass
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function getMaxSortOrderOfAttributeInProduct($product, \bool $bypass = false)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -1230,18 +986,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getMaxSortOrderOfProductFile ()
+	 * @param mixed $product
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           mixed $product
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfProductFile($product, $bypass = false)
+	public function getMaxSortOrderOfProductFile($product, \bool $bypass = false)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -1264,21 +1014,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getMaxSortOrderOfProductInCategory ()
+	 * @param mixed $category
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->resetResponse()
-	 * @use             $this->validateAndGetProductCategory()
-	 *
-	 * @param           mixed $category
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfProductInCategory($category, $bypass = false)
+	public function getMaxSortOrderOfProductInCategory($category,  \bool $bypass = false)
 	{
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
@@ -1299,17 +1040,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getMostRecentFileOfProduct ()
+	 * @param mixed $product
 	 *
-	 * @since           1.2.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listFilesOfProducts()
-	 *
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getMostRecentFileOfProduct($product)
 	{
@@ -1337,17 +1070,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getParentOfProductCategory ()
+	 * @param mixed $category
 	 *
-	 * @since           1.2.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getParentOfProductCategory($category)
 	{
@@ -1363,19 +1088,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProduct ()
+	 * @param mixed $product
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProduct($product)
 	{
@@ -1407,22 +1122,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProductByUrlKey ()
+	 * @param string $urlKey
+	 * @param null $language
 	 *
-	 * @since           1.5.3
-	 * @version         1.6.0
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $urlKey
-	 * @param            mixed $language
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductByUrlKey($urlKey, $language = null)
+	public function getProductByUrlKey(\string $urlKey, $language = null)
 	{
 		$timeStamp = time();
 		if (!is_string($urlKey)) {
@@ -1464,21 +1169,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProductAttribute ()
+	 * @param $attr
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $attr
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttribute($attr)
+	public function getProductAttribute(mixed $attr)
 	{
 		$timeStamp = time();
 		if ($attr instanceof BundleEntity\ProductAttribute) {
@@ -1505,21 +1200,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProductAttributeValue ()
+	 * @param int $id
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           integer $id
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttributeValue($id)
+	public function getProductAttributeValue(\integer $id)
 	{
 		$timeStamp = time();
 		$result = $this->em->getRepository($this->entity['pav']['name'])
@@ -1533,22 +1218,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProductAttributeByUrlKey ()
+	 * @param string $urlKey
+	 * @param null   $language
 	 *
-	 * @since           1.5.3
-	 * @version         1.6.0
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $urlKey
-	 * @param            mixed $language
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttributeByUrlKey($urlKey, $language = null)
+	public function getProductAttributeByUrlKey(\string $urlKey, $language = null)
 	{
 		$timeStamp = time();
 		if (!is_string($urlKey)) {
@@ -1588,37 +1263,19 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProductBySku ()
+	 * @param string $sku
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProduct()
-	 *
-	 * @param           string $sku
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductBySku($sku)
+	public function getProductBySku(\string $sku)
 	{
 		return $this->getProduct($sku);
 	}
 
 	/**
-	 * @name            getProductCategory ()
+	 * @param mixed $category
 	 *
-	 * @since           1.0.1
-	 * @version         1.6.0
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductCategory($category){
 		$timeStamp = time();
@@ -1647,21 +1304,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getProductCategoryByUrlKey ()
+	 * @param string $urlKey
+	 * @param mixed|null   $language
 	 *
-	 * @since           1.5.3
-	 * @version         1.6.0
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $urlKey
-	 * @param           mixed $language
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductCategoryByUrlKey($urlKey, $language = null){
+	public function getProductCategoryByUrlKey(\string $urlKey, $language = null){
 		$timeStamp = time();
 		if (!is_string($urlKey)) {
 			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
@@ -1700,19 +1348,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getRandomCategoryOfProduct ()
+	 * @param mixed $product
 	 *
-	 * @since           1.3.6
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getRandomCategoryOfProduct($product)
 	{
@@ -1737,19 +1375,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getVolumePricing ()
+	 * @param mixed $pricing
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->resetResponse()
-	 *
-	 * @param           integer $pricing
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getVolumePricing($pricing)
 	{
@@ -1765,19 +1393,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            getVolumePricingOfProductWithMaximumQuantity ()
+	 * @param mixed $product
 	 *
-	 * @since           1.4.4
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listVolumePricingsOfProduct()
-	 *
-	 * @param            mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getVolumePricingOfProductWithMaximumQuantity($product)
 	{
@@ -1790,23 +1408,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            incrementCountViewOfProduct ()
+	 * @param     $product
+	 * @param int $count
 	 *
-	 * @since           1.3.8
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->getProduct()
-	 * @use             $this->updateProduct()
-	 *
-	 * @param        mixed $product
-	 * @param        int $count
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function incrementCountViewOfProduct($product, $count)
+	public function incrementCountViewOfProduct($product, \integer $count)
 	{
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -1818,17 +1425,76 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertBrand ()
+	 * @param mixed $pUKey
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
+	 * @return mixed
+	 */
+	public function insertProductUrlKeyHistory($pUKey)
+	{
+		return $this->insertProductUrlKeyHistories(array($pUKey));
+	}
+
+	/**
+	 * @param array $collection
 	 *
-	 * @use             $this->insertBrands()
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function insertProductUrlKeyHistories(array $collection)
+	{
+		$timeStamp = time();
+		if (!is_array($collection)) {
+			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+		}
+		$countInserts = 0;
+		$insertedItems = array();
+		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+		foreach ($collection as $data) {
+			if ($data instanceof BundleEntity\ProductUrlKeyHistory) {
+				$entity = $data;
+				$this->em->persist($entity);
+				$insertedItems[] = $entity;
+				$countInserts++;
+			} else if (is_object($data)) {
+				$entity = new BundleEntity\ProductUrlKeyHistory();
+				if (!property_exists($data, 'date_added')) {
+					$data->date_added = $now;
+				}
+				if (!property_exists($data, 'date_updated')) {
+					$data->date_updated = $now;
+				}
+				foreach ($data as $column => $value) {
+					$set = 'set' . $this->translateColumnName($column);
+					switch ($column) {
+						case 'product':
+							$response =$this->getProduct($value);
+							if($response->error->exist){
+								return $response;
+							}
+							$entity->setProduct($response->result->set);
+							unset($response);
+							break;
+						default:
+							$entity->$set($value);
+							break;
+					}
+				}
+				$this->em->persist($entity);
+				$insertedItems[] = $entity;
+
+				$countInserts++;
+			}
+		}
+		if ($countInserts > 0) {
+			$this->em->flush();
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+	}
+
+	/**
+	 * @param mixed $brand
 	 *
-	 * @param           mixed $brand
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertBrand($brand)
 	{
@@ -1836,19 +1502,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertBrands ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertBrands($collection)
+	public function insertBrands(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -1897,17 +1555,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProduct ()
+	 * @param mixed $product
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->insertProducts()
-	 *
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertProduct($product)
 	{
@@ -1915,17 +1565,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductAttribute ()
+	 * @param mixed $attribute
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->insertProductAttributes()
-	 *
-	 * @param           mixed $attribute
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertProductAttribute($attribute)
 	{
@@ -1933,19 +1575,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductAttributeLocalizations ()
+	 * @param array $collection
 	 *
-	 * @since           1.1.3
-	 * @version         1.5.5
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProductAttributeLocalizations($collection)
+	public function insertProductAttributeLocalizations(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -1996,17 +1630,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductAttributeValue ()
+	 * @param mixed $value
 	 *
-	 * @since           1.1.7
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->insertProductAttributeValues()
-	 *
-	 * @param           mixed $value
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertProductAttributeValue($value)
 	{
@@ -2014,19 +1640,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductAttributeValues ()
+	 * @param array $collection
 	 *
-	 * @since           1.1.7
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProductAttributeValues($collection)
+	public function insertProductAttributeValues(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2091,20 +1709,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductAttributes ()
-	 *                  Inserts one or more product attributes into database.
+	 * @param array $collection
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProductAttributes($collection)
+	public function insertProductAttributes(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2175,17 +1784,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductCategory ()
+	 * @param mixed $category
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->insertProductCategories()
-	 *
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertProductCategory($category)
 	{
@@ -2193,19 +1794,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductCategories ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProductCategories($collection)
+	public function insertProductCategories(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2297,19 +1890,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductCategoryLocalizations ()
+	 * @param array $collection
 	 *
-	 * @since           1.1.8
-	 * @version         1.5.5
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProductCategoryLocalizations($collection)
+	public function insertProductCategoryLocalizations(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2360,19 +1945,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProductLocalizations ()
+	 * @param array $collection
 	 *
-	 * @since           1.1.8
-	 * @version         1.5.6
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProductLocalizations($collection)
+	public function insertProductLocalizations(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2420,21 +1997,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertProducts ()
+	 * @param array $collection
 	 *
-	 * @since           1.1.7
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertProducts($collection)
+	public function insertProducts(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2547,19 +2114,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertVolumePricing ()
+	 * @param mixed $volumePricing
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->insertVolumePricings()
-	 *
-	 * @param           mixed $volumePricing
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertVolumePricing($volumePricing)
 	{
@@ -2567,21 +2124,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            insertVolumePricings ().
+	 * @param array $collection
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function insertVolumePricings($collection)
+	public function insertVolumePricings(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -2639,22 +2186,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            isAttributeAssociatedWithProduct ()
+	 * @param mixed $attribute
+	 * @param mixed $product
+	 * @param bool $bypass
 	 *
-	 * @since           1.1.7
-	 * @version         1.5.9
-	 * @author          Can Berkol
-	 *
-	 * @user            $this->createException
-	 *
-	 * @param           mixed $attribute
-	 * @param           mixed $product
-	 *
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isAttributeAssociatedWithProduct($attribute, $product, $bypass = false)
+	public function isAttributeAssociatedWithProduct($attribute, $product, \bool $bypass = false)
 	{
 		$timeStamp = time();
 		$response = $this->getProductAttribute($attribute);
@@ -2689,21 +2227,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            isFileAssociatedWithBlogPost ()
+	 * @param mixed $file
+	 * @param mixed $product
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $file
-	 * @param           mixed $product
-	 * @param           bool $bypass true or false
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isFileAssociatedWithProduct($file, $product, $bypass = false){
+	public function isFileAssociatedWithProduct($file, $product, \bool $bypass = false){
 		$timeStamp = time();
 		$fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
@@ -2739,22 +2269,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            isLocaleAssociatedWithProduct ()
+	 * @param mixed $locale
+	 * @param mixed $product
+	 * @param bool $bypass
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.9
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @user            $this->createException
-	 *
-	 * @param           mixed $locale
-	 * @param           mixed $product
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isLocaleAssociatedWithProduct($locale, $product, $bypass = false){
+	public function isLocaleAssociatedWithProduct($locale, $product, \bool $bypass = false){
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
@@ -2789,22 +2310,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            isLocaleAssociatedWithProductCategory ()
+	 * @param mixed $locale
+	 * @param mixed $category
+	 * @param bool $bypass
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.8
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @user            $this->createException
-	 *
-	 * @param           mixed $locale
-	 * @param           mixed $category
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isLocaleAssociatedWithProductCategory($locale, $category, $bypass = false)
+	public function isLocaleAssociatedWithProductCategory($locale, $category, \bool $bypass = false)
 	{
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -2840,22 +2352,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            isProductAssociatedWithCategory ()
+	 * @param mixed $product
+	 * @param mixed $category
+	 * @param bool $bypass
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @user            $this->createException
-	 *
-	 * @param           mixed $product
-	 * @param           mixed $category
-	 * @param           bool $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isProductAssociatedWithCategory($product, $category, $bypass = false){
+	public function isProductAssociatedWithCategory($product, $category, \bool $bypass = false){
 		$timeStamp = time();
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -2888,34 +2391,29 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name	listActiveProducts()
-	 * @author	Said İmamoğlu
-	 * @since	1.6.8
-	 * @version	1.6.8
-	 * @param null $filter
-	 * @param null $sortOrder
-	 * @param null $limit
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listActiveProducts($filter = null,$sortOrder = null, $limit= null){
+	public function listActiveProducts(array $filter = null, array $sortOrder = null, array $limit= null){
 		$filter[] = array(
 			'glue' => 'and',
 			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' =>'a' ),
 		);
 		return $this->listProducts($filter,$sortOrder,$limit);
 	}
+
 	/**
-	 * @name	listActiveProductsOfSite()
-	 * @author	Said İmamoğlu
-	 * @since	1.6.8
-	 * @version	1.6.8
-	 * @param	$site
-	 * @param null $filter
-	 * @param null $sortOrder
-	 * @param null $limit
+	 * @param mixed $site
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listActiveProductsOfSite($site,$filter = null,$sortOrder = null, $limit= null){
+	public function listActiveProductsOfSite($site, array $filter = null, array $sortOrder = null, array $limit = null){
 		$SMMModel = new SMMService\SiteManagementModel($this->kernel);
 		$response = $SMMModel->getSite($site);
 		if ($response->error->exist) {
@@ -2934,17 +2432,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listActiveLocalesOfProduct ()
+	 * @param mixed $product
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $product entity
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listActiveLocalesOfProduct($product)
 	{
@@ -2977,17 +2467,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listActiveLocalesOfProductCategory ()
+	 * @param mixed $category
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $category entity
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listActiveLocalesOfProductCategory($category)
 	{
@@ -3020,21 +2502,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listActiveProductsOfCategory ()
+	 * @param mixed $category
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.5.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProduct()
-	 *
-	 * @param           mixed $category
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listActiveProductsOfCategory($category, $sortOrder = null, $limit = null)
+	public function listActiveProductsOfCategory($category, array  $sortOrder = null, array  $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -3106,22 +2580,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listAttributesOfProduct ()
+	 * @param mixed $product
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProduct()
-	 *
-	 * @param           mixed $product
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listAttributesOfProduct($product, $sortOrder = null, $limit = null)
+	public function listAttributesOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -3171,21 +2636,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listAttributesOfProductCategory ()
+	 * @param mixed $category
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $category
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listAttributesOfProductCategory($category, $sortOrder = null, $limit = null)
+	public function listAttributesOfProductCategory($category, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
@@ -3227,22 +2684,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listAllAttributeValuesOfProduct ()
+	 * @param mixed $product
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.1.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProduct()
-	 *
-	 * @param           mixed $product
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listAllAttributeValuesOfProduct($product, $sortOrder = null, $limit = null)
+	public function listAllAttributeValuesOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -3287,20 +2735,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listAllChildProductCategories ()
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductCategories()
-	 *
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listAllChildProductCategories($sortOrder = null, $limit = null)
+	public function listAllChildProductCategories(array $sortOrder = null, array  $limit = null)
 	{
 		$column = $this->entity['pc']['alias'] . '.parent';
 		$condition = array('column' => $column, 'comparison' => 'notnull', 'value' => null);
@@ -3317,23 +2757,15 @@ class ProductManagementModel extends CoreModel
 		return $this->listProductCategories($filter, $sortOrder, $limit);
 	}
 
-	/**
-	 * @name            listAttributeValuesOfProduct ()
+	/***
+	 * @param mixed $product
+	 * @param mixed $type
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProduct()
-	 *
-	 * @param           mixed $product
-	 * @param           mixed $type
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listAttributeValuesOfProduct($product, $type, $sortOrder = null, $limit = null)
+	public function listAttributeValuesOfProduct($product, $type, array $sortOrder = null, array $limit = null)
 	{
 		$this->resetResponse();
 		$timeStamp = time();
@@ -3379,21 +2811,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listBrands ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listBrands($filter = null, $sortOrder = null, $limit = null)
+	public function listBrands(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -3401,7 +2825,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$oStr = $wStr = $gStr = $fStr = '';
 
-		$qStr = 'SELECT ' . $this->entity['b']['alias'] . ', ' . $this->entity['b']['alias']
+		$qStr = 'SELECT ' . $this->entity['b']['alias']
 			. ' FROM ' . $this->entity['b']['name'] . ' ' . $this->entity['b']['alias'];
 
 		if (!is_null($sortOrder)) {
@@ -3431,40 +2855,123 @@ class ProductManagementModel extends CoreModel
 
 		$result = $q->getResult();
 
-		$entities = array();
-		foreach ($result as $entry) {
-			$id = $entry->getAttribute()->getId();
-			if (!isset($unique[$id])) {
-				$unique[$id] = '';
-				$entities[] = $entry->getAttribute();
-			}
-		}
-		$totalRows = count($entities);
+		$totalRows = count($result);
 		if ($totalRows < 1) {
 			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
 		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+	}
+	/**
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listProductUrlKeyHistories(array $filter = null, array $sortOrder = null, array $limit = null)
+	{
+		$timeStamp = time();
+		if (!is_array($sortOrder) && !is_null($sortOrder)) {
+			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+		}
+		$oStr = $wStr = $gStr = $fStr = '';
+
+		$qStr = 'SELECT ' . $this->entity['pukh']['alias']
+			. ' FROM ' . $this->entity['pukh']['name'] . ' ' . $this->entity['pukh']['alias'];
+
+		if (!is_null($sortOrder)) {
+			foreach ($sortOrder as $column => $direction) {
+				switch ($column) {
+					case 'url_key':
+					case 'date_added':
+					case 'date_updated':
+					case 'date_removed':
+						$column = $this->entity['pukh']['alias'] . '.' . $column;
+						break;
+				}
+				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+			}
+			$oStr = rtrim($oStr, ', ');
+			$oStr = ' ORDER BY ' . $oStr . ' ';
+		}
+
+		if (!is_null($filter)) {
+			$fStr = $this->prepareWhere($filter);
+			$wStr .= ' WHERE ' . $fStr;
+		}
+
+		$qStr .= $wStr . $gStr . $oStr;
+		$q = $this->em->createQuery($qStr);
+		$q = $this->addLimit($q, $limit);
+
+		$result = $q->getResult();
+
+		$totalRows = count($result);
+		if ($totalRows < 1) {
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+		}
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 
 	/**
-	 * @name            listCategoriesOfProduct (
+	 * @param mixed $product
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 * @use             $this->getProduct()
-	 * @use             $this->listProductCategories()
-	 *
-	 * @param           mixed $product
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listCategoriesOfProduct($product, $filter = null, $sortOrder = null, $limit = null)
+	public function listProductUrlKeyHistoriesOfProduct($product, array $sortOrder = null, array $limit = null)
+	{
+		$timeStamp = time();
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				'column' => $this->entity['pukh']['alias'].'.product',
+				'comparison' => '=',
+				'value' => $product->getId()
+			),
+		);
+
+		return $this->listProductUrlKeyHistories($filter, $sortOrder, $limit);
+	}
+	/**
+	 * @param mixed $product
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function getLastUrlKeyHistoryOfProuct($product)
+	{
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				'column' => $this->entity['pukh']['alias'].'.product',
+				'comparison' => '=',
+				'value' => $product->getId()
+			),
+		);
+
+		$response = $this->listProductUrlKeyHistories($filter, array('date_added' => 'desc'), array('start' => 0, 'count' => 1));
+		$response->result->set = $response->result->set[0];
+		$response->result->count->set = 1;
+		return $response;
+	}
+	/**
+	 * @param mixed $product
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listCategoriesOfProduct($product, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -3502,21 +3009,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listChildCategoriesOfProductCategory ()
+	 * @param mixed $category
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductCategories()
-	 *
-	 * @param           mixed $category
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return            \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listChildCategoriesOfProductCategory($category, $sortOrder = null, $limit = null)
+	public function listChildCategoriesOfProductCategory($category, array $sortOrder = null, array $limit = null)
 	{
 		if ($category instanceof BundleEntity\ProductCategory) {
 			$category = $category->getId();
@@ -3536,21 +3035,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listChildCategoriesOfProductCategoryWithPreviewImage ()
+	 * @param mixed $category
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.9
-	 * @version         1.6.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductCategories()
-	 *
-	 * @param           mixed $category
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listChildCategoriesOfProductCategoryWithPreviewImage($category, $sortOrder = null, $limit = null){
+	public function listChildCategoriesOfProductCategoryWithPreviewImage($category, array $sortOrder = null, array $limit = null){
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -3584,20 +3075,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listCustomizableProducts ()
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listCustomizableProducts($sortOrder = null, $limit = null)
+	public function listCustomizableProducts(array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['p']['alias'] . '.is_customizable';
 		$condition = array('column' => $column, 'comparison' => '=', 'value' => 'y');
@@ -3614,23 +3097,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listFeaturedParentProductCategories ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.7
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listProductCategories()
-	 *
-	 * @param        array $filter
-	 * @param        array $sortOrder
-	 * @param        array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listFeaturedParentProductCategories($filter = null, $sortOrder = null, $limit = null)
+	public function listFeaturedParentProductCategories(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -3649,24 +3122,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listFilesOfProduct ()
+	 * @param mixed $product
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.1.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @throws          $this->createException()
-	 *
-	 * @param           mixed $product
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listFilesOfProduct($product, $filter = null, $sortOrder = null, $limit = null)
+	public function listFilesOfProduct($product, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -3722,39 +3185,30 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name	listInactiveProducts()
-	 * @author	Said İmamoğlu
-	 * @since	1.6.8
-	 * @version	1.6.8
-	 * @param null $filter
-	 * @param null $sortOrder
-	 * @param null $limit
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listInactiveProducts($filter = null,$sortOrder = null, $limit= null){
+	public function listInactiveProducts(array $filter = null, array $sortOrder = null, array $limit= null){
 		$filter[] = array(
 			'glue' => 'and',
 			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' =>'i' ),
 		);
-		return $this->listProducts($filter,$sortOrder,$limit);
+		return $this->listProducts($filter, $sortOrder, $limit);
 	}
+
 	/**
-	 * @name            listLocalizationsOfProduct()
+	 * @param mixed $product
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.6.4
-	 * @version         1.6.4
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $product
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listLocalizationsOfProduct($product, $sortOrder = null, $limit = null){
+	public function listLocalizationsOfProduct($product, array $sortOrder = null, array $limit = null){
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
@@ -3801,22 +3255,14 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name            listNotCustomizableProducts ()
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listNotCustomizableProducts($sortOrder = null, $limit = null)
+	public function listNotCustomizableProducts(array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['p']['alias'] . '.is_customizable';
 		$condition = array('column' => $column, 'comparison' => '=', 'value' => 'n');
@@ -3833,21 +3279,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listOutOfStockProducts ()
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException
-	 *
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listOutOfStockProducts($sortOrder = null, $limit = null)
+	public function listOutOfStockProducts(array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['product']['alias'] . '.quantity';
 		$condition = array('column' => $column, 'comparison' => '<', 'value' => 1);
@@ -3864,20 +3301,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listParentOnlyProductCategories ()
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductCategories()
-	 *
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listParentOnlyProductCategories($sortOrder = null, $limit = null)
+	public function listParentOnlyProductCategories(array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['pc']['alias'] . '.parent';
 		$condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
@@ -3894,24 +3323,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listParentOnlyProductCategoriesOfLevel ()
+	 * @param int        $level
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.8
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @uses            $this->listProductCategories()
-	 *
-	 * @param           integer $level
-	 * @param           array $filter
-	 * @param           mixed $sortOrder
-	 * @param           mixed $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listParentOnlyProductCategoriesOfLevel($level = 1, $filter = null, $sortOrder = null, $limit = null)
+	public function listParentOnlyProductCategoriesOfLevel(\integer $level = 1, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['pc']['alias'] . '.parent';
 		$condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
@@ -3932,41 +3351,25 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsPricedBetween ()
+	 * @param array      $amounts
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsPriced()
-	 *
-	 * @param           array $amounts
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return mixed
 	 */
-	public function listProductsPricedBetween($amounts, $sortOrder = null, $limit = null)
+	public function listProductsPricedBetween(array $amounts, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amounts, 'between', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductAttributes ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductAttributes($filter = null, $sortOrder = null, $limit = null)
+	public function listProductAttributes(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -4027,23 +3430,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductAttributeValues ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.2
-	 * @version         1.6.7
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductAttributeValues($filter = null, $sortOrder = null, $limit = null)
+	public function listProductAttributeValues(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -4088,21 +3481,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductCategories ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategories($filter = null, $sortOrder = null, $limit = null)
+	public function listProductCategories(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -4164,25 +3549,15 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductCategoriesOfParentHavingLevel ()
+	 * @param mixed $category
+	 * @param int        $level
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @since           1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listProductCategories()
-	 *
-	 * @param        mixed $category
-	 * @param        int $level
-	 * @param        array $filter
-	 * @param        array $sortOrder
-	 * @param        array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfParentHavingLevel($category, $level, $filter = null, $sortOrder = null, $limit = null)
+	public function listProductCategoriesOfParentHavingLevel($category, \integer $level, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -4201,27 +3576,17 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductAttributeValuesOfProduct ()
+	 * @param mixed $product
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.4.4
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $product
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          array           $response
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductAttributeValuesOfProduct($product, $filter = null, $sortOrder = null, $limit = null)
+	public function listProductAttributeValuesOfProduct($product, array $filter = null, array  $sortOrder = null, array $limit = null)
 	{
 		$response = $this->getProduct($product);
-		if ($product->error->exist) {
+		if ($response->error->exist) {
 			return $product;
 		}
 		$filter[] = array(
@@ -4237,21 +3602,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductCategoriesOfLevel ()
+	 * @param int        $level
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.1.9
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductCategoriesOfLevel()
-	 *
-	 * @param           integer $level
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfLevel($level = 1, $sortOrder = null, $limit = null)
+	public function listProductCategoriesOfLevel(\integer $level = 1, array $sortOrder = null, array $limit = null)
 	{
 		$conditions[] = array(
 			'glue' => 'or',
@@ -4266,21 +3623,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProducts ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProducts($filter = null, $sortOrder = null, $limit = null)
+	public function listProducts(array  $filter = null, array $sortOrder = null,array  $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -4347,22 +3696,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsAdded ()
+	 * @param \DateTime  $date
+	 * @param string     $eq
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed $date
-	 * @param           string $eq after, before, between
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAdded($date, $eq, $sortOrder = null, $limit = null)
+	public function listProductsAdded(\DateTime $date, \string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eqOpts = array('after', 'before', 'between', 'on');
 		$column = $this->entity['p']['alias'] . '.date_added';
@@ -4408,102 +3749,61 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsAddedAfter ()
+	 * @param \DateTime  $date
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsAdded()
-	 *
-	 * @param           mixed $date
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAddedAfter($date, $sortOrder = null, $limit = null)
+	public function listProductsAddedAfter(\DateTime $date, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsAdded($date, 'after', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsAddedBefore ()
+	 * @param \DateTime  $date
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsAdded()
-	 *
-	 * @param           mixed $date
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAddedBefore($date, $sortOrder = null, $limit = null)
+	public function listProductsAddedBefore(\DateTime$date, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsAdded($date, 'before', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsAddedBetween ()
+	 * @param array      $dates
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsAdded()
-	 *
-	 * @param           array $dates
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAddedBetween($dates, $sortOrder = null, $limit = null)
+	public function listProductsAddedBetween(array $dates, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsAdded($dates, 'between', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsAddedOn ()
+	 * @param \DateTime  $date
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsAdded()
-	 *
-	 * @param           mixed $date
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAddedOn($date, $sortOrder = null, $limit = null)
+	public function listProductsAddedOn(\DateTime $date, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsAdded($date, 'on', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsInCategory ()
+	 * @param array      $categories
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.1
-	 * @version         1.6.0
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->getProductCategory()
-	 *
-	 * @param           mixed $categories
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsInCategory(array $categories, $sortOrder = null, $limit = null){
+	public function listProductsInCategory(array $categories, array $sortOrder = null, array $limit = null){
 		$timeStamp = time();
 		$catIds = array();
 		foreach ($categories as $category) {
@@ -4570,21 +3870,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsInLocales ()
+	 * @param array      $locales
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $locales
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsInLocales(array $locales, $sortOrder = null, $limit = null)
+	public function listProductsInLocales(array $locales, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$langIds = array();
@@ -4640,21 +3932,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductCategoriesInLocales()
+	 * @param array      $locales
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.3
-	 * @version         1.6.1
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $locales
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesInLocales(array $locales, $sortOrder = null, $limit = null){
+	public function listProductCategoriesInLocales(array $locales, array $sortOrder = null, array $limit = null){
 		$timeStamp = time();
 		$langIds = array();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -4708,22 +3992,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsLiked ()
+	 * @param int        $likes
+	 * @param string     $eq
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed $likes
-	 * @param           string $eq less, more, between
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLiked($likes, $eq, $sortOrder = null, $limit = null){
+	public function listProductsLiked(\integer  $likes, \string $eq, array $sortOrder = null, array $limit = null){
 		//$eq_opts = array('less', 'more', 'between');
 
 		$column = $this->entity['p']['alias'] . '.count_like';
@@ -4766,80 +4042,48 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsLikedBetween ()
+	 * @param int        $likes
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsLiked()
-	 *
-	 * @param           array $likes
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedBetween($likes, $sortOrder = null, $limit = null)
+	public function listProductsLikedBetween(\integer $likes, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsLiked($likes, 'between', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsLikedLessThan ()
+	 * @param int        $likes
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsLiked()
-	 *
-	 * @param           integer $likes
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedLessThan($likes, $sortOrder = null, $limit = null)
+	public function listProductsLikedLessThan(\integer $likes, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsLiked($likes, 'less', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsLikedMoreThan ()
+	 * @param int        $likes
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.0
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsLiked()
-	 *
-	 * @param           integer $likes
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedMoreThan($likes, $sortOrder = null, $limit = null){
+	public function listProductsLikedMoreThan(\integer $likes, array $sortOrder = null, array $limit = null){
 		return $this->listProductsLiked($likes, 'more', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsOfBrand ()
+	 * @param mixed $brand
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed $brand
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsOfBrand($brand, $sortOrder = null, $limit = null){
+	public function listProductsOfBrand($brand, array $sortOrder = null, array $limit = null){
 		$response = $this->getBrand($brand);
 		if ($response->error->exist) {
 			return $response;
@@ -4860,21 +4104,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsOfCategory()
+	 * @param mixed $category
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.9
-	 * @version         1.6.5
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getProduct()
-	 *
-	 * @param           mixed $category
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsOfCategory($category, $sortOrder = null, $limit = null){
+	public function listProductsOfCategory($category, array $sortOrder = null, array $limit = null){
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
@@ -4939,24 +4175,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsOfCategoryInLocales ()
+	 * @param mixed $category
+	 * @param array      $locales
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $category
-	 * @param           array $locales
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsOfCategoryInLocales($category, array $locales, $sortOrder = null, $limit = null)
+	public function listProductsOfCategoryInLocales($category, array $locales, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$langIds = array();
@@ -5031,21 +4257,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsOfSite ()
+	 * @param mixed $site
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed $site
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsOfSite($site, $sortOrder = null, $limit = null)
+	public function listProductsOfSite($site, array $sortOrder = null, array $limit = null)
 	{
 		$SMMModel = new SMMService\SiteManagementModel($this->kernel);
 		$response = $SMMModel->getSite($site);
@@ -5068,22 +4286,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsUpdated ()
+	 * @param \DateTime  $date
+	 * @param string     $eq
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed $date
-	 * @param           string $eq
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsUpdated($date, $eq, $sortOrder = null, $limit = null)
+	public function listProductsUpdated(\DateTime $date, \string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eq_opts = array('after', 'before', 'between', 'on');
 		$column = $this->entity['p']['alias'] . '.date_added';
@@ -5129,41 +4339,25 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsUpdatedAfter ()
+	 * @param \DateTime  $date
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsUpdated()
-	 *
-	 * @param           array $date
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsUpdatedAfter($date, $sortOrder = null, $limit = null)
+	public function listProductsUpdatedAfter(\DateTime $date, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsUpdated($date, 'after', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsUpdatedBefore ()
+	 * @param \DateTime  $date
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsUpdated()
-	 *
-	 * @param           array $date
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsUpdatedBefore($date, $sortOrder = null, $limit = null)
+	public function listProductsUpdatedBefore(\DateTime $date, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsUpdated($date, 'before', $sortOrder, $limit);
 	}
@@ -5189,42 +4383,26 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsUpdatedOn ()
+	 * @param \DateTime  $date
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsUpdated()
-	 *
-	 * @param           array $date
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsUpdatedOn($date, $sortOrder = null, $limit = null)
+	public function listProductsUpdatedOn(\DateTime $date, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsUpdated($date, 'on', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsWithPrice ()
+	 * @param float      $price
+	 * @param string     $eq
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           decimal $price
-	 * @param           string $eq after, before, between
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithPrice($price, $eq, $sortOrder = null, $limit = null)
+	public function listProductsWithPrice(\float $price, \string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eq_opts = array('more', 'less', 'between');
 		$column = $this->entity['p']['alias'] . '.price';
@@ -5267,22 +4445,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsWithQuantity ()
+	 * @param int        $quantity
+	 * @param string     $eq
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           integer $quantity
-	 * @param           string $eq after, before, between
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantities($quantity, $eq, $sortOrder = null, $limit = null)
+	public function listProductsWithQuantities(\integer $quantity, \string $eq, array $sortOrder = null, array $limit = null)
 	{
 		//$eq_opts = array('more', 'less', 'between');
 
@@ -5326,122 +4496,74 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsWithQuantityBetween ()
+	 * @param array      $quantities
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsWithQuantities()
-	 *
-	 * @param           array $quantities
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return mixed
 	 */
-	public function listProductsWithQuantityBetween($quantities, $sortOrder = null, $limit = null)
+	public function listProductsWithQuantityBetween(array $quantities, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantity($quantities, 'between', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsWithQuantitiesLessThan ()
+	 * @param int        $quantity
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsQuantities()
-	 *
-	 * @param           integer $quantity
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantityLessThan($quantity, $sortOrder = null, $limit = null)
+	public function listProductsWithQuantityLessThan(\integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantities($quantity, 'less', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsWithQuantitiesMoreThan ()
+	 * @param int        $quantity
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.5
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsQuantities()
-	 *
-	 * @param           integer $quantity
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantitiesMoreThan($quantity, $sortOrder = null, $limit = null)
+	public function listProductsWithQuantitiesMoreThan(\integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantities($quantity, 'more', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsWithPriceLessThan ()
+	 * @param float      $amount
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsPriced()
-	 *
-	 * @param           decimal $amount
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return         \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return mixed
 	 */
-	public function listProductsWithPriceLessThan($amount, $sortOrder = null, $limit = null)
+	public function listProductsWithPriceLessThan(\float $amount, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amount, 'less', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsWithPriceMoreThan ()
+	 * @param float      $amount
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsPriced()
-	 *
-	 * @param           decimal $amount
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return            \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return mixed
 	 */
-	public function listProductsWithPriceMoreThan($amount, $sortOrder = null, $limit = null)
+	public function listProductsWithPriceMoreThan(\float $amount, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amount, 'more', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsViewed ()
+	 * @param mixed $views
+	 * @param string     $eq
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProducts()
-	 *
-	 * @param           mixed $views
-	 * @param           string $eq
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsViewed($views, $eq, $sortOrder = null, $limit = null)
+	public function listProductsViewed($views, \string $eq, array $sortOrder = null, array $limit = null)
 	{
 		//$eq_opts = array('less', 'more', 'between');
 		$column = $this->entity['p']['alias'] . '.count_view';
@@ -5484,82 +4606,49 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listProductsViewedBetween ()
+	 * @param array      $views
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsViewed()
-	 *
-	 * @param           array $views
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsViewedBetween($views, $sortOrder = null, $limit = null)
+	public function listProductsViewedBetween(array $views, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsViewed($views, 'between', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsViewedLessThan ()
+	 * @param array      $views
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsViewed()
-	 *
-	 * @param           array $views
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsViewedLessThan($views, $sortOrder = null, $limit = null)
+	public function listProductsViewedLessThan(array $views, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsViewed($views, 'less', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listProductsViewedMoreThan ()
+	 * @param array      $views
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @uses            $this->listProductsViewed()
-	 *
-	 * @param           array $views
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsViewedMoreThan($views, $sortOrder = null, $limit = null)
+	public function listProductsViewedMoreThan(array $views, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsViewed($views, 'more', $sortOrder, $limit);
 	}
 
 	/**
-	 * @name            listRelatedProductsOfProduct ()
+	 * @param mixed $product
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->listProducts()
-	 * @use             $this->createException
-	 *
-	 * @param           mixed $product (id, sku, or object)
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listRelatedProductsOfProduct($product, $sortOrder = null, $limit = null)
+	public function listRelatedProductsOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -5602,21 +4691,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listValuesOfProductAttributes ()
+	 * @param mixed $product
+	 * @param mixed $attribute
+	 * @param mixed $language
 	 *
-	 * @since           1.2.4
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           mixed $attribute
-	 * @param           mixed $product
-	 * @param           mixed $language
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listValuesOfProductAttributes($product, $attribute, $language)
 	{
@@ -5659,21 +4738,13 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listVolumePricings ()
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.0.2
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $filter
-	 * @param           array $sortOrder
-	 * @param           array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricings($filter = null, $sortOrder = null, $limit = null)
+	public function listVolumePricings(array $filter = null, array $sortOrder = null, array  $limit = null)
 	{
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
@@ -5730,22 +4801,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listVolumePricingsOfProduct ()
+	 * @param mixed $product
+	 * @param array      $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param        mixed $product
-	 * @param        array $filter
-	 * @param        array $sortOrder
-	 * @param        array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProduct($product, $filter = array(), $sortOrder = null, $limit = null)
+	public function listVolumePricingsOfProduct($product, array $filter = array(), array  $sortOrder = null, array $limit = null)
 	{
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -5764,45 +4827,25 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @param mixed $product
+	 * @param int $quantity
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->listVolumePricingsOfProductWithQuantityLowerThan()
-	 *
-	 * @param        mixed $product
-	 * @param        integer $quantity
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithClosestQuantity($product, $quantity)
+	public function listVolumePricingsOfProductWithClosestQuantity($product, \integer $quantity)
 	{
 		return $this->listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, null, array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
 	}
 
 	/**
-	 * @name            listVolumePricingsOfProductWithQuantityGreaterThan ()
+	 * @param mixed $product
+	 * @param int        $quantity
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berlpş
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param        mixed $product
-	 * @param        int $quantity
-	 * @param        array $sortOrder
-	 * @param        array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, $quantity, $sortOrder = null, $limit = null)
+	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, \integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -5817,24 +4860,14 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            listPricingsOfProductWithType ()
+	 * @param mixed $product
+	 * @param int        $quantity
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param        mixed $product
-	 * @param        int $quantity
-	 * @param        array $sortOrder
-	 * @param        array $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, $sortOrder = null, $limit = null)
+	public function listVolumePricingsOfProductWithQuantityLowerThan($product, \integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -5849,20 +4882,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            markCategoriesAsFeatured ()
+	 * @param array $categories
 	 *
-	 * @since           1.3.1
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $categories array of ids or entities.
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function markCategoriesAsFeatured($categories)
+	public function markCategoriesAsFeatured(array $categories)
 	{
 		$timeStamp = time();
 		$catIds = array();
@@ -5888,18 +4912,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            relateProductsWithProduct ()
+	 * @param array $collection
+	 * @param mixed $product
 	 *
-	 * @since           1.3.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $collection
-	 * @param           mixed $product (id, sku, or object)
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function relateProductsWithProduct($collection, $product)
+	public function relateProductsWithProduct(array $collection, $product)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -5931,18 +4949,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            removeCategoriesFromProduct ()
+	 * @param array                                                   $categories
+	 * @param mixed $product
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $categories
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeCategoriesFromProduct($categories, $product)
+	public function removeCategoriesFromProduct(array $categories, $product)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -5977,18 +4989,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            removeFilesFromProduct ()
+	 * @param array $files
+	 * @param mixed $product
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $files
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeFilesFromProduct($files, $product)
+	public function removeFilesFromProduct(array $files, $product)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -6024,18 +5030,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            removeLocalesFromProduct ()
+	 * @param array $locales
+	 * @param mixed $product
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $locales
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeLocalesFromProduct($locales, $product){
+	public function removeLocalesFromProduct(array $locales, $product){
 		$timeStamp = time();
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -6068,19 +5068,14 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
 	}
+
 	/**
-	 * @name            removeLocalesFromProductCategory()
+	 * @param array $locales
+	 * @param mixed $category
 	 *
-	 * @since           1.5.8
-	 * @version         1.5.8
-	 * @author          Can Berkol
-	 *
-	 * @param           array $locales
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeLocalesFromProductCategory($locales, $category){
+	public function removeLocalesFromProductCategory(array $locales, $category){
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
@@ -6113,19 +5108,14 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
 	}
+
 	/**
-	 * @name            removeProductsFromCategory ()
+	 * @param array $products
+	 * @param       $category
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $products
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeProductsFromCategory($products, $category){
+	public function removeProductsFromCategory(array $products, $category){
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
@@ -6159,20 +5149,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            removeProductCategoriesFromLocale ()
+	 * @param array $categories
+	 * @param       $locale
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->doesProductExist()
-	 *
-	 * @param           array $categories
-	 * @param           mixed $locale
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeProductCategoriesFromLocale($categories, $locale)
+	public function removeProductCategoriesFromLocale(array $categories, mixed $locale)
 	{
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -6208,18 +5190,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            removeProductsFromLocale ()
+	 * @param array $products
+	 * @param mixed $locale
 	 *
-	 * @since           1.2.3
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $products
-	 * @param           mixed $locale
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function removeProductsFromLocale($products, $locale)
+	public function removeProductsFromLocale(array $products, $locale)
 	{
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -6253,19 +5229,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            unmarkCategoriesAsFeatured ()
+	 * @param array $categories
 	 *
-	 * @since           1.3.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $categories
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function unmarkCategoriesAsFeatured($categories)
+	public function unmarkCategoriesAsFeatured(array $categories)
 	{
 		$timeStamp = time();
 		$catIds = array();
@@ -6291,18 +5259,12 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            unrelateProductsFromProduct ()
+	 * @param array $collection
+	 * @param mixed $product
 	 *
-	 * @since           1.3.4
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @param           array $collection
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function unrelateProductsFromProduct($collection, $product)
+	public function unrelateProductsFromProduct(array $collection, $product)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -6334,17 +5296,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateBrand ()
+	 * @param mixed $brand
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateBrands()
-	 *
-	 * @param           mixed $brand
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateBrand($brand)
 	{
@@ -6352,19 +5306,82 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateBrands ()
+	 * @param mixed $urlKey
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function updateBrands($collection)
+	public function updadeProductUrlKeyHistory($urlKey)
+	{
+		return $this->updadeProductUrlKeyHistories(array($urlKey));
+	}
+	/**
+	 * @param array $collection
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function updadeProductUrlKeyHistories(array $collection)
+	{
+		$timeStamp = time();
+		$countUpdates = 0;
+		$updatedItems = array();
+		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
+		foreach ($collection as $data) {
+			if ($data instanceof BundleEntity\ProductUrlKeyHistory) {
+				$entity = $data;
+				$this->em->persist($entity);
+				$updatedItems[] = $entity;
+				$countUpdates++;
+			} else if (is_object($data)) {
+				if (!property_exists($data, 'id') || !is_numeric($data->id)) {
+					return $this->createException('InvalidParameter', 'Each data must contain a valid identifier id, integer', 'err.invalid.parameter.collection');
+				}
+				if (!property_exists($data, 'date_updated')) {
+					$data->date_updated = $now;
+				}
+				if (property_exists($data, 'date_added')) {
+					unset($data->date_added);
+				}
+				$response = $this->getProductUrlHistory($data->product, $data->url_key);
+				if ($response->error->exist) {
+					return $this->createException('EntityDoesNotExist', 'Brand with id ' . $data->id, 'err.invalid.entity');
+				}
+				$oldEntity = $response->result->set;
+				foreach ($data as $column => $value) {
+					$set = 'set' . $this->translateColumnName($column);
+					switch ($column) {
+						case 'id':
+							break;
+						case 'product':
+							$response = $this->getProduct($value);
+							if($response->error->exist){
+								return $response;
+							}
+							$oldEntity->set
+							break;
+						default:
+							$oldEntity->$set($value);
+							break;
+					}
+					if ($oldEntity->isModified()) {
+						$this->em->persist($oldEntity);
+						$countUpdates++;
+						$updatedItems[] = $oldEntity;
+					}
+				}
+			}
+		}
+		if ($countUpdates > 0) {
+			$this->em->flush();
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+	}
+	/**
+	 * @param array $collection
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function updateBrands(array $collection)
 	{
 		$timeStamp = time();
 		$countUpdates = 0;
@@ -6416,17 +5433,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProduct ()
+	 * @param mixed $product
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateProducts()
-	 *
-	 * @param           mixed $product
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateProduct($product)
 	{
@@ -6434,17 +5443,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProductAttribute ()
+	 * @param mixed $attribute
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateProductAttributes()
-	 *
-	 * @param           mixed $attribute
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateProductAttribute($attribute)
 	{
@@ -6452,19 +5453,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProductAttributes ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function updateProductAttributes($collection)
+	public function updateProductAttributes(array $collection)
 	{
 		$timeStamp = time();
 		$countUpdates = 0;
@@ -6551,17 +5544,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProductAttributeValue ()
+	 * @param mixed $data
 	 *
-	 * @since           1.1.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateProductAttributeValues()
-	 *
-	 * @param           mixed $data
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateProductAttributeValue($data)
 	{
@@ -6569,19 +5554,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProductAttributeValues ()
+	 * @param array $collection
 	 *
-	 * @since           1.1.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function updateProductAttributeValues($collection)
+	public function updateProductAttributeValues(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -6661,17 +5638,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProductCategory ()
+	 * @param mixed $category
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateProductCategories()
-	 *
-	 * @param           mixed $category
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateProductCategory($category)
 	{
@@ -6679,19 +5648,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProductCategories ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.6
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function updateProductCategories($collection)
+	public function updateProductCategories(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -6804,19 +5765,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateProducts ()
+	 * @param array $collection
 	 *
-	 * @since           1.0.1
-	 * @version         1.5.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function updateProducts($collection)
+	public function updateProducts(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -6915,19 +5868,9 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateVolumePricing ()
+	 * @param mixed $volumePricing
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->updateProductAttributeValues()
-	 *
-	 * @param           mixed $volumePricing
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateVolumePricing($volumePricing)
 	{
@@ -6935,21 +5878,11 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @name            updateVolumePricings ()
+	 * @param array $collection
 	 *
-	 * @since           1.3.2
-	 * @version         1.5.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->createException()
-	 *
-	 * @param           array $collection
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function updateVolumePricings($collection)
+	public function updateVolumePricings(array $collection)
 	{
 		$timeStamp = time();
 		if (!is_array($collection)) {
@@ -7012,429 +5945,3 @@ class ProductManagementModel extends CoreModel
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
 	}
 }
-
-/**
- * Change Log
- * **************************************
- * v1.6.8                      26.08.2015
- * Said İmamoğlu
- * **************************************
- * FR :: Listing active and inactive products implemented.
- * **************************************
- * v1.6.7                      08.08.2015
- * Said İmamoğlu
- * **************************************
- * BF :: listProductAttributeValues() now returns whole table properties.
- * **************************************
- * v1.6.5                      06.08.2015
- * Can Berkol
- * **************************************
- * BF :: listProductsOfCategory() now returns error if no products found.
- *
- * **************************************
- * v1.6.4                      18.07.2015
- * Can Berkol
- * *************************************
- * BF :: addAttributesToProduct() 'attribute key changed to 'aatr'
- * FR :: listLocalizationsOfProduct() method added.
- *
- * **************************************
- * v1.6.3                      22.07.2015
- * Can Berkol
- * *************************************
- * BF :: listChildCategoriesOfProductCategoryWithPreviewImage() object was being sent to filter value.
- * BF :: list Methods now return unique values.
- *
- * **************************************
- * v1.6.1                      21.07.2015
- * Can Berkol
- * *************************************
- * BF :: listProductCategoriesInLocales() was not returning all items. Fixed.
- *
- * **************************************
- * v1.6.0                      16.07.2015
- * Can Berkol & Said İmamoğlu
- * **************************************
- * BF :: getProductCategory() fixed.
- * BF :: getProductCategoryByUrlKey() fixed.
- * BF :: listProductsInCategory() fixed.
- * BF :: getProductByUrlKey() fixed. (Said)
- * BF :: getProductAttributeByUrlKey() fixed. (Said)
- * **************************************
- * v1.5.9                      13.07.2015
- * Can Berkol
- * **************************************
- * BF :: Functions with a DQL problem in using COUNT aggregate function fixed. See. 1.5.8 change log.
- * BF :: addProductToCategories was tryingto set an integer insteadof ProductCategory object. Fixed.
- * BF :: listProductsInCategory() method was returning wrong object. Fixed.
- *
- * **************************************
- * v1.5.8                      12.07.2015
- * Can Berkol
- * **************************************
- * BF :: listProductsInCategory() was not returning a collection of products. Fixed.
- * BF :: isLocaleAssociatedWithProductCategory() has a DQL problem. Fixed by adding ".category" to COUNT().
- * BF :: missing method removeLocalesFromProductCategory() re-added.
- *
- * **************************************
- * v1.5.7                      02.07.2015
- * Can Berkol
- * **************************************
- * BF :: listProductCategoriesInLocales() Instead of ids object were being collected. Fixed.
- *
- * **************************************
- * v1.5.6                      15.06.2015
- * Can Berkol
- * **************************************
- * BF :: insertLocalizations() methods had a false login on default: case. Fixed.
- *
- * **************************************
- * v1.5.5                      12.06.2015
- * Can Berkol
- * **************************************
- * BF :: insertLocalizations() methods rewritten.
- *
- * **************************************
- * v1.5.4                      25.05.2015
- * Can Berkol
- * **************************************
- * BF :: db_connection is replaced with dbConnection
- *
- * **************************************
- * v1.5.3                      12.05.2015
- * Can Berkol
- * **************************************
- * CR :: Made compatible with Core 3.3.
- *
- * **************************************
- * v1.5.2                      Can Berkol
- * 18.03.2015
- * **************************************
- * A listActiveProductsOfCategory()
- *
- * **************************************
- * v1.5.1                      Can Berkol
- * 03.03.2015
- * **************************************
- * U removeCategoriesFromProduct()
- * *
- * **************************************
- * v1.5.0                      Can Berkol
- * 25.12.2014
- * **************************************
- * U removeLocalesFromProducts()
- *
- * **************************************
- * v1.4.9                      Can Berkol
- * 24.12.2014
- * **************************************
- * U addLocalesToProduct()
- * U insertProducts()
- * U listProducts()
- *
- * **************************************
- * v1.4.8                      Can Berkol
- * 23.12.2014
- * **************************************
- * U listActiveLocalesOfProduct()
- *
- * **************************************
- * v1.4.7                      Can Berkol
- * 10.12.2014
- * **************************************
- * U removeLocalesFromProductCategory()
- *
- * **************************************
- * v1.4.6                      Can Berkol
- * 22.09.2014
- * **************************************
- * A getCategoriesOfProductEntry()
- *
- * **************************************
- * v1.4.5                      Can Berkol
- * 05.07.2014
- * **************************************
- * D getCategoriesOfProductEntry() in favor for listCategoriesOfProduct()
- * U deleteProducts()
- * U doesProductAttributeExist() Now returns bool in result set.
- * U doesProductAttributeValueExist() Now uses getAttributeValueOfProduct and therefore parameters changed. Now returns a boolean value in result  set.
- * U getMaxSortOrderOfAttributeInProduct()
- *
- * **************************************
- * v1.4.4                   Said İmamoğlu
- * 04.07.2014
- * **************************************
- * A getVolumePricingOfProductWithMaximumQuantity()
- *
- * **************************************
- * v1.4.3                      Can Berkol
- * 30.06.2014
- * **************************************
- * U deleteProductAttributes()
- * U deleteProductCategories()
- *
- * **************************************
- * v1.4.2                      Can Berkol
- * 28.06.2014
- * **************************************
- * A deleteAllAttributeValuesOfProductByAttribute()
- * A validateAndGetLocale()
- * A validateAndGetProductAttribute()
- * A validateAndGetProductCategory()
- * R deleteAllAttributeValuesByAttribute()
- *
- * **************************************
- * v1.4.1                      Can Berkol
- * 24.06.2014
- * **************************************
- * U addFilesToProduct()
- * U listFilesOfProducts()
- * A getRandomCategoryOfProductHasParentByLevel()
- *
- * **************************************
- * v1.4.0                      Can Berkol
- * 17.06.2014
- * **************************************
- * A validateAndGetProduct()
- * U addAttributesToProduct()
- * U addFilesToProduct()
- *
- * **************************************
- * v1.3.9                   Said İmamoğlu
- * 13.06.2014
- * **************************************
- * A listProductsOfCategoryByFilter()
- *
- * **************************************
- * v1.3.8                   Said İmamoğlu
- * 04.06.2014
- * **************************************
- * A listProductsOfCategoryByF()
- *
- * **************************************
- * v1.3.7                   Said İmamoğlu
- * 04.06.2014
- * **************************************
- * A listFeaturedParentProductCategories()
- *
- * **************************************
- * v1.3.6                   Said İmamoğlu
- * 30.05.2014
- * **************************************
- * A getProductByUrlKey()
- * U getProduct()
- *
- * **************************************
- * v1.3.5                      Can Berkol
- * 22.05.2014
- * **************************************
- * U listCategoriesOfProduct()
- *
- * **************************************
- * v1.3.4                      Can Berkol
- * 22.05.2014
- * **************************************
- * A relateProducts()
- * A listRelatedProductsOfProducts()
- * A unrelateProducts()
- *
- * **************************************
- * v1.3.3                      Can Berkol
- * 20.05.2014
- * **************************************
- * U listProductsInLocales
- *
- * **************************************
- * v1.3.2                   Said İmamoğlu
- * 16.05.2014
- * **************************************
- * A insertVolumePricing()
- * A insertVolumePricings()
- * A updateVolumePricing()
- * A updateVolumePricings()
- * A deleteVolumePricing()
- * A deleteVolumePricings()
- * A listVolumePricings()
- * A getVolumePricing()
- * A listVolumePricingsOfProduct()
- * A listVolumePricingsOfProductWithQuantityGreaterThan()
- * A listVolumePricingsOfProductWithQuantityLowerThan()
- * A listVolumePricingsOfProductWithClosestQuantity()
- *
- * **************************************
- * v1.3.1                      Can Berkol
- * 06.05.2014
- * **************************************
- * A markCategoriesAsFeatured()
- * A unmarkCategoriesAsFeatured()
- *
- * **************************************
- * v1.3.0                      Can Berkol
- * 08.04.2014
- * **************************************
- * A deleteAllAttributeValuesByAttribute()
- *
- * **************************************
- * v1.2.9                      Can Berkol
- * 29.03.2014
- * **************************************
- * A listChildCategoriesOfProductCategoryWithPreviewImage()
- *
- * **************************************
- * v1.2.8                      Can Berkol
- * 28.03.2014
- * **************************************
- * U removeProductsFromCategory()
- * A deletBrand()
- * A deletBrands()
- * A listBrands()
- * A getBrands()
- * A doesBrandExist()
- * A insertBrand()
- * A insertBrands()
- * A updateBrand()
- * A updateBrands()
- * A listProductsOfBrand()
- * A listProductsOfSupplier()
- *
- * **************************************
- * v1.2.7                      Can Berkol
- * 20.03.2014
- * **************************************
- * U listProductCategories()
- * U listProducts()
- *
- * **************************************
- * v1.2.6                      Can Berkol
- * 18.03.2014
- * **************************************
- * A listFilesOfProduct()
- * A getMostRecentFileOfProduct()
- * R getFileOfProduct()
- *
- * **************************************
- * v1.2.5                   Said İmamoğlu
- * 14.03.2014
- * **************************************
- * A addProductToCategories()
- *
- * **************************************
- * v1.2.4                      Can Berkol
- * 10.03.2014
- * **************************************
- * A getParentOfProductCategory()
- * A listAttributesOfProductCategory()
- * B getAttributeValueOfProduct()
- *
- * **************************************
- * v1.2.3                      Can Berkol
- * 06.03.2014
- * **************************************
- * A addLocalesToProduct()
- * A addLocalesToProductCategory()
- * A addProductToLocales()
- * A addProductCategoryToLocales()
- * A isLocaleAssociatedWithProduct()
- * A isLocaleAssociatedWithProductCategory()
- * A listActiveLocalesOfProduct()
- * A listActiveLocalesOfProductCategory()
- * A listProductsInLocales()
- * A listProductCategoriesInLocales()
- * A removeLocaleFromProducts()
- * A removeLocaleFromProductCategories()
- * A removeProductFromLocales()
- * A removeProductCategoryFromLocales()
- *
- * **************************************
- * v1.2.2                   Said İmamoğlu
- * 05.03.2014
- * **************************************
- * A listProductAttributeValues()
- * A doesProductAttributeValueExist()
- *
- * **************************************
- * v1.2.1                      Can Berkol
- * 05.03.2014
- * **************************************
- * A listAllChildProductCategories()
- * A listProductsInCategory()
- * A listChildCategoriesOfProductCategory()
- * D listChildProductCategories()
- * **************************************
- *
- * v1.2.0                      Can Berkol
- * 18.02.2014
- * **************************************
- * A removeProductsFromCategory()
- *
- * **************************************
- * v1.1.9                      Can Berkol
- * 17.02.2014
- * **************************************
- * A listProductCategoriesOfLevel()
- * U getProductCategory()
- * U listProductsOfCategory()
- *
- * **************************************
- * v1.1.8                   Said İmamoğlu
- *                             Can Berkol
- * 14.02.2014
- * **************************************
- * A insertProductCategoryLocalizations()
- * A listParentOnlyProductCategoriesOfLevel()
- * U insertProductCategory()
- * U insertProductCategories()
- * U updateProductCategory()
- * U updateProductCategories()
- *
- * **************************************
- * v1.1.7                      Can Berkol
- * 13.02.2014
- * **************************************
- * A addAttributesToProduct()
- * A deleteProduct()
- * A insertProductAttributeValue()
- * A insertProductAttributeValues()
- * A insertProductLocalizations()
- * A isAttributeAssociatedWithProduct()
- * A getMaxSortOrderOfAttributeInProduct()
- * U deleteProducts()
- * U insertProduct()
- *
- * **************************************
- * v1.1.6                      Can Berkol
- * 07.02.2014
- * **************************************
- * A getAttributeOfProduct()
- * A updateProductAttributeValue()
- * A updateProductAttributeValues()
- * U getProductAttributeValue()
- *
- * **************************************
- * v1.1.4                      Can Berkol
- * 03.02.2014
- * **************************************
- * U listCategoriesOfProduct()
- *
- * **************************************
- * v1.1.3                      Can Berkol
- *                          Said İmamoğlu
- * 27.01.2014
- * **************************************
- * A listFilesOfProducts()
- * A insertProductAttributeLocalizations()
- * U deleteProductAttributes()
- * U insertProductAttributes()
- *
- * **************************************
- * v1.1.2                      Can Berkol
- * 19.01.2014
- * **************************************
- * A countProducts()
- *
- * **************************************
- * v1.1.1                   Said İmamoğlu
- * 15.01.2014
- * **************************************
- * A listAttributeValuesOfProduct()
- */

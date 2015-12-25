@@ -1,19 +1,11 @@
 <?php
 /**
- * @name        AttributesOfProductCategory
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- *  @author		Can Berkol
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.1
- * @date        27.04.2015
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -31,44 +23,39 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 class AttributesOfProductCategory extends CoreEntity
 {
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":1})
+     * @var int
      */
     private $sort_order;
 
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute")
      * @ORM\JoinColumn(name="attribute", referencedColumnName="id", onDelete="CASCADE")
+     * @var \DateTime
      */
     private $attribute;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory")
+     * @ORM\ManyToOne(targetEntity="ProductCategory")
      * @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     private $category;
 
 	/**
-	 * @name            setAttribute()
+	 * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute $attribute
 	 *
-	 * @author          Can Berkol
-	 *
-	 * @since           1.0.1
-	 * @version         1.0.1
-	 *
-	 * @use             $this->setModified()
-	 *
-	 * @param           mixed			$attribute
-	 *
-	 * @return          object                $this
+	 * @return $this
 	 */
-	public function setAttribute($attribute) {
+	public function setAttribute(\BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute $attribute) {
 		if(!$this->setModified('attribute', $attribute)->isModified()) {
 			return $this;
 		}
@@ -77,34 +64,18 @@ class AttributesOfProductCategory extends CoreEntity
 	}
 
 	/**
-	 * @name            getAttribute()
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @since           1.0.1
-	 * @version         1.0.1
-	 *
-	 * @return          mixed           $this->product_attribute
+	 * @return \DateTime
 	 */
 	public function getAttribute() {
 		return $this->attribute;
 	}
 
 	/**
-	 * @name            setCategory()
+	 * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $product_category
 	 *
-	 * @author          Can Berkol
-	 *
-	 * @since           1.0.1
-	 * @version         1.0.1
-	 *
-	 * @use             $this->setModified()
-	 *
-	 * @param           mixed $product_category
-	 *
-	 * @return          object                $this
+	 * @return $this
 	 */
-	public function setCategory($product_category) {
+	public function setCategory(\BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $product_category) {
 		if(!$this->setModified('category', $product_category)->isModified()) {
 			return $this;
 		}
@@ -113,34 +84,18 @@ class AttributesOfProductCategory extends CoreEntity
 	}
 
 	/**
-	 * @name            getCategory()
-	 *
-	 * @author          Can Berkol
-	 *
-	 * @since           1.0.1
-	 * @version         1.0.1
-	 *
-	 * @return          mixed           $this->product_category
+	 * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
 	 */
 	public function getCategory() {
 		return $this->category;
 	}
 
-    /**
-     * @name            setSortOrder ()
+	/**
+	 * @param int $sort_order
 	 *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sort_order
-     *
-     * @return          object                $this
-     */
-    public function setSortOrder($sort_order) {
+	 * @return $this
+	 */
+    public function setSortOrder(\integer $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -148,41 +103,10 @@ class AttributesOfProductCategory extends CoreEntity
 		return $this;
     }
 
-    /**
-     * @name            getSortOrder ()
-	 *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->sort_order
-     */
+	/**
+	 * @return int
+	 */
     public function getSortOrder() {
         return $this->sort_order;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.1                      27.04.2015
- * TW#
- * Can Berkol
- * **************************************
- * Major ORM changes.
- *
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A getDateAdded()
- * A getProductAttribute()
- * A getProductCategory()
- * A getSortOrder()
- *
- * A setDateAdded()
- * A setProductAttribute()
- * A setProductCategory()
- * A setSortOrder()
- *
- */

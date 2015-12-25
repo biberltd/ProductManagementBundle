@@ -1,19 +1,11 @@
 <?php
 /**
- * @name        CategoriesOfProduct
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author      Can Berkol
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.2
- * @date        29.11.2013
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -31,46 +23,39 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 class CategoriesOfProduct extends CoreEntity
 {
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $sort_order;
 
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory")
+     * @ORM\ManyToOne(targetEntity="ProductCategory")
      * @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     private $category;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $product;
 
     /**
-     * @name                  setCategory ()
-     *                                    Sets the category property.
-     *                                    Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $category
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $category
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setCategory($category) {
+    public function setCategory(\BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $category) {
         if(!$this->setModified('category', $category)->isModified()) {
             return $this;
         }
@@ -79,37 +64,18 @@ class CategoriesOfProduct extends CoreEntity
     }
 
     /**
-     * @name            getCategory ()
-     *                              Returns the value of category property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->category
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     public function getCategory() {
         return $this->category;
     }
 
     /**
-     * @name                  setProduct ()
-     *                                   Sets the product property.
-     *                                   Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setProduct($product) {
+    public function setProduct(\BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product) {
         if(!$this->setModified('product', $product)->isModified()) {
             return $this;
         }
@@ -118,37 +84,18 @@ class CategoriesOfProduct extends CoreEntity
     }
 
     /**
-     * @name            getProduct ()
-     *                             Returns the value of product property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     public function getProduct() {
         return $this->product;
     }
 
     /**
-     * @name                  setSortOrder ()
-     *                                     Sets the sort_order property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @param int $sort_order
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sort_order
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setSortOrder($sort_order) {
+    public function setSortOrder(\integer $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -157,59 +104,9 @@ class CategoriesOfProduct extends CoreEntity
     }
 
     /**
-     * @name            getSortOrder ()
-     *                               Returns the value of sort_order property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->sort_order
+     * @return int
      */
     public function getSortOrder() {
         return $this->sort_order;
     }
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
-
 }
-/**
- * Change Log
- * **************************************
- * v1.0.2                      Can Berkol
- * 29.11.2013
- * **************************************
- * A getCategory()
- * A setCategory()
- * D getProductCategory()
- * D setProductCategory()
- *
- * **************************************
- * v1.0.1                      Murat Ünal
- * 11.10.2013
- * **************************************
- * A getProduct()
- * A setProduct()
- * * ************************************
- * v1.0.1                      Murat Ünal
- * 11.10.2013
- * **************************************
- * D getProduct()
- * D setProduct()
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A getDateAdded()
- * A getProduct()
- * A getProductCategory()
- * A getSortOrder()
- *
- * A setDateAdded()
- * A setProduct()
- * A setProductCategory()
- * A setSortOrder()
- *
- */

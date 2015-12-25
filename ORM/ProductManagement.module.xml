@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<skipper version="3.2.1.1226" mvc="Symfony2" orm="Doctrine2">
-  <module name="\ProductManagementBundle" local-name="ProductManagementBundle" namespace="\" uuid="9741bde0-dba7-4022-9b83-7ddfcd40a5c4">
+<skipper version="3.2.4.1256" mvc="Symfony2" orm="Doctrine2">
+  <module name="\ProductManagementBundle" local-name="ProductManagementBundle" namespace="\" export-format="Doctrine2Php" export-path="../Entity" uuid="9741bde0-dba7-4022-9b83-7ddfcd40a5c4">
     <entity name="\ActiveProductLocale" local-name="ActiveProductLocale" namespace="\" description="This table is used to match products with locales. This way user can pick in which locale the products will be visible." uuid="0b71f735-9ad2-4268-9865-c28389d95af2">
       <field name="product" description="Selected product." type="integer" size="15" required="true" primary="true" uuid="731bb636-e96c-4077-9b19-f534f4b14d8c"/>
       <field name="locale" description="Language" type="integer" size="5" required="true" primary="true" uuid="a5c63f12-6554-40c3-8bef-c0aa1be4edeb"/>
@@ -680,6 +680,33 @@
         <attribute name="on-update">CASCADE</attribute>
       </orm-attributes>
     </association>
+    <entity name="\ProductUrlKeyHistory" local-name="ProductUrlKeyHistory" namespace="\" description="Tracks url key changes of product for SEO purposes." uuid="68869a37-9734-4e32-8230-3420a1590c7a">
+      <field name="url_key" description="Old url key of product." type="string" size="255" required="true" uuid="7b955a93-6e22-425b-813f-30c81fb41746"/>
+      <field name="date_added" description="Date when the entry is first added." type="datetime" required="true" uuid="741e9308-5ec7-447f-a685-c7aca930bf39"/>
+      <field name="date_updated" description="Date when the entry is last updated." type="datetime" required="true" uuid="ab82d184-2d4f-48ce-89ce-87b354782809"/>
+      <field name="date_removed" description="Date when the entry is marked as removed." type="datetime" uuid="e7a40da1-3177-4e6f-bb77-e8ff8aee0512"/>
+      <field name="product" type="integer" size="15" required="true" uuid="ac0d2868-a1d5-4f53-96f2-541cd175e13d"/>
+      <index name="idxUProductUrlKey">
+        <index-field name="url_key"/>
+        <index-field name="date_added"/>
+        <index-field name="product"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">product_url_key_history</attribute>
+        <attribute name="export-file-name">ProductUrlKeyHistory.php</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+      </orm-attributes>
+    </entity>
+    <association from="\ProductUrlKeyHistory" to="\Product" caption="idxFProductOfUrlKey" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="c1b65194-633a-4b05-8045-532b4b8d4847">
+      <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
     <orm-attributes>
       <attribute name="namespace">BiberLtd\Core\Bundles\ProductManagementBundle\Entity</attribute>
       <attribute name="file-suffix">without-suffix</attribute>
@@ -692,8 +719,8 @@
     <entity uuid="54bdf829-a601-4c54-97b8-3ccbeb915fac" bg-color="4294967295" hdr-color="4292006610" position-x="50" position-y="450" size-x="0" size-x2="125" size-y="0" size-y2="87"/>
     <entity uuid="5a305683-57f2-495d-9e9a-011d3343c137" bg-color="4294967295" hdr-color="4292006610" position-x="1450" position-y="200" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
     <entity uuid="5ca3abd3-e423-44e0-be5b-2b26ff7c6dfe" bg-color="4294967295" hdr-color="4292006610" position-x="1124" position-y="439" size-x="0" size-x2="151" size-y="0" size-y2="45"/>
+    <entity uuid="68869a37-9734-4e32-8230-3420a1590c7a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="300" position-y="43" size-x="0" size-x2="20" size-y="0" size-y2="20"/>
     <entity uuid="88915b8c-14d5-42f1-a4e4-5d2a31ff96e3" bg-color="4294967295" hdr-color="4292006610" position-x="1450" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
-    <module uuid="9741bde0-dba7-4022-9b83-7ddfcd40a5c4" bg-color="4280139519" size-x="0" size-x2="1812" size-y="7" size-y2="650"/>
     <entity uuid="ab4d46b1-9b5b-4ce2-9e65-898e5bcf4073" bg-color="4294967295" hdr-color="4292006610" position-x="750" position-y="200" size-x="0" size-x2="145" size-y="0" size-y2="73"/>
     <entity uuid="ab52fd8c-bbaa-4acd-bf2b-ddf58080803e" bg-color="4294967295" hdr-color="4292006610" position-x="350" position-y="350" size-x="0" size-x2="138" size-y="0" size-y2="115"/>
     <entity uuid="b1cc9d75-7583-466b-9675-95dd95acbaf9" bg-color="4294967295" hdr-color="4292006610" position-x="1350" position-y="350" size-x="0" size-x2="147" size-y="0" size-y2="129"/>
@@ -705,5 +732,6 @@
     <entity uuid="f94f0dff-737d-40da-bdae-9cc36c5db82a" bg-color="4294967295" hdr-color="4292006610" position-x="1080" position-y="242" size-x="0" size-x2="142" size-y="0" size-y2="101"/>
     <entity uuid="fd9a924e-dc7c-44be-a74e-510e80042650" bg-color="4294967295" hdr-color="4292006610" position-x="1550" position-y="450" size-x="0" size-x2="142" size-y="0" size-y2="45"/>
     <entity uuid="ff58bc59-4964-4488-92c9-914bc835a050" bg-color="4294967295" hdr-color="4292006610" position-x="800" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
+    <module uuid="9741bde0-dba7-4022-9b83-7ddfcd40a5c4" bg-color="#1DBEFF" size-x="0" size-x2="1812" size-y="7" size-y2="650"/>
   </visual-data>
 </skipper>

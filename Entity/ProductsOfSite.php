@@ -1,18 +1,11 @@
 <?php
 /**
- * @name        ProductOfSite
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.0
- * @date        11.09.2013
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -31,23 +24,27 @@ class ProductsOfSite extends CoreEntity
 {
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $count_view;
 
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $count_like;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $product;
 
@@ -55,26 +52,16 @@ class ProductsOfSite extends CoreEntity
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
      */
     private $site;
 
     /**
-     * @name                  setCountLike ()
-     *                                     Sets the count_like property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @param int $count_like
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $count_like
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setCountLike($count_like) {
+    public function setCountLike(\integer $count_like) {
         if(!$this->setModified('count_like', $count_like)->isModified()) {
             return $this;
         }
@@ -83,37 +70,18 @@ class ProductsOfSite extends CoreEntity
     }
 
     /**
-     * @name            getCountLike ()
-     *                               Returns the value of count_like property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->count_like
+     * @return int
      */
     public function getCountLike() {
         return $this->count_like;
     }
 
     /**
-     * @name                  setCountView ()
-     *                                     Sets the count_view property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @param int $count_view
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $count_view
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setCountView($count_view) {
+    public function setCountView(\integer $count_view) {
         if(!$this->setModified('count_view', $count_view)->isModified()) {
             return $this;
         }
@@ -121,38 +89,19 @@ class ProductsOfSite extends CoreEntity
 		return $this;
     }
 
-    /**
-     * @name            getCountView ()
-     *                               Returns the value of count_view property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->count_view
-     */
+	/**
+	 * @return int
+	 */
     public function getCountView() {
         return $this->count_view;
     }
 
-    /**
-     * @name                  setProduct ()
-     *                                   Sets the product property.
-     *                                   Updates the data only if stored value and value to be set are different.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product
-     *
-     * @return          object                $this
-     */
-    public function setProduct($product) {
+	/**
+	 * @param \BiberLtd\Bundle\ProductManagementBundle\Product $product
+	 *
+	 * @return $this
+	 */
+    public function setProduct(\BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product) {
         if(!$this->setModified('product', $product)->isModified()) {
             return $this;
         }
@@ -160,38 +109,19 @@ class ProductsOfSite extends CoreEntity
 		return $this;
     }
 
-    /**
-     * @name            getProduct ()
-     *                             Returns the value of product property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product
-     */
+	/**
+	 * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
+	 */
     public function getProduct() {
         return $this->product;
     }
 
-    /**
-     * @name                  setSite ()
-     *                                Sets the site property.
-     *                                Updates the data only if stored value and value to be set are different.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $site
-     *
-     * @return          object                $this
-     */
-    public function setSite($site) {
+	/**
+	 * @param \BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site
+	 *
+	 * @return $this
+	 */
+    public function setSite(\BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site) {
         if(!$this->setModified('site', $site)->isModified()) {
             return $this;
         }
@@ -199,37 +129,10 @@ class ProductsOfSite extends CoreEntity
 		return $this;
     }
 
-    /**
-     * @name            getSite ()
-     *                          Returns the value of site property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->site
-     */
+	/**
+	 * @return \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
+	 */
     public function getSite() {
         return $this->site;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A getCountLike()
- * A getCountView()
- * A getDateAdded()
- * A getProduct()
- * A getSite()
- *
- * A setCountLike()
- * A setCountView()
- * A setDateAdded()
- * A setProduct()
- * A setSite()
- *
- */

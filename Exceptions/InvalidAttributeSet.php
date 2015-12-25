@@ -1,24 +1,26 @@
 <?php
 /**
- * @name        InvalidAttributeSetException
- * @package		BiberLtd\Bundle\ProductManagementBundle\Exceptions
- *
  * @author		Can Berkol
- * @version     1.0.0
- * @date        17.06.2014
  *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @description Exception to $set collection in product attribute related functions.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Exceptions;
 
 use BiberLtd\Bundle\ExceptionBundle\Services;
 
 class InvalidAttributeSetException extends Services\ExceptionAdapter {
-    public function __construct($kernel, $msg = "", $code = 'PMB0001', Exception $previous = null) {
+    /**
+     * InvalidAttributeSetException constructor.
+     *
+     * @param string                                                             $kernel
+     * @param string                                                             $msg
+     * @param string                                                             $code
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Exceptions\Exception|null $previous
+     */
+    public function __construct($kernel, \string $msg = "", \string $code = 'PMB0001', Exception $previous = null) {
         $numeriCode = ord($code[0]).ord($code[1]).ord($code[2]).substr($code, 2, 3);
         parent::__construct(
             $kernel,
@@ -27,11 +29,3 @@ class InvalidAttributeSetException extends Services\ExceptionAdapter {
             $previous);
      }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.0                      Can Berkol
- * 17.06.2014
- * **************************************
- * A __construct()
- */

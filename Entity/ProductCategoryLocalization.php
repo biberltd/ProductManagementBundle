@@ -1,18 +1,11 @@
 <?php
 /**
- * @name        ProductCategoryLocalization
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.1
- * @date        29.09.2013
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -33,36 +26,39 @@ class ProductCategoryLocalization extends CoreEntity
 {
     /** 
      * @ORM\Column(type="string", length=45, nullable=true)
+     * @var string
      */
     private $name;
 
     /** 
      * @ORM\Column(type="string", length=155, nullable=false)
+     * @var string
      */
     private $url_key;
 
     /** 
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $description;
 
     /** 
      * @ORM\Column(type="string", length=155, nullable=true)
+     * @var string
      */
     private $meta_keywords;
 
     /** 
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $meta_description;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory",
-     *     inversedBy="localizations"
-     * )
+     * @ORM\ManyToOne(targetEntity="ProductCategory", inversedBy="localizations", cascade={"persist"})
      * @ORM\JoinColumn(name="category", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     private $category;
 
@@ -70,26 +66,16 @@ class ProductCategoryLocalization extends CoreEntity
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @ORM\Id
+     * @var \BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language
      */
     private $language;
 
     /**
-     * @name                  setCategory ()
-     *                                    Sets the category property.
-     *                                    Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $category
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $category
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setCategory($category) {
+    public function setCategory(\BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $category) {
         if(!$this->setModified('category', $category)->isModified()) {
             return $this;
         }
@@ -98,37 +84,18 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getCategory ()
-     *                              Returns the value of category property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->category
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     public function getCategory() {
         return $this->category;
     }
 
     /**
-     * @name                  setDescription ()
-     *                                       Sets the description property.
-     *                                       Updates the data only if stored value and value to be set are different.
+     * @param string $description
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $description
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setDescription($description) {
+    public function setDescription(\string $description) {
         if(!$this->setModified('description', $description)->isModified()) {
             return $this;
         }
@@ -137,37 +104,18 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getDescription ()
-     *                                 Returns the value of description property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->description
+     * @return string
      */
     public function getDescription() {
         return $this->description;
     }
 
     /**
-     * @name                  setLanguage ()
-     *                                    Sets the language property.
-     *                                    Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language $language
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $language
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setLanguage($language) {
+    public function setLanguage(\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language $language) {
         if(!$this->setModified('language', $language)->isModified()) {
             return $this;
         }
@@ -176,37 +124,18 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getLanguage ()
-     *                              Returns the value of language property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->language
+     * @return \BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language
      */
     public function getLanguage() {
         return $this->language;
     }
 
     /**
-     * @name                  setMetaDescription ()
-     *                                           Sets the meta_description property.
-     *                                           Updates the data only if stored value and value to be set are different.
+     * @param string $meta_description
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $meta_description
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setMetaDescription($meta_description) {
+    public function setMetaDescription(\string $meta_description) {
         if(!$this->setModified('meta_description', $meta_description)->isModified()) {
             return $this;
         }
@@ -215,37 +144,18 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getMetaDescription ()
-     *                                     Returns the value of meta_description property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->meta_description
+     * @return string
      */
     public function getMetaDescription() {
         return $this->meta_description;
     }
 
     /**
-     * @name                  setMetaKeywords ()
-     *                                        Sets the meta_keywords property.
-     *                                        Updates the data only if stored value and value to be set are different.
+     * @param string $meta_keywords
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $meta_keywords
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setMetaKeywords($meta_keywords) {
+    public function setMetaKeywords(\string $meta_keywords) {
         if(!$this->setModified('meta_keywords', $meta_keywords)->isModified()) {
             return $this;
         }
@@ -254,37 +164,18 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getMetaKeywords ()
-     *                                  Returns the value of meta_keywords property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->meta_keywords
+     * @return string
      */
     public function getMetaKeywords() {
         return $this->meta_keywords;
     }
 
     /**
-     * @name                  setName ()
-     *                                Sets the name property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @param string $name
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $name
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setName($name) {
+    public function setName(\string $name) {
         if(!$this->setModified('name', $name)->isModified()) {
             return $this;
         }
@@ -293,37 +184,18 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getName ()
-     *                          Returns the value of name property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->name
+     * @return string
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @name                  setUrlKey ()
-     *                                  Sets the url_key property.
-     *                                  Updates the data only if stored value and value to be set are different.
+     * @param string $url_key
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $url_key
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setUrlKey($url_key) {
+    public function setUrlKey(\string $url_key) {
         if(!$this->setModified('url_key', $url_key)->isModified()) {
             return $this;
         }
@@ -332,49 +204,9 @@ class ProductCategoryLocalization extends CoreEntity
     }
 
     /**
-     * @name            getUrlKey ()
-     *                            Returns the value of url_key property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->url_key
+     * @return string
      */
     public function getUrlKey() {
         return $this->url_key;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.1                      Can Berkol
- * 29.09.2013
- * **************************************
- * A getCategory()
- * A setCategory()
- * D getProductCategory()
- * D setProductCategory()
- *
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A getDescription()
- * A getLanguage()
- * A getMetaDescription()
- * A getMetaKeywords()
- * A getName()
- * A getProductCategory()
- * A getUrlKey()
- *
- * A setDescription()
- * A setLanguage()
- * A setMetaDescription()
- * A setMetaKeywords()
- * A setName()
- * A setProductCategory()
- * A setUrlKey()
- *
- */

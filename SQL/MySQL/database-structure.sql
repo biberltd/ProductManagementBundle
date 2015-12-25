@@ -1,16 +1,16 @@
 /*
-Navicat MySQL Data Transfer
+Navicat MariaDB Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50505
+Source Server         : localmariadb
+Source Server Version : 100108
 Source Host           : localhost:3306
 Source Database       : bod_core
 
-Target Server Type    : MYSQL
-Target Server Version : 50505
+Target Server Type    : MariaDB
+Target Server Version : 100108
 File Encoding         : 65001
 
-Date: 2015-06-15 15:58:02
+Date: 2015-12-25 22:14:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,24 +79,6 @@ CREATE TABLE `attributes_of_product_category` (
   CONSTRAINT `idxFAttributeOfProductCategory` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`),
   CONSTRAINT `idxFCategoryOfProductAttribute` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
-
--- ----------------------------
--- Table structure for brand
--- ----------------------------
-DROP TABLE IF EXISTS `brand`;
-CREATE TABLE `brand` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'System given id.',
-  `name` varchar(255) COLLATE utf8_turkish_ci NOT NULL COMMENT 'Brand name.',
-  `logo` text COLLATE utf8_turkish_ci COMMENT 'Path of brand logo.',
-  `date_added` datetime NOT NULL COMMENT 'Date when brand is added.',
-  `date_updated` datetime NOT NULL COMMENT 'Date when the brand is updated.',
-  `date_removed` datetime DEFAULT NULL COMMENT 'Date when the brand is removed.',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idxUBrandId` (`id`) USING BTREE,
-  KEY `idxNBrandDateAdded` (`date_added`) USING BTREE,
-  KEY `idxNBrandDateUpdated` (`date_updated`) USING BTREE,
-  KEY `idxNBrandDateRemoved` (`date_removed`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 -- ----------------------------
 -- Table structure for categories_of_product
@@ -169,9 +151,9 @@ CREATE TABLE `product` (
   KEY `idxFPreviewFileOfProduct` (`preview_file`) USING BTREE,
   KEY `idxNProductsOfBrand` (`id`,`brand`) USING BTREE,
   KEY `idxFBrandOfProduct` (`brand`) USING BTREE,
+  CONSTRAINT `idx_f_produc_site` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idx_f_product_brand` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_preview_File` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_produc_site` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idx_f_product_preview_File` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -262,7 +244,7 @@ CREATE TABLE `product_category` (
   CONSTRAINT `idx_f_product_category_parent` FOREIGN KEY (`parent`) REFERENCES `product_category` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `idx_f_product_category_site` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idx_f_product_categpry_preview_image` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for product_category_localization
@@ -305,6 +287,22 @@ CREATE TABLE `product_localization` (
   CONSTRAINT `idxFLocalizedProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idxFProductLocalizationLanguage` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Table structure for product_url_key_history
+-- ----------------------------
+DROP TABLE IF EXISTS `product_url_key_history`;
+CREATE TABLE `product_url_key_history` (
+  `url_key` varchar(255) NOT NULL COMMENT 'Url key of product.',
+  `date_added` datetime NOT NULL COMMENT 'Date when the entry is first added.',
+  `date_updated` datetime NOT NULL COMMENT 'Date when the entry is last updated.',
+  `date_removed` datetime DEFAULT NULL COMMENT 'Date when the entry is marked as removed.',
+  `product` int(10) unsigned NOT NULL COMMENT 'Url key of product.',
+  PRIMARY KEY (`url_key`),
+  KEY `idxFProductOfUrlKey` (`product`),
+  KEY `idxUProductUrlKey` (`url_key`,`date_added`,`product`),
+  CONSTRAINT `product_url_key_history_ibfk_1` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for products_of_site

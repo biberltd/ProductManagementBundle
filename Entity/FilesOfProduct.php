@@ -1,18 +1,11 @@
 <?php
 /**
- * @name        FileOfProduct
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.0
- * @date        11.09.2013
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -30,17 +23,20 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 class FilesOfProduct extends CoreEntity
 {
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":1})
+     * @var int
      */
     private $sort_order;
 
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /** 
-     * @ORM\Column(type="string", length=1, nullable=false)
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default":"i"})
+     * @var string
      */
     private $type;
 
@@ -48,33 +44,24 @@ class FilesOfProduct extends CoreEntity
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
      * @ORM\JoinColumn(name="file", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     private $file;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Product", cascade={"persist"})
      * @ORM\JoinColumn(name="product", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $product;
 
     /**
-     * @name                  setFile ()
-     *                                Sets the file property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\File $file
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $file
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setFile($file) {
+    public function setFile(\BiberLtd\Bundle\ProductManagementBundle\Entity\File $file) {
         if(!$this->setModified('file', $file)->isModified()) {
             return $this;
         }
@@ -83,37 +70,18 @@ class FilesOfProduct extends CoreEntity
     }
 
     /**
-     * @name            getFile ()
-     *                          Returns the value of file property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->file
+     * @return \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     public function getFile() {
         return $this->file;
     }
 
     /**
-     * @name                  setProduct ()
-     *                                   Sets the product property.
-     *                                   Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setProduct($product) {
+    public function setProduct(\BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product) {
         if(!$this->setModified('product', $product)->isModified()) {
             return $this;
         }
@@ -122,37 +90,18 @@ class FilesOfProduct extends CoreEntity
     }
 
     /**
-     * @name            getProduct ()
-     *                             Returns the value of product property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     public function getProduct() {
         return $this->product;
     }
 
     /**
-     * @name                  setSortOrder ()
-     *                                     Sets the sort_order property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @param int $sort_order
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sort_order
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setSortOrder($sort_order) {
+    public function setSortOrder(\integer $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -161,37 +110,18 @@ class FilesOfProduct extends CoreEntity
     }
 
     /**
-     * @name            getSortOrder ()
-     *                               Returns the value of sort_order property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->sort_order
+     * @return int
      */
     public function getSortOrder() {
         return $this->sort_order;
     }
 
     /**
-     * @name                  setType ()
-     *                                Sets the type property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @param string $type
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $type
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setType($type) {
+    public function setType(\string $type) {
         if(!$this->setModified('type', $type)->isModified()) {
             return $this;
         }
@@ -214,22 +144,3 @@ class FilesOfProduct extends CoreEntity
         return $this->type;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A getDateAdded()
- * A getFile()
- * A getProduct()
- * A getSortOrder()
- * A getType()
- *
- * A setDateAdded()
- * A setFile()
- * A setProduct()
- * A setSortOrder()
- * A setType()
- *
- */

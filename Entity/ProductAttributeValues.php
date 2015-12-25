@@ -1,21 +1,14 @@
 <?php
 /**
- * @name        ProductAttributeValues
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.0
- * @date        11.09.2013
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
-
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
+use BiberLtd\Bundle\MultiLanguageSupportBundle\Services\MultiLanguageSupportModel;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
 
@@ -36,71 +29,56 @@ class ProductAttributeValues extends CoreEntity
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $sort_order;
 
     /** 
      * @ORM\Column(type="text", nullable=false)
+     * @var string
      */
     private $value;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $product;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute")
      * @ORM\JoinColumn(name="attribute", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute
      */
     private $attribute;
 
     /** 
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language
      */
     private $language;
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
 
     /**
-     * @name            getId()
-     *                  Gets $id property.
-     * .
-     * @author          Murat Ünal
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          integer          $this->id
+     * @return mixed
      */
     public function getId(){
         return $this->id;
     }
 
     /**
-     * @name                  setAttribute ()
-     *                                     Sets the attribute property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute $attribute
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $attribute
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setAttribute($attribute) {
+    public function setAttribute(\BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute $attribute) {
         if(!$this->setModified('attribute', $attribute)->isModified()) {
             return $this;
         }
@@ -109,37 +87,18 @@ class ProductAttributeValues extends CoreEntity
     }
 
     /**
-     * @name            getAttribute ()
-     *                               Returns the value of attribute property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->attribute
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductAttribute
      */
     public function getAttribute() {
         return $this->attribute;
     }
 
     /**
-     * @name                  setLanguage ()
-     *                                    Sets the language property.
-     *                                    Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language $language
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $language
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setLanguage($language) {
+    public function setLanguage(\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language $language) {
         if(!$this->setModified('language', $language)->isModified()) {
             return $this;
         }
@@ -148,37 +107,18 @@ class ProductAttributeValues extends CoreEntity
     }
 
     /**
-     * @name            getLanguage ()
-     *                              Returns the value of language property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->language
+     * @return \BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language
      */
     public function getLanguage() {
         return $this->language;
     }
 
     /**
-     * @name                  setProduct ()
-     *                                   Sets the product property.
-     *                                   Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setProduct($product) {
+    public function setProduct(\BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product) {
         if(!$this->setModified('product', $product)->isModified()) {
             return $this;
         }
@@ -187,37 +127,18 @@ class ProductAttributeValues extends CoreEntity
     }
 
     /**
-     * @name            getProduct ()
-     *                             Returns the value of product property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     public function getProduct() {
         return $this->product;
     }
 
     /**
-     * @name                  setSortOrder ()
-     *                                     Sets the sort_order property.
-     *                                     Updates the data only if stored value and value to be set are different.
+     * @param int $sort_order
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sort_order
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setSortOrder($sort_order) {
+    public function setSortOrder(\integer $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -226,37 +147,18 @@ class ProductAttributeValues extends CoreEntity
     }
 
     /**
-     * @name            getSortOrder ()
-     *                               Returns the value of sort_order property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->sort_order
+     * @return int
      */
     public function getSortOrder() {
         return $this->sort_order;
     }
 
     /**
-     * @name                  setValue ()
-     *                                 Sets the value property.
-     *                                 Updates the data only if stored value and value to be set are different.
+     * @param string $value
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $value
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setValue($value) {
+    public function setValue(\string $value) {
         if(!$this->setModified('value', $value)->isModified()) {
             return $this;
         }
@@ -265,37 +167,9 @@ class ProductAttributeValues extends CoreEntity
     }
 
     /**
-     * @name            getValue ()
-     *                           Returns the value of value property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->value
+     * @return string
      */
     public function getValue() {
         return $this->value;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A getId()
- * A getLanguage()
- * A getProduct()
- * A getProductAttribute()
- * A getSortOrder()
- * A getValue()
- *
- * A setLanguage()
- * A setProduct()
- * A setProductAttribute()
- * A setSortOrder()
- * A setValue()
- *
- */

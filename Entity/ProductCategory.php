@@ -1,19 +1,11 @@
 <?php
 /**
- * @name        ProductCategory
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author      Can Berkol
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.3
- * @date        12.07.2015
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -38,72 +30,75 @@ class ProductCategory extends CoreLocalizableEntity
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /** 
-     * @ORM\Column(type="string", length=1, nullable=false)
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default":"t"})
+     * @var string
      */
     private $level;
 
     /** 
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $count_children;
 
     /** 
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /** 
      * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
     public $date_updated;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
 	 */
 	public $date_removed;
 
     /** 
-     * @ORM\Column(type="string", length=1, nullable=false)
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default":"n"})
+     * @var string
      */
     private $is_featured;
 
     /** 
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, options={"default":1})
+     * @var int
      */
     private $sort_order;
 
     /** 
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
 	 * @ORM\JoinColumn(name="preview_image", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     private $preview_image;
 
     /** 
-     * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory",
-     *     mappedBy="parent"
-     * )
+     * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="parent")
+     * @var array
      */
     private $product_categories;
 
     /** 
-     * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategoryLocalization",
-     *     mappedBy="category"
-     * )
+     * @ORM\OneToMany(targetEntity="ProductCategoryLocalization", mappedBy="category")
+     * @var array
      */
     protected $localizations;
 
     /** 
-     * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory",
-     *     inversedBy="product_categories"
-     * )
+     * @ORM\ManyToOne(targetEntity="ProductCategory", inversedBy="product_categories")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id", onDelete="RESTRICT")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     private $parent;
 
@@ -111,43 +106,23 @@ class ProductCategory extends CoreLocalizableEntity
     /** 
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
      */
     private $site;
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
 
     /**
-     * @name            getId()
-     *                  Gets $id property.
-     * .
-     * @author          Murat Ünal
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          integer          $this->id
+     * @return mixed
      */
     public function getId(){
         return $this->id;
     }
 
     /**
-     * @name                  setCountChildren ()
-     *                                         Sets the count_children property.
-     *                                         Updates the data only if stored value and value to be set are different.
+     * @param int $count_children
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $count_children
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setCountChildren($count_children) {
+    public function setCountChildren(\integer $count_children) {
         if(!$this->setModified('count_children', $count_children)->isModified()) {
             return $this;
         }
@@ -156,37 +131,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getCountChildren ()
-     *                                   Returns the value of count_children property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->count_children
+     * @return int
      */
     public function getCountChildren() {
         return $this->count_children;
     }
 
     /**
-     * @name                  setLevel ()
-     *                                 Sets the level property.
-     *                                 Updates the data only if stored value and value to be set are different.
+     * @param string $level
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $level
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setLevel($level) {
+    public function setLevel(\string $level) {
         if(!$this->setModified('level', $level)->isModified()) {
             return $this;
         }
@@ -195,37 +151,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getLevel ()
-     *                           Returns the value of level property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->level
+     * @return string
      */
     public function getLevel() {
         return $this->level;
     }
 
     /**
-     * @name                  setProductCategories ()
-     *                                             Sets the product_categories property.
-     *                                             Updates the data only if stored value and value to be set are different.
+     * @param array $product_categories
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product_categories
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setProductCategories($product_categories) {
+    public function setProductCategories(array $product_categories) {
         if(!$this->setModified('product_categories', $product_categories)->isModified()) {
             return $this;
         }
@@ -234,37 +171,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getProductCategories ()
-     *                                       Returns the value of product_categories property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product_categories
+     * @return array
      */
     public function getProductCategories() {
         return $this->product_categories;
     }
 
     /**
-     * @name                  setParent ()
-     *                                           Sets the product_category property.
-     *                                           Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $product_category
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $product_category
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setParent($product_category) {
+    public function setParent(\BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory $product_category) {
         if(!$this->setModified('parent', $product_category)->isModified()) {
             return $this;
         }
@@ -273,37 +191,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getProductCategory ()
-     *                                     Returns the value of product_category property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->product_category
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     public function getParent() {
         return $this->parent;
     }
 
     /**
-     * @name                  setSite ()
-     *                                Sets the site property.
-     *                                Updates the data only if stored value and value to be set are different.
+     * @param \BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $site
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setSite($site) {
+    public function setSite(\BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site) {
         if(!$this->setModified('site', $site)->isModified()) {
             return $this;
         }
@@ -312,37 +211,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getSite()
-     *                          Returns the value of site property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->site
+     * @return \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
      */
     public function getSite() {
         return $this->site;
     }
 
     /**
-     * @name            setIsFeatured()
-     *                  Sets the is_featured property.
-     *                  Updates the data only if stored value and value to be set are different.
+     * @param string $is_featured
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.2
-     * @version         1.0.2
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $is_featured
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setIsFeatured($is_featured) {
+    public function setIsFeatured(\string $is_featured) {
         if($this->setModified('is_featured', $is_featured)->isModified()) {
             $this->is_featured = $is_featured;
         }
@@ -351,37 +231,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            isFeatured()
-     *                  Returns the value of is_featured property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.2
-     * @version         1.0.2
-     *
-     * @return          mixed           $this->is_featured
+     * @return string
      */
     public function getIsFeatured() {
         return $this->is_featured;
     }
 
     /**
-     * @name            setSortOrder ()
-     *                  Sets the sort_order property.
-     *                  Updates the data only if stored value and value to be set are different.
+     * @param int $sort_order
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.2
-     * @version         1.0.2
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sort_order
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setSortOrder($sort_order) {
+    public function setSortOrder(\integer $sort_order) {
         if($this->setModified('sort_order', $sort_order)->isModified()) {
             $this->sort_order = $sort_order;
         }
@@ -390,37 +251,18 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getSortOrder ()
-     *                  Returns the value of sort_order property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.2
-     * @version         1.0.2
-     *
-     * @return          mixed           $this->sort_order
+     * @return int
      */
     public function getSortOrder() {
         return $this->sort_order;
     }
 
     /**
-     * @name            setPreviewImage()
-     *                  Sets the preview_image property.
-     *                  Updates the data only if stored value and value to be set are different.
+     * @param int $preview_image
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.2
-     * @version         1.0.2
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $preview_image
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setPreviewImage($preview_image) {
+    public function setPreviewImage(\integer $preview_image) {
         if($this->setModified('preview_image', $preview_image)->isModified()) {
             $this->preview_image = $preview_image;
         }
@@ -429,79 +271,10 @@ class ProductCategory extends CoreLocalizableEntity
     }
 
     /**
-     * @name            getPreviewImage()
-     *                  Returns the value of preview_image property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.2
-     * @version         1.0.2
-     *
-     * @return          mixed           $this->preview_image
+     * @return \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     public function getPreviewImage() {
         return $this->preview_image;
     }
 
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.2                      Can Berkol
- * 12.01.2014
- * **************************************
- * A isFeatured()
- * A getPreviewImage()
- * A getSortOrder()
- * A setIsFeatured()
- * A setPreviewImage()
- * A setSortOrder()
- *
- * **************************************
- * v1.0.1                      Murat Ünal
- * 11.10.2013
- * **************************************
- * D get_categories_of_products()
- * D set_categories_of_products()
- * D get_attributes_of_product_categories()
- * D set_attributes_of_product_categories()
- * D getCoupons()
- * D setCoupons()
- * D getShipmentRates()
- * D setShipmentRates()
- * D getTaxRates()
- * D setTaxRates()
- *
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A get_attributes_of_product_categories()
- * A get_categories_of_products()
- * A getCountChildren()
- * A getCoupons()
- * A getDateAdded()
- * A getDateUpdated()
- * A getId()
- * A getLevel()
- * A getLocalizations()
- * A getProductCategories()
- * A getProductCategory()
- * A getShipmentRates()
- * A getSite()
- * A getTaxRates()
- *
- * A set_attributes_of_product_categories()
- * A set_categories_of_products()
- * A setCountChildren()
- * A setCoupons()
- * A setDateAdded()
- * A setDateUpdated()
- * A setLevel()
- * A setLocalizations()
- * A setProductCategories()
- * A setProductCategory()
- * A setSite()
- * A setTaxRates()
- *
- */

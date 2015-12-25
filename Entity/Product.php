@@ -1,19 +1,11 @@
 <?php
 /**
- * @name        Product
- * @package		BiberLtd\Bundle\CoreBundle\ProductManagementBundle
+ * @author		Can Berkol
  *
- * @author      Can Berkol
- * @author		Murat Ünal
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.5
- * @date        13.07.2014
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 
@@ -43,139 +35,142 @@ class Product extends CoreLocalizableEntity{
      * @ORM\Id
      * @ORM\Column(type="integer", length=15)
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=5, nullable=false)
+     * @ORM\Column(type="integer", length=5, nullable=false, options={"default":0})
+     * @var integer
      */
     private $quantity;
 
     /**
-     * @ORM\Column(type="decimal", length=6, nullable=false)
+     * @ORM\Column(type="decimal", length=6, nullable=false, options={"default":"0.00"})
+     * @var float
      */
     private $price;
 
     /** 
      * @ORM\Column(type="decimal", length=6, nullable=true)
+     * @var float
      */
     private $discount_price;
 
     /**
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $count_view;
 
     /**
-     * @ORM\Column(type="integer", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
+     * @var int
      */
     private $count_like;
 
     /**
      * @ORM\Column(type="string", length=155, nullable=false)
+     * @var string
      */
     private $sku;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false, options={"default":0})
+     * @var int
      */
     private $sort_order;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_updated;
 
     /** 
      * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
     public $date_removed;
 
     /**
-     * @ORM\Column(type="string", length=1, nullable=false)
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default":"a"})
+     * @var string
      */
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=1, nullable=false)
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default":"t"})
+     * @var string
      */
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=1, nullable=false)
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default":"n"})
+     * @var string
      */
     private $is_customizable;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @var string
      */
     private $extra_info;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductLocalization",
-     *     mappedBy="product",
-     *     cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity="ProductLocalization", mappedBy="product", cascade={"persist"})
+     * @var array
      */
     protected $localizations;
 
     /**
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
      */
     private $site;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File")
 	 * @ORM\JoinColumn(name="preview_file", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     private $preview_file;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Supplier")
+     * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
+     * @var \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier
+     */
+
     private $supplier;
 
-    /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Brand", inversedBy="products")
+    /**
+     * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
      * @ORM\JoinColumn(name="brand", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand
      */
     private $brand;
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
 
     /**
-     * @name            getId()
-     * .
-     * @author          Murat Ünal
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          integer          $this->id
+     * @return mixed
      */
     public function getId(){
         return $this->id;
     }
 
     /**
-     * @name            setCountLike ()
+     * @param int $count_like
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $count_like
-     *
-     * @return          object                $this
+     * @return $this
      */
-    public function setCountLike($count_like) {
+    public function setCountLike(\integer $count_like) {
         if(!$this->setModified('count_like', $count_like)->isModified()) {
             return $this;
         }
@@ -183,35 +178,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getCountLike ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->count_like
-     */
+	/**
+	 * @return int
+	 */
     public function getCountLike() {
         return $this->count_like;
     }
 
-    /**
-     * @name            setCountView ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $count_view
-     *
-     * @return          object                $this
-     */
-    public function setCountView($count_view) {
+	/**
+	 * @param int $count_view
+	 *
+	 * @return $this
+	 */
+    public function setCountView(\integer $count_view) {
         if(!$this->setModified('count_view', $count_view)->isModified()) {
             return $this;
         }
@@ -219,36 +198,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getCountView ()
-     *                               Returns the value of count_view property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->count_view
-     */
+	/**
+	 * @return int
+	 */
     public function getCountView() {
         return $this->count_view;
     }
 
-    /**
-     * @name            setIsCustomizable()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $is_customizable
-     *
-     * @return          object                $this
-     */
-    public function setIsCustomizable($is_customizable) {
+	/**
+	 * @param string $is_customizable
+	 *
+	 * @return $this
+	 */
+    public function setIsCustomizable(\string $is_customizable) {
         if(!$this->setModified('is_customizable', $is_customizable)->isModified()) {
             return $this;
         }
@@ -256,35 +218,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getIsCustomizable()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->is_customizable
-     */
+	/**
+	 * @return string
+	 */
     public function getIsCustomizable() {
         return $this->is_customizable;
     }
 
-    /**
-     * @name            setPreviewFile ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $preview_file
-     *
-     * @return          object                $this
-     */
-    public function setPreviewFile($preview_file) {
+	/**
+	 * @param \BiberLtd\Bundle\FileManagementBundle\Entity\File $preview_file
+	 *
+	 * @return $this
+	 */
+    public function setPreviewFile(\BiberLtd\Bundle\FileManagementBundle\Entity\File $preview_file) {
         if(!$this->setModified('preview_file', $preview_file)->isModified()) {
             return $this;
         }
@@ -292,35 +238,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getPreviewFile ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->preview_file
-     */
+	/**
+	 * @return \BiberLtd\Bundle\FileManagementBundle\Entity\File
+	 */
     public function getPreviewFile() {
         return $this->preview_file;
     }
 
-    /**
-     * @name            setPrice ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $price
-     *
-     * @return          object                $this
-     */
-    public function setPrice($price) {
+	/**
+	 * @param float $price
+	 *
+	 * @return $this
+	 */
+    public function setPrice(\float $price) {
         if(!$this->setModified('price', $price)->isModified()) {
             return $this;
         }
@@ -328,35 +258,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getPrice ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->price
-     */
+	/**
+	 * @return float
+	 */
     public function getPrice() {
         return $this->price;
     }
 
-    /**
-     * @name            setQuantity ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $quantity
-     *
-     * @return          object                $this
-     */
-    public function setQuantity($quantity) {
+	/**
+	 * @param int $quantity
+	 *
+	 * @return $this
+	 */
+    public function setQuantity(\integer $quantity) {
         if(!$this->setModified('quantity', $quantity)->isModified()) {
             return $this;
         }
@@ -364,35 +278,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getQuantity ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->quantity
-     */
+	/**
+	 * @return int
+	 */
     public function getQuantity() {
         return $this->quantity;
     }
 
-    /**
-     * @name            setSite ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $site
-     *
-     * @return          object                $this
-     */
-    public function setSite($site) {
+	/**
+	 * @param \BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site
+	 *
+	 * @return $this
+	 */
+    public function setSite(\BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site) {
         if(!$this->setModified('site', $site)->isModified()) {
             return $this;
         }
@@ -400,35 +298,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getSite ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->site
-     */
+	/**
+	 * @return \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
+	 */
     public function getSite() {
         return $this->site;
     }
 
-    /**
-     * @name            setSku ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sku
-     *
-     * @return          object                $this
-     */
-    public function setSku($sku) {
+	/**
+	 * @param string $sku
+	 *
+	 * @return $this
+	 */
+    public function setSku(\string $sku) {
         if(!$this->setModified('sku', $sku)->isModified()) {
             return $this;
         }
@@ -436,35 +318,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getSku ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->sku
-     */
+	/**
+	 * @return string
+	 */
     public function getSku() {
         return $this->sku;
     }
 
-    /**
-     * @name            setSortOrder ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $sort_order
-     *
-     * @return          object                $this
-     */
-    public function setSortOrder($sort_order) {
+	/**
+	 * @param int $sort_order
+	 *
+	 * @return $this
+	 */
+    public function setSortOrder(\integer $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -472,35 +338,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getSortOrder ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->sort_order
-     */
+	/**
+	 * @return int
+	 */
     public function getSortOrder() {
         return $this->sort_order;
     }
 
-    /**
-     * @name            setStatus ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $status
-     *
-     * @return          object                $this
-     */
-    public function setStatus($status) {
+	/**
+	 * @param string $status
+	 *
+	 * @return $this
+	 */
+    public function setStatus(\string $status) {
         if(!$this->setModified('status', $status)->isModified()) {
             return $this;
         }
@@ -508,35 +358,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getStatus ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->status
-     */
+	/**
+	 * @return string
+	 */
     public function getStatus() {
         return $this->status;
     }
 
-    /**
-     * @name            setType ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $type
-     *
-     * @return          object                $this
-     */
-    public function setType($type) {
+	/**
+	 * @param string $type
+	 *
+	 * @return $this
+	 */
+    public function setType(\string $type) {
         if(!$this->setModified('type', $type)->isModified()) {
             return $this;
         }
@@ -544,35 +378,19 @@ class Product extends CoreLocalizableEntity{
 		return $this;
     }
 
-    /**
-     * @name            getType ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->type
-     */
+	/**
+	 * @return string
+	 */
     public function getType() {
         return $this->type;
     }
 
-    /**
-     * @name            setSupplier ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $supplier
-     *
-     * @return          object                $this
-     */
-    public function setSupplier($supplier) {
+	/**
+	 * @param \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier $supplier
+	 *
+	 * @return $this
+	 */
+    public function setSupplier(\BiberLtd\Bundle\StockManagementBundle\Entity\Supplier $supplier) {
         if($this->setModified('supplier', $supplier)->isModified()) {
             $this->supplier = $supplier;
         }
@@ -580,35 +398,19 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-    /**
-     * @name            getSupplier ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->supplier
-     */
+	/**
+	 * @return \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier
+	 */
     public function getSupplier() {
         return $this->supplier;
     }
 
-    /**
-     * @name            setDiscountPrice ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $discount_price
-     *
-     * @return          object                $this
-     */
-    public function setDiscountPrice($discount_price) {
+	/**
+	 * @param float $discount_price
+	 *
+	 * @return $this
+	 */
+    public function setDiscountPrice(\float $discount_price) {
         if($this->setModified('discount_price', $discount_price)->isModified()) {
             $this->discount_price = $discount_price;
         }
@@ -616,35 +418,19 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-    /**
-     * @name            getDiscountPrice ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->discount_price
-     */
+	/**
+	 * @return float
+	 */
     public function getDiscountPrice() {
         return $this->discount_price;
     }
 
-    /**
-     * @name            setBrand ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $brand
-     *
-     * @return          object                $this
-     */
-    public function setBrand($brand) {
+	/**
+	 * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand $brand
+	 *
+	 * @return $this
+	 */
+    public function setBrand(\BiberLtd\Bundle\ProductManagementBundle\Entity\Brand $brand) {
         if($this->setModified('brand', $brand)->isModified()) {
             $this->brand = $brand;
         }
@@ -652,36 +438,19 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-    /**
-     * @name            getBrand ()
-     *                  Returns the value of brand property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->brand
-     */
+	/**
+	 * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand
+	 */
     public function getBrand() {
         return $this->brand;
     }
 
-    /**
-     * @name            setExtraInfo()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $extra_info
-     *
-     * @return          object                $this
-     */
-    public function setExtraInfo($extra_info) {
+	/**
+	 * @param string $extra_info
+	 *
+	 * @return $this
+	 */
+    public function setExtraInfo(\string $extra_info) {
         if($this->setModified('extra_info', $extra_info)->isModified()) {
             $this->extra_info = $extra_info;
         }
@@ -689,109 +458,10 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-    /**
-     * @name            getExtraInfo()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->extra_info
-     */
+	/**
+	 * @return string
+	 */
     public function getExtraInfo() {
         return $this->extra_info;
     }
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.5                      13.07.2015
- * Can Berkol
- * **************************************
- * BF ::  cascade={"persist"} added to preview_file ManyToOne
- *
- * **************************************
- * v1.0.4                     Can Berkol
- * 16.05.2014
- * **************************************
- * A getExtraInfo()
- * A setExtraInfo()
- *
- * **************************************
- * v1.0.2                     Can Berkol
- * 28.11.2013
- * **************************************
- * A getPreviewFile()
- * A getSite()
- * A setPreviewFile()
- * A getPreviewFile()
- *
- * **************************************
- * v1.0.1                      Murat Ünal
- * 11.10.2013
- * **************************************
- * D getProducts_of_sites()
- * D setProducts_of_sites()
- * D get_categories_of_products()
- * D set_categories_of_products()
- * D get_attributes_of_products()
- * D set_attributes_of_products()
- * D getProductAttribute_valueses()
- * D setProduct_attribute_valueses()
- * D get_files_of_products()
- * D set_files_of_products()
- * D getShoppingOrderItems()
- * D setShoppingOrderItems()
- * D getSite()
- * D setSite
- *
- * **************************************
- * v1.0.0                      Murat Ünal
- * 11.09.2013
- * **************************************
- * A get_attributes_of_products()
- * A get_categories_of_products()
- * A getCountLike()
- * A getCountView()
- * A getCoupons()
- * A getDateAdded()
- * A getDateUpdated()
- * A get_files_of_products()
- * A getId()
- * A getIsCustomizable()
- * A getLocalizations()
- * A getPrice()
- * A getProductAttribute_valueses()
- * A getProducts_of_sites()
- * A getQuantity()
- * A getShoppingCartItems()
- * A getShoppingOrderItems()
- * A getSite()
- * A getSku()
- * A getSortOrder()
- * A getStatus()
- * A getType()
- * A set_attributes_of_products()
- * A set_categories_of_products()
- * A setCountLike()
- * A setCountView()
- * A setCoupons()
- * A setDateAdded()
- * A setDateUpdated()
- * A set_files_of_products()
- * A setIsCustomizable()
- * A setLocalizations()
- * A setPrice()
- * A setProductAttribute_valueses()
- * A setProducts_of_sites()
- * A setQuantity()
- * A setShoppingCartItems()
- * A setShoppingOrderItems()
- * A setSite()
- * A setSku()
- * A setSortOrder()
- * A setStatus()
- * A setType()
- *
- */
