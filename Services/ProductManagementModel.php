@@ -1683,7 +1683,7 @@ class ProductManagementModel extends CoreModel
 							$entity->$set($response->result->set);
 							break;
 						case 'product':
-							$response = $this->getProduct($value, 'id');
+							$response = $this->getProduct($value);
 							if ($response->error->exist) {
 								return $response;
 							}
@@ -1848,7 +1848,7 @@ class ProductManagementModel extends CoreModel
 							unset($response, $fModel);
 							break;
 						case 'parent':
-							$response = $this->getProductCategory($value, 'id');
+							$response = $this->getProductCategory($value);
 							if ($response->error->exist) {
 								break;
 							}
@@ -1857,7 +1857,7 @@ class ProductManagementModel extends CoreModel
 							break;
 						case 'site':
 							$sModel = $this->kernel->getContainer()->get('sitemanagement.model');
-							$response = $sModel->getSite($value, 'id');
+							$response = $sModel->getSite($value);
 							if ($response->error->exist) {
 								return $response;
 							}
@@ -2070,7 +2070,7 @@ class ProductManagementModel extends CoreModel
 							break;
 						case 'site':
 							$sModel = $this->kernel->getContainer()->get('sitemanagement.model');
-							$response = $sModel->getSite($value, 'id');
+							$response = $sModel->getSite($value);
 							if ($response->error->exist) {
 								return $response;
 							}
@@ -2110,7 +2110,6 @@ class ProductManagementModel extends CoreModel
 			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
-
 	}
 
 	/**
@@ -5356,7 +5355,7 @@ class ProductManagementModel extends CoreModel
 							if($response->error->exist){
 								return $response;
 							}
-							$oldEntity->set
+							$oldEntity->setProduct($value);
 							break;
 						default:
 							$oldEntity->$set($value);
