@@ -195,7 +195,7 @@
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\Product" to="\Supplier" caption="idx_f_product_supplier" inverse-alias="supplier" many-owner="true" many-inverse="false" uuid="3534aca0-24b7-42e2-8fae-bee6d480eafb">
+    <association from="\Product" to="\BiberLtd\Bundle\StockManagementBundle\Entity\Supplier" caption="idx_f_product_supplier" inverse-alias="supplier" many-owner="true" many-inverse="false" uuid="3534aca0-24b7-42e2-8fae-bee6d480eafb">
       <association-field from="supplier" to="id"/>
     </association>
     <entity name="\ProductLocalization" local-name="ProductLocalization" namespace="\" description="Hols localization for each product." uuid="398bafb3-54d0-4c80-b26c-398e9a15f46d">
@@ -725,10 +725,10 @@
     <entity uuid="ab52fd8c-bbaa-4acd-bf2b-ddf58080803e" bg-color="4294967295" hdr-color="4292006610" position-x="350" position-y="350" size-x="0" size-x2="138" size-y="0" size-y2="115"/>
     <entity uuid="b1cc9d75-7583-466b-9675-95dd95acbaf9" bg-color="4294967295" hdr-color="4292006610" position-x="1350" position-y="350" size-x="0" size-x2="147" size-y="0" size-y2="129"/>
     <entity uuid="b7508859-399b-4f7f-877e-60541c9194d4" bg-color="4294967295" hdr-color="4292006610" position-x="1250" position-y="150" size-x="0" size-x2="150" size-y="0" size-y2="73"/>
-    <entity uuid="be02716a-911d-4e0e-8e00-5c89d2dbb0de" bg-color="4294967295" hdr-color="4292006610" position-x="900" position-y="450" size-x="0" size-x2="118" size-y="0" size-y2="73"/>
+    <entity uuid="be02716a-911d-4e0e-8e00-5c89d2dbb0de" bg-color="4294967295" hdr-color="4292006610" position-x="551" position-y="521" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
     <entity uuid="d5752aa3-5dc2-43c1-a65d-b8c8beb1bc25" bg-color="4294967295" hdr-color="4292006610" position-x="650" position-y="350" size-x="0" size-x2="149" size-y="0" size-y2="115"/>
     <entity uuid="e923dbd1-47ee-440d-b826-abf97f12cc74" bg-color="4294967295" hdr-color="4292006610" position-x="1100" position-y="50" size-x="0" size-x2="121" size-y="0" size-y2="101"/>
-    <entity uuid="ed4e2029-a3f4-47c3-8258-b05222394278" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="52" position-y="110" size-x="0" size-x2="137" size-y="0" size-y2="283"/>
+    <entity uuid="ed4e2029-a3f4-47c3-8258-b05222394278" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="51" position-y="60" size-x="0" size-x2="137" size-y="0" size-y2="283"/>
     <entity uuid="f94f0dff-737d-40da-bdae-9cc36c5db82a" bg-color="4294967295" hdr-color="4292006610" position-x="1080" position-y="242" size-x="0" size-x2="142" size-y="0" size-y2="101"/>
     <entity uuid="fd9a924e-dc7c-44be-a74e-510e80042650" bg-color="4294967295" hdr-color="4292006610" position-x="1550" position-y="450" size-x="0" size-x2="142" size-y="0" size-y2="45"/>
     <entity uuid="ff58bc59-4964-4488-92c9-914bc835a050" bg-color="4294967295" hdr-color="4292006610" position-x="800" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>

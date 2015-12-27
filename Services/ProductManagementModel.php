@@ -1747,6 +1747,9 @@ class ProductManagementModel extends CoreModel
 							$countLocalizations++;
 							break;
 						case 'site':
+							/**
+							 * @var \BiberLtd\Bundle\SiteManagementBundle\Services\SiteManagementModel $sModel
+							 */
 							$sModel = $this->kernel->getContainer()->get('sitemanagement.model');
 							$response = $sModel->getSite($value);
 							if ($response->error->exist) {
