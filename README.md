@@ -16,4 +16,4 @@ Product Management Bundle
 
  **INSTALLATION**:
 
- Add "**biberltd/multilanguage-support-bundle**" into your composer's require directive.
+ Add "**biberltd/product-management-bundle**" into your composer's require directive.

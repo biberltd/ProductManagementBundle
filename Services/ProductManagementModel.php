@@ -1052,17 +1052,8 @@ class ProductManagementModel extends CoreModel
 			return $response;
 		}
 		$product = $response->result->set;
-		$filter[] = array(
-			'glue' => 'and',
-			'condition' => array(
-				array(
-					'glue' => 'and',
-					'condition' => array('column' => $this->entity['fop']['alias'] . '.product', 'comparison' => '=', 'value' => $product->getId()),
-				)
-			)
-		);
 
-		$response = $this->listFilesOfProducts($filter, array('date_added' => 'desc'), array('start' => 0, 'count' => 1));
+		$response = $this->listFilesOfProduct($product, null, array('date_added' => 'desc'), array('start' => 0, 'count' => 1));
 		if ($response->error->exist) {
 			return $response;
 		}
@@ -5113,7 +5104,7 @@ class ProductManagementModel extends CoreModel
 
 	/**
 	 * @param array $products
-	 * @param       $category
+	 * @param mixed $category
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
@@ -5133,9 +5124,9 @@ class ProductManagementModel extends CoreModel
 			$idsToRemove[] = $response->result->set->getId();
 		}
 		$in = ' IN (' . implode(',', $idsToRemove) . ')';
-		$qStr = 'DELETE FROM ' . $this->entity['apcl']['name'] . ' ' . $this->entity['apl']['alias']
-			. ' WHERE ' . $this->entity['apcl']['alias'] . '.category ' . $category->getId()
-			. ' AND ' . $this->entity['apcl']['alias'] . '.language ' . $in;
+		$qStr = 'DELETE FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+			. ' WHERE ' . $this->entity['cop']['alias'] . '.category ' . $category->getId()
+			. ' AND ' . $this->entity['cop']['alias'] . '.product ' . $in;
 
 		$q = $this->em->createQuery($qStr);
 		$result = $q->getResult();
