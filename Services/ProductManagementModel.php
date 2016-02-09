@@ -563,7 +563,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesBrandExist($brand, boolean $bypass = false)
+	public function doesBrandExist($brand, boolean $bypass = null)
 	{
 		$response = $this->getBrand($brand);
 		$exist = true;
@@ -781,7 +781,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeExist($attribute, boolean $bypass = false)
+	public function doesProductAttributeExist($attribute, boolean $bypass = null)
 	{
 		$response = $this->getProductAttribute($attribute);
 		$exist = true;
@@ -823,7 +823,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductExist($product, boolean $bypass = false)
+	public function doesProductExist($product, boolean $bypass = null)
 	{
 		$response = $this->getProduct($product);
 		$exist = true;
@@ -843,7 +843,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductCategoryExist($category, boolean $bypass = false)
+	public function doesProductCategoryExist($category, boolean $bypass = null)
 	{
 		$response = $this->getProductCategory($category);
 		$exist = true;
@@ -965,7 +965,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfAttributeInProduct($product, \bool $bypass = false)
+	public function getMaxSortOrderOfAttributeInProduct($product, boolean $bypass = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
