@@ -803,7 +803,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeValueExist($attribute, $product, $language, \bool $bypass = false)
+	public function doesProductAttributeValueExist($attribute, $product, $language, boolean $bypass = null)
 	{
 		$exist = false;
 		$response = $this->getAttributeValueOfProduct($attribute, $product, $language);
@@ -991,7 +991,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfProductFile($product, \bool $bypass = false)
+	public function getMaxSortOrderOfProductFile($product, boolean $bypass = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProduct($product);
@@ -1019,7 +1019,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfProductInCategory($category,  \bool $bypass = false)
+	public function getMaxSortOrderOfProductInCategory($category,  boolean $bypass = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProductCategory($category);
@@ -2185,7 +2185,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isAttributeAssociatedWithProduct($attribute, $product, \bool $bypass = false)
+	public function isAttributeAssociatedWithProduct($attribute, $product, boolean $bypass = null)
 	{
 		$timeStamp = time();
 		$response = $this->getProductAttribute($attribute);
@@ -2226,7 +2226,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isFileAssociatedWithProduct($file, $product, \bool $bypass = false){
+	public function isFileAssociatedWithProduct($file, $product, boolean $bypass = null){
 		$timeStamp = time();
 		$fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
@@ -2268,7 +2268,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isLocaleAssociatedWithProduct($locale, $product, \bool $bypass = false){
+	public function isLocaleAssociatedWithProduct($locale, $product, boolean $bypass = null){
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
@@ -2309,7 +2309,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isLocaleAssociatedWithProductCategory($locale, $category, \bool $bypass = false)
+	public function isLocaleAssociatedWithProductCategory($locale, $category, boolean $bypass = null)
 	{
 		$timeStamp = time();
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -2351,7 +2351,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isProductAssociatedWithCategory($product, $category, \bool $bypass = false){
+	public function isProductAssociatedWithCategory($product, $category, boolean $bypass = null){
 		$timeStamp = time();
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
