@@ -32,7 +32,7 @@ class ProductManagementModel extends CoreModel
 	 * @param string $dbConnection
 	 * @param string $orm
 	 */
-	public function __construct($kernel, \string $dbConnection = 'default', \string $orm = 'doctrine')
+	public function __construct($kernel, string $dbConnection = 'default', string $orm = 'doctrine')
 	{
 		parent::__construct($kernel, $dbConnection, $orm);
 
@@ -563,7 +563,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesBrandExist($brand, \bool $bypass = false)
+	public function doesBrandExist($brand, boolean $bypass = false)
 	{
 		$response = $this->getBrand($brand);
 		$exist = true;
@@ -781,7 +781,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeExist($attribute, \bool $bypass = false)
+	public function doesProductAttributeExist($attribute, boolean $bypass = false)
 	{
 		$response = $this->getProductAttribute($attribute);
 		$exist = true;
@@ -823,7 +823,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductExist($product, \bool $bypass = false)
+	public function doesProductExist($product, boolean $bypass = false)
 	{
 		$response = $this->getProduct($product);
 		$exist = true;
@@ -843,7 +843,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductCategoryExist($category, \bool $bypass = false)
+	public function doesProductCategoryExist($category, boolean $bypass = false)
 	{
 		$response = $this->getProductCategory($category);
 		$exist = true;
@@ -938,7 +938,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductUrlKeyHistory($product, \string $urlKey)
+	public function getProductUrlKeyHistory($product, string $urlKey)
 	{
 		$timeStamp = time();
 		if ($product instanceof BundleEntity\ProductUrlKeyHistory) {
@@ -1118,7 +1118,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductByUrlKey(\string $urlKey, $language = null)
+	public function getProductByUrlKey(string $urlKey, $language = null)
 	{
 		$timeStamp = time();
 		if (!is_string($urlKey)) {
@@ -1195,7 +1195,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttributeValue(\integer $id)
+	public function getProductAttributeValue(integer $id)
 	{
 		$timeStamp = time();
 		$result = $this->em->getRepository($this->entity['pav']['name'])
@@ -1214,7 +1214,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttributeByUrlKey(\string $urlKey, $language = null)
+	public function getProductAttributeByUrlKey(string $urlKey, $language = null)
 	{
 		$timeStamp = time();
 		if (!is_string($urlKey)) {
@@ -1258,7 +1258,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductBySku(\string $sku)
+	public function getProductBySku(string $sku)
 	{
 		return $this->getProduct($sku);
 	}
@@ -1300,7 +1300,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductCategoryByUrlKey(\string $urlKey, $language = null){
+	public function getProductCategoryByUrlKey(string $urlKey, $language = null){
 		$timeStamp = time();
 		if (!is_string($urlKey)) {
 			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
@@ -1404,7 +1404,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function incrementCountViewOfProduct($product, \integer $count)
+	public function incrementCountViewOfProduct($product, integer $count)
 	{
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -3323,7 +3323,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listParentOnlyProductCategoriesOfLevel(\integer $level = 1, array $filter = null, array $sortOrder = null, array $limit = null)
+	public function listParentOnlyProductCategoriesOfLevel(integer $level = 1, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['pc']['alias'] . '.parent';
 		$condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
@@ -3550,7 +3550,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfParentHavingLevel($category, \integer $level, array $filter = null, array $sortOrder = null, array $limit = null)
+	public function listProductCategoriesOfParentHavingLevel($category, integer $level, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -3601,7 +3601,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfLevel(\integer $level = 1, array $sortOrder = null, array $limit = null)
+	public function listProductCategoriesOfLevel(integer $level = 1, array $sortOrder = null, array $limit = null)
 	{
 		$conditions[] = array(
 			'glue' => 'or',
@@ -3696,7 +3696,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAdded(\DateTime $date, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsAdded(\DateTime $date, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eqOpts = array('after', 'before', 'between', 'on');
 		$column = $this->entity['p']['alias'] . '.date_added';
@@ -3992,7 +3992,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLiked(\integer  $likes, \string $eq, array $sortOrder = null, array $limit = null){
+	public function listProductsLiked(integer  $likes, string $eq, array $sortOrder = null, array $limit = null){
 		//$eq_opts = array('less', 'more', 'between');
 
 		$column = $this->entity['p']['alias'] . '.count_like';
@@ -4041,7 +4041,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedBetween(\integer $likes, array $sortOrder = null, array $limit = null)
+	public function listProductsLikedBetween(integer $likes, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsLiked($likes, 'between', $sortOrder, $limit);
 	}
@@ -4053,7 +4053,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedLessThan(\integer $likes, array $sortOrder = null, array $limit = null)
+	public function listProductsLikedLessThan(integer $likes, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsLiked($likes, 'less', $sortOrder, $limit);
 	}
@@ -4065,7 +4065,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedMoreThan(\integer $likes, array $sortOrder = null, array $limit = null){
+	public function listProductsLikedMoreThan(integer $likes, array $sortOrder = null, array $limit = null){
 		return $this->listProductsLiked($likes, 'more', $sortOrder, $limit);
 	}
 
@@ -4286,7 +4286,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsUpdated(\DateTime $date, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsUpdated(\DateTime $date, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eq_opts = array('after', 'before', 'between', 'on');
 		$column = $this->entity['p']['alias'] . '.date_added';
@@ -4395,7 +4395,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithPrice(\float $price, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsWithPrice(float $price, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eq_opts = array('more', 'less', 'between');
 		$column = $this->entity['p']['alias'] . '.price';
@@ -4445,7 +4445,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantities(\integer $quantity, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsWithQuantities(integer $quantity, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		//$eq_opts = array('more', 'less', 'between');
 
@@ -4507,7 +4507,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantityLessThan(\integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listProductsWithQuantityLessThan(integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantities($quantity, 'less', $sortOrder, $limit);
 	}
@@ -4519,7 +4519,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantitiesMoreThan(\integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listProductsWithQuantitiesMoreThan(integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantities($quantity, 'more', $sortOrder, $limit);
 	}
@@ -4531,7 +4531,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return mixed
 	 */
-	public function listProductsWithPriceLessThan(\float $amount, array $sortOrder = null, array $limit = null)
+	public function listProductsWithPriceLessThan(float $amount, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amount, 'less', $sortOrder, $limit);
 	}
@@ -4543,7 +4543,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return mixed
 	 */
-	public function listProductsWithPriceMoreThan(\float $amount, array $sortOrder = null, array $limit = null)
+	public function listProductsWithPriceMoreThan(float $amount, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amount, 'more', $sortOrder, $limit);
 	}
@@ -4556,7 +4556,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsViewed($views, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsViewed($views, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		//$eq_opts = array('less', 'more', 'between');
 		$column = $this->entity['p']['alias'] . '.count_view';
@@ -4825,7 +4825,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithClosestQuantity($product, \integer $quantity)
+	public function listVolumePricingsOfProductWithClosestQuantity($product, integer $quantity)
 	{
 		return $this->listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, null, array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
 	}
@@ -4838,7 +4838,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, \integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -4860,7 +4860,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithQuantityLowerThan($product, \integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listVolumePricingsOfProductWithQuantityLowerThan($product, integer $quantity, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
