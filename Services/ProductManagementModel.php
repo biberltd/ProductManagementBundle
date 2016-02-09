@@ -3323,8 +3323,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listParentOnlyProductCategoriesOfLevel(integer $level = 1, array $filter = null, array $sortOrder = null, array $limit = null)
+	public function listParentOnlyProductCategoriesOfLevel(integer $level = null, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
+		$level = $level ?? 1;
 		$column = $this->entity['pc']['alias'] . '.parent';
 		$condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
 		$filter[] = array(
@@ -3601,8 +3602,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfLevel(integer $level = 1, array $sortOrder = null, array $limit = null)
+	public function listProductCategoriesOfLevel(integer $level = null, array $sortOrder = null, array $limit = null)
 	{
+		$level = $level ?? 1;
 		$conditions[] = array(
 			'glue' => 'or',
 			'condition' => array('column' => $this->entity['pc']['alias'] . '.level', 'comparison' => '=', 'value' => $level),
