@@ -81,7 +81,7 @@ class Brand extends CoreEntity
      *
      * @return $this
      */
-    public function setLogo(\string $logo) {
+    public function setLogo(string $logo) {
         if($this->setModified('logo', $logo)->isModified()) {
             $this->logo = $logo;
         }
@@ -101,7 +101,7 @@ class Brand extends CoreEntity
      *
      * @return $this
      */
-    public function setName(\string $name) {
+    public function setName(string $name) {
         if($this->setModified('name', $name)->isModified()) {
             $this->name = $name;
         }

@@ -170,7 +170,7 @@ class Product extends CoreLocalizableEntity{
      *
      * @return $this
      */
-    public function setCountLike(\integer $count_like) {
+    public function setCountLike(integer $count_like) {
         if(!$this->setModified('count_like', $count_like)->isModified()) {
             return $this;
         }
@@ -190,7 +190,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setCountView(\integer $count_view) {
+    public function setCountView(integer $count_view) {
         if(!$this->setModified('count_view', $count_view)->isModified()) {
             return $this;
         }
@@ -210,7 +210,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setIsCustomizable(\string $is_customizable) {
+    public function setIsCustomizable(string $is_customizable) {
         if(!$this->setModified('is_customizable', $is_customizable)->isModified()) {
             return $this;
         }
@@ -250,7 +250,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setPrice(\float $price) {
+    public function setPrice(float $price) {
         if(!$this->setModified('price', $price)->isModified()) {
             return $this;
         }
@@ -270,7 +270,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setQuantity(\integer $quantity) {
+    public function setQuantity(integer $quantity) {
         if(!$this->setModified('quantity', $quantity)->isModified()) {
             return $this;
         }
@@ -310,7 +310,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setSku(\string $sku) {
+    public function setSku(string $sku) {
         if(!$this->setModified('sku', $sku)->isModified()) {
             return $this;
         }
@@ -330,7 +330,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setSortOrder(\integer $sort_order) {
+    public function setSortOrder(integer $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -350,7 +350,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setStatus(\string $status) {
+    public function setStatus(string $status) {
         if(!$this->setModified('status', $status)->isModified()) {
             return $this;
         }
@@ -370,7 +370,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setType(\string $type) {
+    public function setType(string $type) {
         if(!$this->setModified('type', $type)->isModified()) {
             return $this;
         }
@@ -410,7 +410,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setDiscountPrice(\float $discount_price) {
+    public function setDiscountPrice(float $discount_price) {
         if($this->setModified('discount_price', $discount_price)->isModified()) {
             $this->discount_price = $discount_price;
         }
@@ -450,7 +450,7 @@ class Product extends CoreLocalizableEntity{
 	 *
 	 * @return $this
 	 */
-    public function setExtraInfo(\string $extra_info) {
+    public function setExtraInfo(string $extra_info) {
         if($this->setModified('extra_info', $extra_info)->isModified()) {
             $this->extra_info = $extra_info;
         }

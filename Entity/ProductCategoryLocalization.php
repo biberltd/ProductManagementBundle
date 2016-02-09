@@ -95,7 +95,7 @@ class ProductCategoryLocalization extends CoreEntity
      *
      * @return $this
      */
-    public function setDescription(\string $description) {
+    public function setDescription(string $description) {
         if(!$this->setModified('description', $description)->isModified()) {
             return $this;
         }
@@ -135,7 +135,7 @@ class ProductCategoryLocalization extends CoreEntity
      *
      * @return $this
      */
-    public function setMetaDescription(\string $meta_description) {
+    public function setMetaDescription(string $meta_description) {
         if(!$this->setModified('meta_description', $meta_description)->isModified()) {
             return $this;
         }
@@ -155,7 +155,7 @@ class ProductCategoryLocalization extends CoreEntity
      *
      * @return $this
      */
-    public function setMetaKeywords(\string $meta_keywords) {
+    public function setMetaKeywords(string $meta_keywords) {
         if(!$this->setModified('meta_keywords', $meta_keywords)->isModified()) {
             return $this;
         }
@@ -175,7 +175,7 @@ class ProductCategoryLocalization extends CoreEntity
      *
      * @return $this
      */
-    public function setName(\string $name) {
+    public function setName(string $name) {
         if(!$this->setModified('name', $name)->isModified()) {
             return $this;
         }
@@ -195,7 +195,7 @@ class ProductCategoryLocalization extends CoreEntity
      *
      * @return $this
      */
-    public function setUrlKey(\string $url_key) {
+    public function setUrlKey(string $url_key) {
         if(!$this->setModified('url_key', $url_key)->isModified()) {
             return $this;
         }
