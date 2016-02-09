@@ -262,7 +262,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setPreviewImage(integer $preview_image) {
+    public function setPreviewImage($preview_image) {
         if($this->setModified('preview_image', $preview_image)->isModified()) {
             $this->preview_image = $preview_image;
         }
