@@ -122,7 +122,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setCountChildren(integer $count_children) {
+    public function setCountChildren($count_children) {
         if(!$this->setModified('count_children', $count_children)->isModified()) {
             return $this;
         }
@@ -142,7 +142,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setLevel(string $level) {
+    public function setLevel($level) {
         if(!$this->setModified('level', $level)->isModified()) {
             return $this;
         }
@@ -222,7 +222,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setIsFeatured(string $is_featured) {
+    public function setIsFeatured($is_featured) {
         if($this->setModified('is_featured', $is_featured)->isModified()) {
             $this->is_featured = $is_featured;
         }
@@ -242,7 +242,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setSortOrder(integer $sort_order) {
+    public function setSortOrder($sort_order) {
         if($this->setModified('sort_order', $sort_order)->isModified()) {
             $this->sort_order = $sort_order;
         }
