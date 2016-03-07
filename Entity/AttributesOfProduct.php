@@ -86,7 +86,7 @@ class AttributesOfProduct extends CoreEntity
      *
      * @return $this
      */
-    public function setPriceFactor(\float $price_factor) {
+    public function setPriceFactor(float $price_factor) {
         if(!$this->setModified('price_factor', $price_factor)->isModified()) {
             return $this;
         }
@@ -106,7 +106,7 @@ class AttributesOfProduct extends CoreEntity
      *
      * @return $this
      */
-    public function setPriceFactorType(\float $price_factor_type) {
+    public function setPriceFactorType(float $price_factor_type) {
         if(!$this->setModified('price_factor_type', $price_factor_type)->isModified()) {
             return $this;
         }
@@ -146,7 +146,7 @@ class AttributesOfProduct extends CoreEntity
      *
      * @return $this
      */
-    public function setSortOrder(\integer $sort_order) {
+    public function setSortOrder(int $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }

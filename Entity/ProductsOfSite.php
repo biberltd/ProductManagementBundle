@@ -61,7 +61,7 @@ class ProductsOfSite extends CoreEntity
      *
      * @return $this
      */
-    public function setCountLike(\integer $count_like) {
+    public function setCountLike(int $count_like) {
         if(!$this->setModified('count_like', $count_like)->isModified()) {
             return $this;
         }
@@ -81,7 +81,7 @@ class ProductsOfSite extends CoreEntity
      *
      * @return $this
      */
-    public function setCountView(\integer $count_view) {
+    public function setCountView(int $count_view) {
         if(!$this->setModified('count_view', $count_view)->isModified()) {
             return $this;
         }

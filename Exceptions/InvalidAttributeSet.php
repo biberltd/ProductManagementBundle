@@ -20,7 +20,7 @@ class InvalidAttributeSetException extends Services\ExceptionAdapter {
      * @param string                                                             $code
      * @param \BiberLtd\Bundle\ProductManagementBundle\Exceptions\Exception|null $previous
      */
-    public function __construct($kernel, \string $msg = "", \string $code = 'PMB0001', Exception $previous = null) {
+    public function __construct($kernel, string $msg = "", string $code = 'PMB0001', Exception $previous = null) {
         $numeriCode = ord($code[0]).ord($code[1]).ord($code[2]).substr($code, 2, 3);
         parent::__construct(
             $kernel,

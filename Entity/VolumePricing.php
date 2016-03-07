@@ -87,7 +87,7 @@ class VolumePricing extends CoreEntity
      *
      * @return $this
      */
-    public function setDiscountedPrice(\float $discounted_price) {
+    public function setDiscountedPrice(float $discounted_price) {
         if($this->setModified('discounted_price', $discounted_price)->isModified()) {
             $this->discounted_price = $discounted_price;
         }
@@ -107,7 +107,7 @@ class VolumePricing extends CoreEntity
      *
      * @return $this
      */
-    public function setLimitDirection(\string $limit_direction) {
+    public function setLimitDirection(string $limit_direction) {
         if($this->setModified('limit_direction', $limit_direction)->isModified()) {
             $this->limit_direction = $limit_direction;
         }
@@ -127,7 +127,7 @@ class VolumePricing extends CoreEntity
      *
      * @return $this
      */
-    public function setPrice(\float $price) {
+    public function setPrice(float $price) {
         if($this->setModified('price', $price)->isModified()) {
             $this->price = $price;
         }
@@ -174,7 +174,7 @@ class VolumePricing extends CoreEntity
      *
      * @return $this
      */
-    public function setQuantityLimit(\integer $quantity_limit) {
+    public function setQuantityLimit(int $quantity_limit) {
         if($this->setModified('quantity_limit', $quantity_limit)->isModified()) {
             $this->quantity_limit = $quantity_limit;
         }

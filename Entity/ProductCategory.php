@@ -122,7 +122,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setCountChildren(\integer $count_children) {
+    public function setCountChildren(int $count_children) {
         if(!$this->setModified('count_children', $count_children)->isModified()) {
             return $this;
         }
@@ -142,7 +142,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setLevel(\string $level) {
+    public function setLevel(string $level) {
         if(!$this->setModified('level', $level)->isModified()) {
             return $this;
         }
@@ -222,7 +222,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setIsFeatured(\string $is_featured) {
+    public function setIsFeatured(string $is_featured) {
         if($this->setModified('is_featured', $is_featured)->isModified()) {
             $this->is_featured = $is_featured;
         }
@@ -242,7 +242,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setSortOrder(\integer $sort_order) {
+    public function setSortOrder(int $sort_order) {
         if($this->setModified('sort_order', $sort_order)->isModified()) {
             $this->sort_order = $sort_order;
         }
@@ -262,7 +262,7 @@ class ProductCategory extends CoreLocalizableEntity
      *
      * @return $this
      */
-    public function setPreviewImage(\integer $preview_image) {
+    public function setPreviewImage(int $preview_image) {
         if($this->setModified('preview_image', $preview_image)->isModified()) {
             $this->preview_image = $preview_image;
         }

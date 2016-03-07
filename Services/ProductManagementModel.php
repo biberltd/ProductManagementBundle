@@ -32,7 +32,7 @@ class ProductManagementModel extends CoreModel
 	 * @param string $dbConnection
 	 * @param string $orm
 	 */
-	public function __construct($kernel, \string $dbConnection = 'default', \string $orm = 'doctrine')
+	public function __construct($kernel, string $dbConnection = 'default', string $orm = 'doctrine')
 	{
 		parent::__construct($kernel, $dbConnection, $orm);
 
@@ -78,9 +78,9 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addAttributesToProduct(array $collection, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 
-		$validAttributes = array();
+		$validAttributes = [];
 		foreach ($collection as $attr) {
 			$response = $this->getProductAttribute($attr['attribute']);
 			if (!$response->error->exist) {
@@ -100,12 +100,12 @@ class ProductManagementModel extends CoreModel
 		}
 		$product = $response->result->set;
 
-		$aopCcollection = array();
+		$aopCcollection = [];
 		$count = 0;
 		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($validAttributes as $item) {
 			/** If no entity is provided as product we need to check if it does exist */
-			$aopCollection = array();
+			$aopCollection = [];
 			/** Check if association exists */
 			if (!$this->isAttributeAssociatedWithProduct($item['attr'], $product, true)) {
 				$aop = new BundleEntity\AttributesOfProduct();
@@ -123,9 +123,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($aopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($aopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -136,7 +136,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addFilesToProduct(array $collection, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -144,7 +144,7 @@ class ProductManagementModel extends CoreModel
 		$product = $response->result->set;
 		$fileModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
-		$fopCollection = array();
+		$fopCollection = [];
 		$count = 0;
 		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $file) {
@@ -171,9 +171,9 @@ class ProductManagementModel extends CoreModel
 
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($fopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($fopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -184,7 +184,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addLocalesToProduct(array $locales, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -195,7 +195,7 @@ class ProductManagementModel extends CoreModel
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $locales parameter must be an array collection', 'E:S:001');
 		}
 
-		$aplCollection = array();
+		$aplCollection = [];
 		$count = 0;
 		/** Start persisting locales */
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -217,9 +217,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -230,7 +230,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addLocalesToProductCategory(array $locales, $category)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -241,7 +241,7 @@ class ProductManagementModel extends CoreModel
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. $locales parameter must be an array collection', 'E:S:001');
 		}
 
-		$aplCollection = array();
+		$aplCollection = [];
 		$count = 0;
 		/** Start persisting locales */
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
@@ -263,9 +263,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -276,13 +276,13 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addProductsToCategory(array $collection, $category)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$category = $response->result->set;
-		$copCollection = array();
+		$copCollection = [];
 		$count = 0;
 		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $product) {
@@ -310,9 +310,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($copCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($copCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -322,13 +322,13 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function addProductToCategories($product, array $collection){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
-		$productCollection = array();
+		$productCollection = [];
 		$count = 0;
 		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $category) {
@@ -355,9 +355,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -368,14 +368,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addProductCategoriesToLocale(array $categories, $locale)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		$response = $mlsModel->getLanguage($locale);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$locale = $response->result->set;
-		$aplCollection = array();
+		$aplCollection = [];
 		$count = 0;
 		/** Start persisting locales */
 		foreach ($categories as $category) {
@@ -397,9 +397,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -410,14 +410,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function addProductsToLocale(array $products, $locale)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		$response = $mlsModel->getLanguage($locale);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$locale = $response->result->set;
-		$aplCollection = array();
+		$aplCollection = [];
 		$count = 0;
 		/** Start persisting locales */
 		foreach ($products as $product) {
@@ -439,9 +439,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($count > 0) {
 			$this->em->flush();
-			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($aplCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -451,7 +451,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function countProducts(array $filter = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$wStr = '';
 		$qStr = 'SELECT COUNT(' . $this->entity['p']['alias'] . ')'
 			. ' FROM ' . $this->entity['p']['name'] . ' ' . $this->entity['p']['alias'];
@@ -468,7 +468,7 @@ class ProductManagementModel extends CoreModel
 		if (!$result) {
 			$count = $result;
 		}
-		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -478,7 +478,7 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function countProductsOfCategory($category, array $filter = null){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
@@ -513,7 +513,7 @@ class ProductManagementModel extends CoreModel
 		if (!$result) {
 			$count = $result;
 		}
-		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -533,7 +533,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function deleteBrands(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
@@ -551,10 +551,10 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		if ($countDeleted < 0) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 		}
 		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -563,7 +563,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesBrandExist($brand, \bool $bypass = false)
+	public function doesBrandExist($brand, bool $bypass = false)
 	{
 		$response = $this->getBrand($brand);
 		$exist = true;
@@ -594,7 +594,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function deleteProductAttributes(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
@@ -612,10 +612,10 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		if ($countDeleted < 0) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 		}
 		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -626,7 +626,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function deleteAllAttributeValuesOfProductByAttribute($attribute, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductAttribute($attribute);
 		if ($response->error->exist) {
 			return $response;
@@ -642,7 +642,7 @@ class ProductManagementModel extends CoreModel
 			. ' AND ' . $this->entity['pav']['alias'] . '.product = ' . $product->getId();
 		$query = $this->em->createQuery($qStr);
 		$query->getResult();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -662,7 +662,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function deleteProductCategories(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
@@ -680,10 +680,10 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		if ($countDeleted < 0) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 		}
 		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -710,7 +710,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function deleteProducts(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
@@ -728,10 +728,10 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		if ($countDeleted < 0) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 		}
 		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -751,7 +751,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function deleteVolumePricings(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
@@ -769,10 +769,10 @@ class ProductManagementModel extends CoreModel
 			}
 		}
 		if ($countDeleted < 0) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 		}
 		$this->em->flush();
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -781,7 +781,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeExist($attribute, \bool $bypass = false)
+	public function doesProductAttributeExist($attribute, bool $bypass = false)
 	{
 		$response = $this->getProductAttribute($attribute);
 		$exist = true;
@@ -803,7 +803,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductAttributeValueExist($attribute, $product, $language, \bool $bypass = false)
+	public function doesProductAttributeValueExist($attribute, $product, $language, bool $bypass = false)
 	{
 		$exist = false;
 		$response = $this->getAttributeValueOfProduct($attribute, $product, $language);
@@ -823,7 +823,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductExist($product, \bool $bypass = false)
+	public function doesProductExist($product, bool $bypass = false)
 	{
 		$response = $this->getProduct($product);
 		$exist = true;
@@ -843,7 +843,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesProductCategoryExist($category, \bool $bypass = false)
+	public function doesProductCategoryExist($category, bool $bypass = false)
 	{
 		$response = $this->getProductCategory($category);
 		$exist = true;
@@ -866,7 +866,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getAttributeValueOfProduct($attribute, $product, $language)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductAttribute($attribute);
 		if ($response->error->exist) {
 			return $response;
@@ -899,10 +899,10 @@ class ProductManagementModel extends CoreModel
 		$query->setFirstResult(0);
 		$result = $query->getResult();
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -912,9 +912,9 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getBrand($brand)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if ($brand instanceof BundleEntity\Brand) {
-			return new ModelResponse($brand, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+			return new ModelResponse($brand, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 		}
 		$result = null;
 		switch ($brand) {
@@ -926,10 +926,10 @@ class ProductManagementModel extends CoreModel
 				break;
 		}
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -938,11 +938,11 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductUrlKeyHistory($product, \string $urlKey)
+	public function getProductUrlKeyHistory($product, string $urlKey)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if ($product instanceof BundleEntity\ProductUrlKeyHistory) {
-			return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+			return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 		}
 		$result = null;
 		$response = $this->getProduct($product);
@@ -954,10 +954,10 @@ class ProductManagementModel extends CoreModel
 		$result = $this->em->getRepository($this->entity['pukh']['name'])->findOneBy(array('product' => $product->getId(), 'url_key' => $urlKey));
 
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 	/**
 	 * @param mixed $product
@@ -965,9 +965,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfAttributeInProduct($product, \bool $bypass = false)
+	public function getMaxSortOrderOfAttributeInProduct($product, bool $bypass = false)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -982,7 +982,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $result;
 		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -991,9 +991,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfProductFile($product, \bool $bypass = false)
+	public function getMaxSortOrderOfProductFile($product, bool $bypass = false)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -1010,7 +1010,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $result;
 		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1019,9 +1019,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getMaxSortOrderOfProductInCategory($category,  \bool $bypass = false)
+	public function getMaxSortOrderOfProductInCategory($category,  bool $bypass = false)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -1036,7 +1036,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $result;
 		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1046,7 +1046,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getMostRecentFileOfProduct($product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -1057,7 +1057,7 @@ class ProductManagementModel extends CoreModel
 		if ($response->error->exist) {
 			return $response;
 		}
-		return new ModelResponse($response->result->set, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($response->result->set, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1085,9 +1085,9 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getProduct($product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if ($product instanceof BundleEntity\Product) {
-			return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+			return new ModelResponse($product, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 		}
 		$result = null;
 		switch ($product) {
@@ -1106,10 +1106,10 @@ class ProductManagementModel extends CoreModel
 				break;
 		}
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1118,9 +1118,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductByUrlKey(\string $urlKey, $language = null)
+	public function getProductByUrlKey(string $urlKey, $language = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_string($urlKey)) {
 			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
 		}
@@ -1153,7 +1153,7 @@ class ProductManagementModel extends CoreModel
 			return $response;
 		}
 		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
+		$response->stats->execution->end = microtime(true);
 		$response->result->set = $response->result->set[0];
 
 		return $response;
@@ -1166,9 +1166,9 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getProductAttribute(mixed $attr)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if ($attr instanceof BundleEntity\ProductAttribute) {
-			return new ModelResponse($attr, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+			return new ModelResponse($attr, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 		}
 		$result = null;
 		switch ($attr) {
@@ -1184,10 +1184,10 @@ class ProductManagementModel extends CoreModel
 				break;
 		}
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1195,17 +1195,17 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttributeValue(\integer $id)
+	public function getProductAttributeValue(int $id)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$result = $this->em->getRepository($this->entity['pav']['name'])
 			->findOneBy(array('id' => $id));
 
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1214,9 +1214,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttributeByUrlKey(\string $urlKey, $language = null)
+	public function getProductAttributeByUrlKey(string $urlKey, $language = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_string($urlKey)) {
 			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
 		}
@@ -1247,7 +1247,7 @@ class ProductManagementModel extends CoreModel
 		$response = $this->listProductAtrributes($filter, null, array('start' => 0, 'count' => 1));
 
 		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
+		$response->stats->execution->end = microtime(true);
 		$response->result->set  = $response->result->set[0];
 
 		return $response;
@@ -1258,7 +1258,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductBySku(\string $sku)
+	public function getProductBySku(string $sku)
 	{
 		return $this->getProduct($sku);
 	}
@@ -1269,9 +1269,9 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getProductCategory($category){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if ($category instanceof BundleEntity\ProductCategory) {
-			return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+			return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 		}
 		$result = null;
 		switch ($category) {
@@ -1288,10 +1288,10 @@ class ProductManagementModel extends CoreModel
 				break;
 		}
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1300,8 +1300,8 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductCategoryByUrlKey(\string $urlKey, $language = null){
-		$timeStamp = time();
+	public function getProductCategoryByUrlKey(string $urlKey, $language = null){
+		$timeStamp = microtime(true);
 		if (!is_string($urlKey)) {
 			return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
 		}
@@ -1333,7 +1333,7 @@ class ProductManagementModel extends CoreModel
 
 		$response->result->set = $response->result->set[0];
 		$response->stats->execution->start = $timeStamp;
-		$response->stats->execution->end = time();
+		$response->stats->execution->end = microtime(true);
 
 		return $response;
 	}
@@ -1345,7 +1345,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getRandomCategoryOfProduct($product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -1362,7 +1362,7 @@ class ProductManagementModel extends CoreModel
 		$random = rand(0, $i - 1);
 		$category = $categoriesOfProduct[$random];
 		unset($categoriesOfProduct);
-		return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($category, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1372,15 +1372,15 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function getVolumePricing($pricing)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 
 		$result = $this->em->getRepository($this->entity['vp']['name'])
 			->findOneBy(array('id' => $pricing));
 
 		if (is_null($result)) {
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1395,7 +1395,7 @@ class ProductManagementModel extends CoreModel
 			return $response;
 		}
 		$product = $response->result->set;
-		return $this->listVolumePricingsOfProduct($product, array(), array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
+		return $this->listVolumePricingsOfProduct($product, [], array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
 	}
 
 	/**
@@ -1404,7 +1404,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function incrementCountViewOfProduct($product, \integer $count)
+	public function incrementCountViewOfProduct($product, int $count)
 	{
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -1432,12 +1432,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductUrlKeyHistories(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductUrlKeyHistory) {
@@ -1477,9 +1477,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1499,12 +1499,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertBrands(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\Brand) {
@@ -1540,9 +1540,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1572,12 +1572,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductAttributeLocalizations(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductAttributeLocalization) {
 				$entity = $data;
@@ -1615,9 +1615,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1637,12 +1637,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductAttributeValues(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductAttributeValues) {
 				$entity = $data;
@@ -1694,9 +1694,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1706,14 +1706,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductAttributes(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
 		$countLocalizations = 0;
-		$insertedItems = array();
-		$localizations = array();
+		$insertedItems = [];
+		$localizations = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductAttribute) {
 				$entity = $data;
@@ -1772,9 +1772,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1794,14 +1794,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductCategories(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
 		$countLocalizations = 0;
-		$insertedItems = array();
-		$localizations = array();
+		$insertedItems = [];
+		$localizations = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductCategory) {
@@ -1878,9 +1878,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1890,12 +1890,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductCategoryLocalizations(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductCategoryLocalization) {
 				$entity = $data;
@@ -1933,9 +1933,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1945,12 +1945,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProductLocalizations(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductLocalization) {
 				$entity = $data;
@@ -1985,9 +1985,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -1997,14 +1997,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertProducts(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
 		$countLocalizations = 0;
-		$insertedItems = array();
-		$localizations = array();
+		$insertedItems = [];
+		$localizations = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\Product) {
@@ -2101,9 +2101,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2123,12 +2123,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function insertVolumePricings(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countInserts = 0;
-		$insertedItems = array();
+		$insertedItems = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\VolumePricing) {
@@ -2173,9 +2173,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countInserts > 0) {
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, time());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2185,9 +2185,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isAttributeAssociatedWithProduct($attribute, $product, \bool $bypass = false)
+	public function isAttributeAssociatedWithProduct($attribute, $product, bool $bypass = false)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductAttribute($attribute);
 		if ($response->error->exist) {
 			return $response;
@@ -2215,7 +2215,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $found;
 		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 
 	}
 
@@ -2226,8 +2226,8 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isFileAssociatedWithProduct($file, $product, \bool $bypass = false){
-		$timeStamp = time();
+	public function isFileAssociatedWithProduct($file, $product, bool $bypass = false){
+		$timeStamp = microtime(true);
 		$fModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 
 		$response = $fModel->getFile($file);
@@ -2258,7 +2258,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $found;
 		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2268,8 +2268,8 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isLocaleAssociatedWithProduct($locale, $product, \bool $bypass = false){
-		$timeStamp = time();
+	public function isLocaleAssociatedWithProduct($locale, $product, bool $bypass = false){
+		$timeStamp = microtime(true);
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
 		$response = $mlsModel->getLanguage($locale);
@@ -2299,7 +2299,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $found;
 		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2309,9 +2309,9 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isLocaleAssociatedWithProductCategory($locale, $category, \bool $bypass = false)
+	public function isLocaleAssociatedWithProductCategory($locale, $category, bool $bypass = false)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 
 		$response = $mlsModel->getLanguage($locale);
@@ -2341,7 +2341,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $found;
 		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2351,8 +2351,8 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function isProductAssociatedWithCategory($product, $category, \bool $bypass = false){
-		$timeStamp = time();
+	public function isProductAssociatedWithCategory($product, $category, bool $bypass = false){
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -2380,7 +2380,7 @@ class ProductManagementModel extends CoreModel
 		if ($bypass) {
 			return $found;
 		}
-		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($found, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2431,7 +2431,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listActiveLocalesOfProduct($product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -2442,8 +2442,8 @@ class ProductManagementModel extends CoreModel
 			. ' WHERE ' . $this->entity['apl']['alias'] . '.product = ' . $product->getId();
 		$query = $this->em->createQuery($qStr);
 		$result = $query->getResult();
-		$locales = array();
-		$unique = array();
+		$locales = [];
+		$unique = [];
 		foreach ($result as $entry) {
 			$id = $entry->getLocale()->getId();
 			if (!isset($unique[$id])) {
@@ -2454,9 +2454,9 @@ class ProductManagementModel extends CoreModel
 		unset($unique);
 		$totalRows = count($locales);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2466,7 +2466,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listActiveLocalesOfProductCategory($category)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -2477,8 +2477,8 @@ class ProductManagementModel extends CoreModel
 			. ' WHERE ' . $this->entity['apcl']['alias'] . '.category = ' . $category->getId();
 		$query = $this->em->createQuery($qStr);
 		$result = $query->getResult();
-		$locales = array();
-		$unique = array();
+		$locales = [];
+		$unique = [];
 		foreach ($result as $entry) {
 			$id = $entry->getLocale()->getId();
 			if (!isset($unique[$id])) {
@@ -2489,9 +2489,9 @@ class ProductManagementModel extends CoreModel
 		unset($unique);
 		$totalRows = count($locales);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($locales, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2503,7 +2503,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listActiveProductsOfCategory($category, array  $sortOrder = null, array  $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -2550,12 +2550,12 @@ class ProductManagementModel extends CoreModel
 		if (count($result) < 1) {
 
 		}
-		$collection = array();
+		$collection = [];
 		foreach ($result as $item) {
 			$collection[] = $item->getProduct()->getId();
 		}
 		unset($result);
-		$filter = array();
+		$filter = [];
 		$filter[] = array(
 			'glue' => 'and',
 			'condition' => array(
@@ -2581,7 +2581,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listAttributesOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -2612,7 +2612,7 @@ class ProductManagementModel extends CoreModel
 		$q = $this->addLimit($q, $limit);
 
 		$result = $q->getResult();
-		$entities = array();
+		$entities = [];
 		foreach ($result as $entity) {
 			$id = $entity->getAttribute()->getId();
 			if (!isset($unique[$id])) {
@@ -2623,9 +2623,9 @@ class ProductManagementModel extends CoreModel
 		$totalRows = count($entities);
 		unset($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2637,7 +2637,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listAttributesOfProductCategory($category, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -2671,9 +2671,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2685,7 +2685,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listAllAttributeValuesOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -2722,9 +2722,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2752,26 +2752,33 @@ class ProductManagementModel extends CoreModel
 
 	/***
 	 * @param mixed $product
-	 * @param mixed $type
+	 * @param mixed $attribute
 	 * @param array|null $sortOrder
 	 * @param array|null $limit
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listAttributeValuesOfProduct($product, $type, array $sortOrder = null, array $limit = null)
+	public function listAttributeValuesOfProduct($product, $attribute, array $sortOrder = null, array $limit = null)
 	{
 		$this->resetResponse();
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
 
+		$response = $this->getProductAttribute($attribute);
+		if ($response->error->exist) {
+			return $response;
+		}
+		$attribute = $response->result->set;
+		unset($response);
+
 		$qStr = 'SELECT ' . $this->entity['pav']['alias'] . ', ' . $this->entity['pa']['alias']
 			. ' FROM ' . $this->entity['pav']['name'] . ' ' . $this->entity['pav']['alias']
 			. ' JOIN ' . $this->entity['pav']['alias'] . '.attribute ' . $this->entity['pa']['alias']
-			. ' WHERE ' . $this->entity['pav']['alias'] . '.product = ' . $product->getId() . ' AND ' . $this->entity['pav']['alias'] . '.attribute = ' . $type;
+			. ' WHERE ' . $this->entity['pav']['alias'] . '.product = ' . $product->getId() . ' AND ' . $this->entity['pav']['alias'] . '.attribute = ' . $attribute->getId();
 
 		$oStr = '';
 		if ($sortOrder != null) {
@@ -2798,9 +2805,9 @@ class ProductManagementModel extends CoreModel
 		$result = $q->getResult();
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2812,7 +2819,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listBrands(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -2850,9 +2857,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 	/**
 	 * @param array|null $filter
@@ -2863,7 +2870,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductUrlKeyHistories(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -2901,9 +2908,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -2915,7 +2922,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductUrlKeyHistoriesOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if($response->error->exist){
 			return $response;
@@ -2966,7 +2973,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listCategoriesOfProduct($product, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -2978,14 +2985,14 @@ class ProductManagementModel extends CoreModel
 		$q = $this->em->createQuery($qStr);
 		$result = $q->getResult();
 
-		$catsOfProduct = array();
+		$catsOfProduct = [];
 		if (count($result) > 0) {
 			foreach ($result as $cop) {
 				$catsOfProduct[] = $cop->getCategory()->getId();
 			}
 		}
 		if (count($catsOfProduct) < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
 		$columnI = $this->entity['pc']['alias'] . '.id';
 		$conditionI = array('column' => $columnI, 'comparison' => 'in', 'value' => $catsOfProduct);
@@ -3124,7 +3131,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listFilesOfProduct($product, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -3174,9 +3181,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3202,7 +3209,7 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listLocalizationsOfProduct($product, array $sortOrder = null, array $limit = null){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -3244,9 +3251,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3323,7 +3330,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listParentOnlyProductCategoriesOfLevel(\integer $level = 1, array $filter = null, array $sortOrder = null, array $limit = null)
+	public function listParentOnlyProductCategoriesOfLevel(int $level = 1, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$column = $this->entity['pc']['alias'] . '.parent';
 		$condition = array('column' => $column, 'comparison' => 'null', 'value' => null);
@@ -3364,7 +3371,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductAttributes(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -3407,7 +3414,7 @@ class ProductManagementModel extends CoreModel
 
 		$result = $q->getResult();
 
-		$entities = array();
+		$entities = [];
 		foreach ($result as $entry) {
 			$id = $entry->getAttribute()->getId();
 			if (!isset($unique[$id])) {
@@ -3417,9 +3424,9 @@ class ProductManagementModel extends CoreModel
 		}
 		$totalRows = count($entities);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3431,7 +3438,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductAttributeValues(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -3468,9 +3475,9 @@ class ProductManagementModel extends CoreModel
 		$result = $q->getResult();
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3482,7 +3489,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductCategories(array $filter = null, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -3525,8 +3532,8 @@ class ProductManagementModel extends CoreModel
 		$q = $this->em->createQuery($qStr);
 		$q = $this->addLimit($q, $limit);
 		$result = $q->getResult();
-		$entities = array();
-		$unique = array();
+		$entities = [];
+		$unique = [];
 		foreach ($result as $entry) {
 			$id = $entry->getCategory()->getId();
 			if (!isset($unique[$id])) {
@@ -3536,9 +3543,9 @@ class ProductManagementModel extends CoreModel
 		}
 		$totalRows = count($entities);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3550,7 +3557,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfParentHavingLevel($category, \integer $level, array $filter = null, array $sortOrder = null, array $limit = null)
+	public function listProductCategoriesOfParentHavingLevel($category, int $level, array $filter = null, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -3601,7 +3608,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductCategoriesOfLevel(\integer $level = 1, array $sortOrder = null, array $limit = null)
+	public function listProductCategoriesOfLevel(int $level = 1, array $sortOrder = null, array $limit = null)
 	{
 		$conditions[] = array(
 			'glue' => 'or',
@@ -3624,7 +3631,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProducts(array  $filter = null, array $sortOrder = null,array  $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -3673,7 +3680,7 @@ class ProductManagementModel extends CoreModel
 
 		$result = $q->getResult();
 
-		$entities = array();
+		$entities = [];
 		foreach ($result as $entry) {
 			$id = $entry->getProduct()->getId();
 			if (!isset($unique[$id])) {
@@ -3683,9 +3690,9 @@ class ProductManagementModel extends CoreModel
 		}
 		$totalRows = count($entities);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3696,7 +3703,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsAdded(\DateTime $date, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsAdded(\DateTime $date, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eqOpts = array('after', 'before', 'between', 'on');
 		$column = $this->entity['p']['alias'] . '.date_added';
@@ -3797,8 +3804,8 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductsInCategory(array $categories, array $sortOrder = null, array $limit = null){
-		$timeStamp = time();
-		$catIds = array();
+		$timeStamp = microtime(true);
+		$catIds = [];
 		foreach ($categories as $category) {
 			$response = $this->getProductCategory($category);
 			if ($response->error->exist) {
@@ -3808,7 +3815,7 @@ class ProductManagementModel extends CoreModel
 			$catIds[] = $category->getId();
 		}
 		if (empty($catIds)) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
 		$catIds = implode(',', $catIds);
 
@@ -3842,8 +3849,8 @@ class ProductManagementModel extends CoreModel
 		$result = $q->getResult();
 
 		$totalRows = 0;
-		$collection = array();
-		$unique = array();
+		$collection = [];
+		$unique = [];
 		if(count($result)){
 			foreach($result as $item){
 				$id = $item->getProduct()->getId();
@@ -3857,9 +3864,9 @@ class ProductManagementModel extends CoreModel
 		unset($unique);
 		unset($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($collection, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($collection, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3871,8 +3878,8 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductsInLocales(array $locales, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
-		$langIds = array();
+		$timeStamp = microtime(true);
+		$langIds = [];
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		foreach ($locales as $locale) {
 			$response = $mlsModel->getLanguage($locale);
@@ -3912,16 +3919,16 @@ class ProductManagementModel extends CoreModel
 		$q = $this->em->createQuery($qStr);
 		$q = $this->addLimit($q, $limit);
 		$result = $q->getResult();
-		$products = array();
+		$products = [];
 		foreach ($result as $cop) {
 			$products[] = $cop->getProduct();
 		}
 
 		$totalRows = count($products);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3932,8 +3939,8 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductCategoriesInLocales(array $locales, array $sortOrder = null, array $limit = null){
-		$timeStamp = time();
-		$langIds = array();
+		$timeStamp = microtime(true);
+		$langIds = [];
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		foreach ($locales as $locale) {
 			$response = $mlsModel->getLanguage($locale);
@@ -3972,16 +3979,16 @@ class ProductManagementModel extends CoreModel
 		$q = $this->addLimit($q, $limit);
 		$result = $q->getResult();
 
-		$categories = array();
+		$categories = [];
 		foreach ($result as $cop) {
 			$categories[] = $cop->getCategory();
 		}
 
 		$totalRows = count($categories);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($categories, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($categories, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -3992,7 +3999,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLiked(\integer  $likes, \string $eq, array $sortOrder = null, array $limit = null){
+	public function listProductsLiked(int  $likes, string $eq, array $sortOrder = null, array $limit = null){
 		//$eq_opts = array('less', 'more', 'between');
 
 		$column = $this->entity['p']['alias'] . '.count_like';
@@ -4041,7 +4048,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedBetween(\integer $likes, array $sortOrder = null, array $limit = null)
+	public function listProductsLikedBetween(int $likes, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsLiked($likes, 'between', $sortOrder, $limit);
 	}
@@ -4053,7 +4060,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedLessThan(\integer $likes, array $sortOrder = null, array $limit = null)
+	public function listProductsLikedLessThan(int $likes, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsLiked($likes, 'less', $sortOrder, $limit);
 	}
@@ -4065,7 +4072,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsLikedMoreThan(\integer $likes, array $sortOrder = null, array $limit = null){
+	public function listProductsLikedMoreThan(int $likes, array $sortOrder = null, array $limit = null){
 		return $this->listProductsLiked($likes, 'more', $sortOrder, $limit);
 	}
 
@@ -4104,7 +4111,7 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listProductsOfCategory($category, array $sortOrder = null, array $limit = null){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
@@ -4147,13 +4154,13 @@ class ProductManagementModel extends CoreModel
 		$query = $this->em->createQuery($qStr);
 		$result = $query->getResult();
 
-		$collection = array();
+		$collection = [];
 		foreach ($result as $item) {
 			$collection[] = $item->getProduct()->getId();
 		}
 		unset($result);
 		if(count($collection) < 1){
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
 		$filter[] = array(
 			'glue' => 'and',
@@ -4177,8 +4184,8 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listProductsOfCategoryInLocales($category, array $locales, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
-		$langIds = array();
+		$timeStamp = microtime(true);
+		$langIds = [];
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		foreach ($locales as $locale) {
 			$response = $mlsModel->getLanguage($locale);
@@ -4194,8 +4201,8 @@ class ProductManagementModel extends CoreModel
 			return $response;
 		}
 		$products = $response->result->set;
-		$productIdCollection = array();
-		$productCollection = array();
+		$productIdCollection = [];
+		$productCollection = [];
 		foreach ($products as $productEntity) {
 			$productIdCollection[] = $productEntity->getId();
 			$productCollection[$productEntity->getId()] = $productEntity;
@@ -4234,7 +4241,7 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = 0;
 		if (!is_null($result)) {
-			$products = array();
+			$products = [];
 			foreach ($result as $cop) {
 				$products[] = $cop->getProduct();
 			}
@@ -4242,9 +4249,9 @@ class ProductManagementModel extends CoreModel
 		}
 
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 
 
 	}
@@ -4286,7 +4293,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsUpdated(\DateTime $date, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsUpdated(\DateTime $date, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eq_opts = array('after', 'before', 'between', 'on');
 		$column = $this->entity['p']['alias'] . '.date_added';
@@ -4395,7 +4402,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithPrice(\float $price, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsWithPrice(float $price, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		// $eq_opts = array('more', 'less', 'between');
 		$column = $this->entity['p']['alias'] . '.price';
@@ -4445,7 +4452,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantities(\integer $quantity, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsWithQuantities(int $quantity, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		//$eq_opts = array('more', 'less', 'between');
 
@@ -4507,7 +4514,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantityLessThan(\integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listProductsWithQuantityLessThan(int $quantity, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantities($quantity, 'less', $sortOrder, $limit);
 	}
@@ -4519,7 +4526,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithQuantitiesMoreThan(\integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listProductsWithQuantitiesMoreThan(int $quantity, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsWithQuantities($quantity, 'more', $sortOrder, $limit);
 	}
@@ -4531,7 +4538,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return mixed
 	 */
-	public function listProductsWithPriceLessThan(\float $amount, array $sortOrder = null, array $limit = null)
+	public function listProductsWithPriceLessThan(float $amount, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amount, 'less', $sortOrder, $limit);
 	}
@@ -4543,7 +4550,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return mixed
 	 */
-	public function listProductsWithPriceMoreThan(\float $amount, array $sortOrder = null, array $limit = null)
+	public function listProductsWithPriceMoreThan(float $amount, array $sortOrder = null, array $limit = null)
 	{
 		return $this->listProductsPriced($amount, 'more', $sortOrder, $limit);
 	}
@@ -4556,7 +4563,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsViewed($views, \string $eq, array $sortOrder = null, array $limit = null)
+	public function listProductsViewed($views, string $eq, array $sortOrder = null, array $limit = null)
 	{
 		//$eq_opts = array('less', 'more', 'between');
 		$column = $this->entity['p']['alias'] . '.count_view';
@@ -4643,7 +4650,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listRelatedProductsOfProduct($product, array $sortOrder = null, array $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -4658,10 +4665,10 @@ class ProductManagementModel extends CoreModel
 		$result = $q->getResult();
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		$relatedProducts = array();
-		$relatedProductIds = array();
+		$relatedProducts = [];
+		$relatedProductIds = [];
 		foreach ($result as $rpObject) {
 			$relatedProduct = $rpObject->getRelatedProduct();
 			$relatedProducts[] = $relatedProduct;
@@ -4692,7 +4699,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listValuesOfProductAttributes($product, $attribute, $language)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
@@ -4725,9 +4732,9 @@ class ProductManagementModel extends CoreModel
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -4739,7 +4746,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listVolumePricings(array $filter = null, array $sortOrder = null, array  $limit = null)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
 		}
@@ -4778,7 +4785,7 @@ class ProductManagementModel extends CoreModel
 
 		$result = $q->getResult();
 
-		$entities = array();
+		$entities = [];
 		foreach ($result as $entry) {
 			$id = $entry->getVolumePricing()->getId();
 			if (!isset($unique[$id])) {
@@ -4788,9 +4795,9 @@ class ProductManagementModel extends CoreModel
 		}
 		$totalRows = count($entities);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+		return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -4801,7 +4808,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProduct($product, array $filter = array(), array  $sortOrder = null, array $limit = null)
+	public function listVolumePricingsOfProduct($product, array $filter = [], array  $sortOrder = null, array $limit = null)
 	{
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
@@ -4825,7 +4832,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithClosestQuantity($product, \integer $quantity)
+	public function listVolumePricingsOfProductWithClosestQuantity($product, int $quantity)
 	{
 		return $this->listVolumePricingsOfProductWithQuantityLowerThan($product, $quantity, null, array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
 	}
@@ -4838,7 +4845,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, \integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listVolumePricingsOfProductWithQuantityGreaterThan($product, int $quantity, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -4860,7 +4867,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listVolumePricingsOfProductWithQuantityLowerThan($product, \integer $quantity, array $sortOrder = null, array $limit = null)
+	public function listVolumePricingsOfProductWithQuantityLowerThan($product, int $quantity, array $sortOrder = null, array $limit = null)
 	{
 		$filter[] = array(
 			'glue' => 'and',
@@ -4881,8 +4888,8 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function markCategoriesAsFeatured(array $categories)
 	{
-		$timeStamp = time();
-		$catIds = array();
+		$timeStamp = microtime(true);
+		$catIds = [];
 		foreach ($categories as $category) {
 			$response = $this->getProductCategory($category);
 			if ($response->error->exist) {
@@ -4892,7 +4899,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$catIds = implode(',', $catIds);
 		if (count($catIds) < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
 		$qStr = 'UPDATE ' . $this->entity['pc']['name'] . ' ' . $this->entity['pc']['alias']
 			. ' SET ' . $this->entity['pc']['alias'] . '.is_featured = \'y\''
@@ -4901,7 +4908,7 @@ class ProductManagementModel extends CoreModel
 		$query = $this->em->createQuery($qStr);
 		$result = $query->getResult();
 
-		return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+		return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -4912,14 +4919,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function relateProductsWithProduct(array $collection, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
 		$countRelated = 0;
-		$relatedProducts = array();
+		$relatedProducts = [];
 		foreach ($collection as $item) {
 			$response = $this->getProduct($item);
 			if ($response->error->exist) {
@@ -4938,7 +4945,7 @@ class ProductManagementModel extends CoreModel
 		if ($countRelated > 0) {
 			$this->em->flush();
 		}
-		return new ModelResponse($relatedProducts, $countRelated, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+		return new ModelResponse($relatedProducts, $countRelated, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -4949,13 +4956,13 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function removeCategoriesFromProduct(array $categories, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
-		$idsToRemove = array();
+		$idsToRemove = [];
 		foreach ($categories as $category) {
 			$response = $this->getProductCategory($category);
 			if ($response->error->exist) {
@@ -4976,9 +4983,9 @@ class ProductManagementModel extends CoreModel
 			$deleted = false;
 		}
 		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -4989,13 +4996,13 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function removeFilesFromProduct(array $files, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
-		$idsToRemove = array();
+		$idsToRemove = [];
 		$fmModel = new FMMService\FileManagementModel($this->kernel, $this->dbConnection, $this->orm);
 		foreach ($files as $file) {
 			$response = $fmModel->getFile($file);
@@ -5017,9 +5024,9 @@ class ProductManagementModel extends CoreModel
 			$deleted = false;
 		}
 		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5029,13 +5036,13 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeLocalesFromProduct(array $locales, $product){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
-		$idsToRemove = array();
+		$idsToRemove = [];
 		$mModel = new MLSService\MultiLanguageSupportModel($this->kernel, $this->dbConnection, $this->orm);
 		foreach ($locales as $locale) {
 			$response = $mModel->getLanguage($locale);
@@ -5057,9 +5064,9 @@ class ProductManagementModel extends CoreModel
 			$deleted = false;
 		}
 		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5069,13 +5076,13 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeLocalesFromProductCategory(array $locales, $category){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$category = $response->result->set;
-		$idsToRemove = array();
+		$idsToRemove = [];
 		$mModel = new MLSService\MultiLanguageSupportModel($this->kernel, $this->dbConnection, $this->orm);
 		foreach ($locales as $locale) {
 			$response = $mModel->getLanguage($locale);
@@ -5097,9 +5104,9 @@ class ProductManagementModel extends CoreModel
 			$deleted = false;
 		}
 		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5109,13 +5116,13 @@ class ProductManagementModel extends CoreModel
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function removeProductsFromCategory(array $products, $category){
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$category = $response->result->set;
-		$idsToRemove = array();
+		$idsToRemove = [];
 		foreach ($products as $product) {
 			$response = $this->getProductCategory($category);
 			if ($response->error->exist) {
@@ -5136,9 +5143,9 @@ class ProductManagementModel extends CoreModel
 			$deleted = false;
 		}
 		if ($deleted) {
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5149,14 +5156,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function removeProductCategoriesFromLocale(array $categories, mixed $locale)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		$response = $mlsModel->getLanguage($locale);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$locale = $response->result->set;
-		$toRemove = array();
+		$toRemove = [];
 		$count = 0;
 		/** Start persisting files */
 
@@ -5177,9 +5184,9 @@ class ProductManagementModel extends CoreModel
 
 			$query = $this->em->createQuery($qStr);
 			$query->getResult();
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5190,14 +5197,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function removeProductsFromLocale(array $products, $locale)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$mlsModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
 		$response = $mlsModel->getLanguage($locale);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$locale = $response->result->set;
-		$toRemove = array();
+		$toRemove = [];
 		$count = 0;
 		foreach ($products as $product) {
 			$response = $this->getProduct($product);
@@ -5216,9 +5223,9 @@ class ProductManagementModel extends CoreModel
 
 			$query = $this->em->createQuery($qStr);
 			$query->getResult();
-			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5228,8 +5235,8 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function unmarkCategoriesAsFeatured(array $categories)
 	{
-		$timeStamp = time();
-		$catIds = array();
+		$timeStamp = microtime(true);
+		$catIds = [];
 		foreach ($categories as $category) {
 			$response = $this->getProductCategory($category);
 			if ($response->error->exist) {
@@ -5239,7 +5246,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$catIds = implode(',', $catIds);
 		if (count($catIds) < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
 		$qStr = 'UPDATE ' . $this->entity['pc']['name'] . ' ' . $this->entity['pc']['alias']
 			. ' SET ' . $this->entity['pc']['alias'] . '.is_featured = \'n\''
@@ -5248,7 +5255,7 @@ class ProductManagementModel extends CoreModel
 		$query = $this->em->createQuery($qStr);
 		$result = $query->getResult();
 
-		return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+		return new ModelResponse($result, count($catIds), 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5259,14 +5266,14 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function unrelateProductsFromProduct(array $collection, $product)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$response = $this->getProduct($product);
 		if ($response->error->exist) {
 			return $response;
 		}
 		$product = $response->result->set;
 		$countUnrelated = 0;
-		$unrelatedProductIds = array();
+		$unrelatedProductIds = [];
 		foreach ($collection as $item) {
 			$response = $this->getProduct($item);
 			if ($response->error->exist) {
@@ -5285,7 +5292,7 @@ class ProductManagementModel extends CoreModel
 
 		$query->getResult();
 
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5314,9 +5321,9 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updadeProductUrlKeyHistories(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$countUpdates = 0;
-		$updatedItems = array();
+		$updatedItems = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductUrlKeyHistory) {
@@ -5365,9 +5372,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 	/**
 	 * @param array $collection
@@ -5376,9 +5383,9 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updateBrands(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$countUpdates = 0;
-		$updatedItems = array();
+		$updatedItems = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\Brand) {
@@ -5420,9 +5427,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5452,10 +5459,10 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updateProductAttributes(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		$countUpdates = 0;
-		$updatedItems = array();
-		$localizations = array();
+		$updatedItems = [];
+		$localizations = [];
 		$now = new \DateTime('now', new \DateTimeZone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductAttribute) {
@@ -5531,9 +5538,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5553,12 +5560,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updateProductAttributeValues(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countUpdates = 0;
-		$updatedItems = array();
+		$updatedItems = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductAttributeValues) {
 				$entity = $data;
@@ -5625,9 +5632,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5647,13 +5654,13 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updateProductCategories(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countUpdates = 0;
-		$updatedItems = array();
-		$localizations = array();
+		$updatedItems = [];
+		$localizations = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\ProductCategory) {
 				$entity = $data;
@@ -5752,9 +5759,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5764,13 +5771,13 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updateProducts(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countUpdates = 0;
-		$updatedItems = array();
-		$localizations = array();
+		$updatedItems = [];
+		$localizations = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\Product) {
 				$entity = $data;
@@ -5855,9 +5862,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -5877,12 +5884,12 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function updateVolumePricings(array $collection)
 	{
-		$timeStamp = time();
+		$timeStamp = microtime(true);
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
 		}
 		$countUpdates = 0;
-		$updatedItems = array();
+		$updatedItems = [];
 		foreach ($collection as $data) {
 			if ($data instanceof BundleEntity\VolumePricing) {
 				$entity = $data;
@@ -5932,9 +5939,9 @@ class ProductManagementModel extends CoreModel
 		}
 		if ($countUpdates > 0) {
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
 }

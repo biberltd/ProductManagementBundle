@@ -21,7 +21,7 @@ This method is used to fetch single product from Database.
 **Parameters**:
 - __mixed_ $product
 
-	Product entity, id as integer, url key as string or sku as string.
+	Product entity, id as integer,,m, url key as string or sku as string.
 
 **Return**:
 - ModelResponse

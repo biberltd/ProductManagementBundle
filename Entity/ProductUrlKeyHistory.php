@@ -64,7 +64,7 @@ class ProductUrlKeyHistory extends CoreEntity
      *
      * @return $this
      */
-    public function setUrlKey(\string $url_key){
+    public function setUrlKey(string $url_key){
         if(!$this->setModified('url_key', $url_key)->isModified()){
             return $this;
         }
