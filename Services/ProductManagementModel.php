@@ -2781,7 +2781,7 @@ class ProductManagementModel extends CoreModel
 			. ' WHERE ' . $this->entity['pav']['alias'] . '.product = ' . $product->getId() . ' AND ' . $this->entity['pav']['alias'] . '.attribute = ' . $attribute->getId();
 
 		$oStr = '';
-		if ($sortOrder != null) {
+		if ($sortOrder != null){
 			foreach ($sortOrder as $column => $direction) {
 				switch ($column) {
 					case 'sort_order':
