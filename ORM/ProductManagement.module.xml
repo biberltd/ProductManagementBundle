@@ -670,14 +670,12 @@
       <association-field from="product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
-        <attribute name="on-update">CASCADE</attribute>
       </orm-attributes>
     </association>
     <association from="\RelatedProduct" to="\Product" caption="idxFRelatedProduct" inverse-alias="related_product" many-owner="true" many-inverse="false" parent-required="true" uuid="0eb05669-2c51-49dc-9baf-88edaf1a74ba">
       <association-field from="related_product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
-        <attribute name="on-update">CASCADE</attribute>
       </orm-attributes>
     </association>
     <entity name="\ProductUrlKeyHistory" local-name="ProductUrlKeyHistory" namespace="\" description="Tracks url key changes of product for SEO purposes." uuid="68869a37-9734-4e32-8230-3420a1590c7a">

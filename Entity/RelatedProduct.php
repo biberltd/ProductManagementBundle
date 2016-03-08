@@ -24,7 +24,7 @@ class RelatedProduct extends CoreEntity
     /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE", onUpdate="CASCADE")
+     * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $product;
@@ -36,8 +36,7 @@ class RelatedProduct extends CoreEntity
      *     name="related_product",
      *     referencedColumnName="id",
      *     nullable=false,
-     *     onDelete="CASCADE",
-     *     onUpdate="CASCADE"
+     *     onDelete="CASCADE"
      * )
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
