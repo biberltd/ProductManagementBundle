@@ -4793,7 +4793,7 @@ class ProductManagementModel extends CoreModel
 			$id = $entry->getId();
 			if (!isset($unique[$id])) {
 				$unique[$id] = '';
-				$entities[] = $entry->getId();
+				$entities[] = $entry;
 			}
 		}
 		$totalRows = count($entities);
