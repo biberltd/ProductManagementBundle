@@ -1199,7 +1199,7 @@ class ProductManagementModel extends CoreModel
 	{
 		$timeStamp = microtime(true);
 		$result = $this->em->getRepository($this->entity['pav']['name'])
-			->findOneBy(array('id' => $id));
+		                   ->findOneBy(array('id' => $id));
 
 		if (is_null($result)) {
 			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
@@ -1375,7 +1375,7 @@ class ProductManagementModel extends CoreModel
 		$timeStamp = microtime(true);
 
 		$result = $this->em->getRepository($this->entity['vp']['name'])
-			->findOneBy(array('id' => $pricing));
+		                   ->findOneBy(array('id' => $pricing));
 
 		if (is_null($result)) {
 			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
@@ -4787,10 +4787,13 @@ class ProductManagementModel extends CoreModel
 
 		$entities = [];
 		foreach ($result as $entry) {
-			$id = $entry->getVolumePricing()->getId();
+			/**
+			 * @var BundleEntity\VolumePricing $entry
+			 */
+			$id = $entry->getId();
 			if (!isset($unique[$id])) {
 				$unique[$id] = '';
-				$entities[] = $entry->getVolumePricing();
+				$entities[] = $entry->getId();
 			}
 		}
 		$totalRows = count($entities);
