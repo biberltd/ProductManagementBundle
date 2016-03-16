@@ -6027,11 +6027,26 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listProductsWithStatus(string $status, array $sortOrder = null, array $limit= null){
+	public function listProductsWithStatus(string $status, array $sortOrder = null, array $limit = null){
 		$filter[] = array(
 			'glue' => 'and',
 			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' => $status),
 		);
 		return $this->listProducts($filter,$sortOrder,$limit);
+	}
+
+	/**
+	 * @param string     $keyword
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listProductsWithSkuContaining(string $keyword, array $sortOrder = null, array $limit = null){
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.sku', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		return $this->listProducts($filter, $sortOrder, $limit);
 	}
 }
