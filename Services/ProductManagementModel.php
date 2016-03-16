@@ -5947,4 +5947,43 @@ class ProductManagementModel extends CoreModel
 
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
 	}
+
+	/**
+	 * @param string     $keyword
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listProductsWitkKeywordMatchingInMeta(string $keyword, array $sortOrder = null, array $limit = null){
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['p']['alias'].'.sku', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['p']['alias'].'.extra_info', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['pl']['alias'].'.name', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['pl']['alias'].'.description', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['pl']['alias'].'.meta_keywords', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['pl']['alias'].'.meta_description', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		$filter[] = array(
+			'glue' => 'or',
+			'condition' => array('column' => $this->entity['pl']['alias'].'.url_key', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		return $this->listProducts($filter,$sortOrder,$limit);
+	}
 }
