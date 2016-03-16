@@ -6019,4 +6019,19 @@ class ProductManagementModel extends CoreModel
 		);
 		return $this->listProducts($filter, $sortOrder, $limit);
 	}
+
+	/**
+	 * @param string     $status
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listProductsWithStatus(string $status, array $sortOrder = null, array $limit= null){
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.status', 'comparison' => '=', 'value' => $status),
+		);
+		return $this->listProducts($filter,$sortOrder,$limit);
+	}
 }
