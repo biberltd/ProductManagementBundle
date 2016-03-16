@@ -22,6 +22,7 @@ use BiberLtd\Bundle\MultiLanguageSupportBundle\Services as MLSService;
 use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
 use BiberLtd\Bundle\CoreBundle\Services as CoreServices;
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
+use BiberLtd\Bundle\StockManagementBundle\Services\StockManagementModel;
 
 class ProductManagementModel extends CoreModel
 {
@@ -5985,5 +5986,37 @@ class ProductManagementModel extends CoreModel
 			'condition' => array('column' => $this->entity['pl']['alias'].'.url_key', 'comparison' => 'contains', 'value' => $keyword),
 		);
 		return $this->listProducts($filter,$sortOrder,$limit);
+	}
+
+	/**
+	 * @param mixed $supplier
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listProductsOfSupplier($supplier, array $sortOrder = null, array $limit = null){
+		/**
+		 * @var StockManagementModel $sModel
+		 */
+		$sModel = $this->kernel->getContainer()->get('stockmanagement.model');
+		$response = $sModel->getSupplier($supplier);
+		if ($response->error->exist) {
+			return $response;
+		}
+		$supplier = $response->result->set;
+		unset($response);
+		$column = $this->entity['p']['alias'] . '.supplier';
+		$condition = array('column' => $column, 'comparison' => '=', 'value' => $supplier->getId());
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				array(
+					'glue' => 'and',
+					'condition' => $condition,
+				)
+			)
+		);
+		return $this->listProducts($filter, $sortOrder, $limit);
 	}
 }
