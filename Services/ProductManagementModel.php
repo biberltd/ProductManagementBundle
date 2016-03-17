@@ -6049,4 +6049,19 @@ class ProductManagementModel extends CoreModel
 		);
 		return $this->listProducts($filter, $sortOrder, $limit);
 	}
+
+	/**
+	 * @param array      $pIds
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listProductsWithIds(array $pIds, array $sortOrder = null, array $limit = null){
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array('column' => $this->entity['p']['alias'].'.sku', 'comparison' => 'contains', 'value' => $keyword),
+		);
+		return $this->listProducts($filter, $sortOrder, $limit);
+	}
 }
