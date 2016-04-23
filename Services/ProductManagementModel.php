@@ -2944,7 +2944,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getLastUrlKeyHistoryOfProuct($product)
+	public function getLastUrlKeyHistoryOfProduct($product)
 	{
 		$response = $this->getProduct($product);
 		if($response->error->exist){
@@ -2961,6 +2961,30 @@ class ProductManagementModel extends CoreModel
 
 		$response = $this->listProductUrlKeyHistories($filter, array('date_added' => 'desc'), array('start' => 0, 'count' => 1));
 		$response->result->set = $response->result->set[0];
+		$response->result->count->set = 1;
+		return $response;
+	}
+
+	/**
+	 * @param string $urlKey
+	 * @return ModelResponse
+	 */
+	public function getLastProductWithHistoricUrlKey(string $urlKey)
+	{
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				'column' => $this->entity['pukh']['alias'].'.url_key',
+				'comparison' => '=',
+				'value' => $urlKey
+			),
+		);
+
+		$response = $this->listProductUrlKeyHistories($filter, array('date_added' => 'desc'), array('start' => 0, 'count' => 1));
+		if($response->error->exist){
+			return $response;
+		}
+		$response->result->set = $response->result->set[0]->getProduct();
 		$response->result->count->set = 1;
 		return $response;
 	}
