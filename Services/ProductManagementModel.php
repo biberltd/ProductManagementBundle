@@ -287,7 +287,7 @@ class ProductManagementModel extends CoreModel
 		$count = 0;
 		$now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
 		foreach ($collection as $product) {
-			$response = $this->getProduct($product['product']);
+			$response = $this->getProduct($product['p']);
 			if ($response->error->exist) {
 				return $response;
 			}
@@ -510,11 +510,7 @@ class ProductManagementModel extends CoreModel
 
 		$result = $q->getSingleScalarResult();
 
-		$count = 0;
-		if (!$result) {
-			$count = $result;
-		}
-		return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -952,7 +948,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$product = $response->result->set;
 
-		$result = $this->em->getRepository($this->entity['pukh']['name'])->findOneBy(array('product' => $product->getId(), 'url_key' => $urlKey));
+		$result = $this->em->getRepository($this->entity['pukh']['name'])->findOneBy(array('p' => $product->getId(), 'url_key' => $urlKey));
 
 		if (is_null($result)) {
 			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
@@ -1200,7 +1196,7 @@ class ProductManagementModel extends CoreModel
 	{
 		$timeStamp = microtime(true);
 		$result = $this->em->getRepository($this->entity['pav']['name'])
-		                   ->findOneBy(array('id' => $id));
+			->findOneBy(array('id' => $id));
 
 		if (is_null($result)) {
 			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
@@ -1376,7 +1372,7 @@ class ProductManagementModel extends CoreModel
 		$timeStamp = microtime(true);
 
 		$result = $this->em->getRepository($this->entity['vp']['name'])
-		                   ->findOneBy(array('id' => $pricing));
+			->findOneBy(array('id' => $pricing));
 
 		if (is_null($result)) {
 			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
@@ -1457,7 +1453,7 @@ class ProductManagementModel extends CoreModel
 				foreach ($data as $column => $value) {
 					$set = 'set' . $this->translateColumnName($column);
 					switch ($column) {
-						case 'product':
+						case 'p':
 							$response =$this->getProduct($value);
 							if($response->error->exist){
 								return $response;
@@ -1674,7 +1670,7 @@ class ProductManagementModel extends CoreModel
 							}
 							$entity->$set($response->result->set);
 							break;
-						case 'product':
+						case 'p':
 							$response = $this->getProduct($value);
 							if ($response->error->exist) {
 								return $response;
@@ -2154,7 +2150,7 @@ class ProductManagementModel extends CoreModel
 				foreach ($data as $column => $value) {
 					$set = 'set' . $this->translateColumnName($column);
 					switch ($column) {
-						case 'product':
+						case 'p':
 							$response = $this->getProduct($value);
 							if ($response->error->exist) {
 								return $response;
@@ -2505,17 +2501,14 @@ class ProductManagementModel extends CoreModel
 	public function listActiveProductsOfCategory($category, array  $sortOrder = null, array  $limit = null)
 	{
 		$timeStamp = microtime(true);
-		if (!is_array($sortOrder) && !is_null($sortOrder)) {
-			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
-		}
 		$response = $this->getProductCategory($category);
 		if ($response->error->exist) {
 			return $response;
 		}
 
-		$qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['product']['alias']
+		$qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['p']['alias']
 			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
-			. ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['product']['alias']
+			. ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
 			. ' WHERE ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
 
 		$oStr = '';
@@ -3311,7 +3304,7 @@ class ProductManagementModel extends CoreModel
 	 */
 	public function listOutOfStockProducts(array $sortOrder = null, array $limit = null)
 	{
-		$column = $this->entity['product']['alias'] . '.quantity';
+		$column = $this->entity['p']['alias'] . '.quantity';
 		$condition = array('column' => $column, 'comparison' => '<', 'value' => 1);
 		$filter[] = array(
 			'glue' => 'and',
@@ -3664,7 +3657,8 @@ class ProductManagementModel extends CoreModel
 
 		$qStr = 'SELECT ' . $this->entity['p']['alias'] . ', ' . $this->entity['pl']['alias']
 			. ' FROM ' . $this->entity['pl']['name'] . ' ' . $this->entity['pl']['alias']
-			. ' JOIN ' . $this->entity['pl']['alias'] . '.product ' . $this->entity['p']['alias'];
+			. ' JOIN ' . $this->entity['pl']['alias'] . '.product ' . $this->entity['p']['alias']
+			. ' WITH ' . $this->entity['pl']['alias'] . '.product = '.$this->entity['p']['alias'].'.id';
 
 		if (!is_null($sortOrder)) {
 			foreach ($sortOrder as $column => $direction) {
@@ -3702,9 +3696,7 @@ class ProductManagementModel extends CoreModel
 		$qStr .= $wStr . $gStr . $oStr;
 		$q = $this->em->createQuery($qStr);
 		$q = $this->addLimit($q, $limit);
-
 		$result = $q->getResult();
-
 		$entities = [];
 		foreach ($result as $entry) {
 			$id = $entry->getProduct()->getId();
@@ -5379,7 +5371,7 @@ class ProductManagementModel extends CoreModel
 					switch ($column) {
 						case 'id':
 							break;
-						case 'product':
+						case 'p':
 							$response = $this->getProduct($value);
 							if($response->error->exist){
 								return $response;
@@ -5636,7 +5628,7 @@ class ProductManagementModel extends CoreModel
 							$oldEntity->$set($response->result->set);
 							unset($response, $lModel);
 							break;
-						case 'product':
+						case 'p':
 							$response = $this->getProduct($value);
 							if ($response->error->exist) {
 								return $response;
@@ -5943,7 +5935,7 @@ class ProductManagementModel extends CoreModel
 				foreach ($data as $column => $value) {
 					$set = 'set' . $this->translateColumnName($column);
 					switch ($column) {
-						case 'product':
+						case 'p':
 							$response = $this->getProduct($value);
 							if ($response->error->exist) {
 								return $response;
@@ -6087,5 +6079,190 @@ class ProductManagementModel extends CoreModel
 			'condition' => array('column' => $this->entity['p']['alias'].'.sku', 'comparison' => 'contains', 'value' => $keyword),
 		);
 		return $this->listProducts($filter, $sortOrder, $limit);
+	}
+
+	/**
+	 * @param array $categories
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 * @return ModelResponse
+	 */
+	public function listActiveProductsOfCategories(array $categories, array $sortOrder = null, array  $limit = null)
+	{
+		$timeStamp = microtime(true);
+		$catIds = [];
+		foreach($categories as $aCat){
+			$response = $this->getProductCategory($aCat);
+			if($response->error->exist){
+				continue;
+			}
+			$catEntity = $response->result->set;
+			$catIds[] = $catEntity->getId();
+		}
+
+		$qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['p']['alias']
+			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+			. ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
+			. ' WITH '. $this->entity['cop']['alias'].'.product = '. $this->entity['p']['alias'].'.id'
+			. ' WHERE ' . $this->entity['cop']['alias'] . '.category IN (' . implode(',', $catIds).')';
+
+		$oStr = '';
+		if ($sortOrder != null) {
+			foreach ($sortOrder as $column => $direction) {
+				$sorting = false;
+				if (!in_array($column, array('name', 'url_key'))) {
+					$sorting = true;
+					switch ($column) {
+						case 'id':
+						case 'quantity':
+						case 'price':
+						case 'sku':
+						case 'date_added':
+						case 'date_updated':
+							$column = $this->entity['p']['alias'] . '.' . $column;
+							break;
+						case 'sort_order':
+							$column = $this->entity['cop']['alias'] . '.' . $column;
+							break;
+					}
+					$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+				}
+			}
+			if ($sorting) {
+				$oStr = rtrim($oStr, ', ');
+				$oStr = ' ORDER BY ' . $oStr . ' ';
+			}
+		}
+		$qStr .= $oStr;
+		$query = $this->em->createQuery($qStr);
+		$result = $query->getResult();
+		if (count($result) < 1) {
+
+		}
+		$collection = [];
+		foreach ($result as $item) {
+			$collection[] = $item->getProduct()->getId();
+		}
+		if(count($collection) < 1){
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
+		}
+		unset($result);
+		$filter = [];
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['p']['alias'] . '.id', 'comparison' => 'in', 'value' => $collection),
+				),
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['p']['alias'] . '.status', 'comparison' => '=', 'value' => 'a'),
+				)
+			)
+		);
+		return $this->listProducts($filter, $sortOrder, $limit);
+	}
+
+	/**
+	 * @param array $categories
+	 * @param array|null $filter
+	 * @return ModelResponse
+	 */
+	public function countProductsOfCategories(array $categories, array $filter = null){
+		$timeStamp = microtime(true);
+		$catIds = [];
+
+		foreach($categories as $aCat){
+			$response = $this->getProductCategory($aCat);
+			if($response->error->exist){
+				continue;
+			}
+			$aCatEntity = $response->result->set;
+			$catIds[] = $aCatEntity->getId();
+		}
+		unset($response);
+		$wStr = '';
+
+		$qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . '.product)'
+			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias'];
+
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['cop']['alias'] . '.category', 'comparison' => 'in', 'value' => $catIds),
+				)
+			)
+		);
+
+		if ($filter != null) {
+			$fStr = $this->prepareWhere($filter);
+			$wStr .= ' WHERE ' . $fStr;
+		}
+		$qStr .= $wStr;
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getSingleScalarResult();
+
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+	}
+
+	/**
+	 * @param $category
+	 * @param array|null $filter
+	 * @return ModelResponse
+	 */
+	public function countActiveProductsOfCategory($category, array $filter = null){
+		return $this->countActiveProductsOfCategories([$category], $filter);
+	}
+	/**
+	 * @param array $categories
+	 * @param array|null $filter
+	 * @return ModelResponse
+	 */
+	public function countActiveProductsOfCategories(array $categories, array $filter = null){
+		$timeStamp = microtime(true);
+		$catIds = [];
+
+		foreach($categories as $aCat){
+			$response = $this->getProductCategory($aCat);
+			if($response->error->exist){
+				continue;
+			}
+			$aCatEntity = $response->result->set;
+			$catIds[] = $aCatEntity->getId();
+		}
+		unset($response);
+		$wStr = '';
+
+		$qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . '.product)'
+			. ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+			. ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
+			. ' WITH '. $this->entity['cop']['alias'].'.product = ' . $this->entity['p']['alias'].'.id';
+
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['cop']['alias'] . '.category', 'comparison' => 'in', 'value' => $catIds),
+				),
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['p']['alias'] . '.status', 'comparison' => '=', 'value' => "a"),
+				)
+			)
+		);
+
+		if ($filter != null) {
+			$fStr = $this->prepareWhere($filter);
+			$wStr .= ' WHERE ' . $fStr;
+		}
+		$qStr .= $wStr;
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getSingleScalarResult();
+
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 	}
 }
