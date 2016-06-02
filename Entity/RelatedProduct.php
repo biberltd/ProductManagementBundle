@@ -32,12 +32,7 @@ class RelatedProduct extends CoreEntity
     /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumn(
-     *     name="related_product",
-     *     referencedColumnName="id",
-     *     nullable=false,
-     *     onDelete="CASCADE"
-     * )
+     * @ORM\JoinColumn(name="related_product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
     private $related_product;

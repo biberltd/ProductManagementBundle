@@ -22,6 +22,7 @@ use \BiberLtd\Bundle\CoreBundle\CoreEntity;
 class ProductUrlKeyHistory extends CoreEntity
 {
     /**
+     * @ORM\Id
      * @ORM\Column(type="string", length=255, nullable=false)
      * @var string
      */
@@ -46,6 +47,7 @@ class ProductUrlKeyHistory extends CoreEntity
     public $date_removed;
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
