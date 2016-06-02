@@ -57,11 +57,11 @@ class FilesOfProduct extends CoreEntity
     private $product;
 
     /**
-     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\File $file
+     * @param \BiberLtd\Bundle\FileManagementBundle\Entity\File $file
      *
      * @return $this
      */
-    public function setFile(\BiberLtd\Bundle\ProductManagementBundle\Entity\File $file) {
+    public function setFile(\BiberLtd\Bundle\FileManagementBundle\Entity\File $file) {
         if(!$this->setModified('file', $file)->isModified()) {
             return $this;
         }
