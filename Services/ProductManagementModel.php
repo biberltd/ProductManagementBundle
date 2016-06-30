@@ -2829,7 +2829,7 @@ class ProductManagementModel extends CoreModel
 					case 'name':
 					case 'date_added':
 					case 'date_updated':
-						$column = $this->entity['p']['alias'] . '.' . $column;
+						$column = $this->entity['b']['alias'] . '.' . $column;
 						break;
 				}
 				$oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
