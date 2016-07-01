@@ -6265,4 +6265,59 @@ class ProductManagementModel extends CoreModel
 
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 	}
+
+	/**
+	 * @param $product
+	 * @return ModelResponse
+	 */
+	public function removeAllRelatedProductsOfProduct($product)
+	{
+		$timeStamp = microtime(true);
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+
+		$qStr = 'DELETE FROM ' . $this->entity['rp']['name']. ' '. $this->entity['rp']['alias']
+			. ' WHERE ' . $this->entity['rp']['alias'] . '.product = ' . $product->getId();
+
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getResult();
+
+		$deleted = true;
+		if (!$result) {
+			$deleted = false;
+		}
+		if ($deleted) {
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+	}
+	/**
+	 * @param $product
+	 * @return ModelResponse
+	 */
+	public function removeAllImagesOfProduct($product)
+	{
+		$timeStamp = microtime(true);
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+
+		$qStr = 'DELETE FROM ' . $this->entity['fop']['name']. ' '. $this->entity['fop']['alias']
+			. ' WHERE ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId();
+
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getResult();
+
+		$deleted = true;
+		if (!$result) {
+			$deleted = false;
+		}
+		if ($deleted) {
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+	}
 }
