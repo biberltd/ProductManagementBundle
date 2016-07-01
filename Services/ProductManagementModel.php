@@ -1161,7 +1161,7 @@ class ProductManagementModel extends CoreModel
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getProductAttribute(mixed $attr)
+	public function getProductAttribute($attr)
 	{
 		$timeStamp = microtime(true);
 		if ($attr instanceof BundleEntity\ProductAttribute) {
