@@ -6321,4 +6321,86 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
+
+	/**
+	 * @param $product
+	 * @return ModelResponse
+	 */
+	public function removeAllVolumePricing($product){
+		$timeStamp = microtime(true);
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$product = $response->result->set;
+		$qStr = 'DELETE FROM ' . $this->entity['vp']['name']. ' '. $this->entity['vp']['alias']
+			. ' WHERE ' . $this->entity['vp']['alias'] . '.product = ' . $product->getId();
+
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getResult();
+
+		$deleted = true;
+		if (!$result) {
+			$deleted = false;
+		}
+		if ($deleted) {
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+	}
+
+	/**
+	 * @param $product
+	 * @return ModelResponse
+	 */
+	public function removeAllCategoriesOfProduct($product){
+		$timeStamp = microtime(true);
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$product = $response->result->set;
+		$qStr = 'DELETE FROM ' . $this->entity['cop']['name']. ' '. $this->entity['cop']['alias']
+			. ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId();
+
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getResult();
+
+		$deleted = true;
+		if (!$result) {
+			$deleted = false;
+		}
+		if ($deleted) {
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+	}
+
+	/**
+	 * @param $product
+	 * @return ModelResponse
+	 */
+	public function removeAllProductAttributeValues($product)
+	{
+		$timeStamp = microtime(true);
+		$response = $this->getProduct($product);
+		if($response->error->exist){
+			return $response;
+		}
+		$product = $response->result->set;
+		$qStr = 'DELETE FROM ' . $this->entity['pav']['name']. ' '. $this->entity['pav']['alias']
+			. ' WHERE ' . $this->entity['pav']['alias'] . '.product = ' . $product->getId();
+
+		$q = $this->em->createQuery($qStr);
+		$result = $q->getResult();
+
+		$deleted = true;
+		if (!$result) {
+			$deleted = false;
+		}
+		if ($deleted) {
+			return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
+		}
+		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+	}
 }
