@@ -6277,7 +6277,7 @@ class ProductManagementModel extends CoreModel
 		if($response->error->exist){
 			return $response;
 		}
-
+		$product = $response->result->set;
 		$qStr = 'DELETE FROM ' . $this->entity['rp']['name']. ' '. $this->entity['rp']['alias']
 			. ' WHERE ' . $this->entity['rp']['alias'] . '.product = ' . $product->getId();
 
@@ -6305,7 +6305,7 @@ class ProductManagementModel extends CoreModel
 			return $response;
 		}
 		$product = $response->result->set;
-		
+
 		$qStr = 'DELETE FROM ' . $this->entity['fop']['name']. ' '. $this->entity['fop']['alias']
 			. ' WHERE ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId();
 
