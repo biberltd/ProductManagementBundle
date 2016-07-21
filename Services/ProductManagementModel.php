@@ -3515,7 +3515,8 @@ class ProductManagementModel extends CoreModel
 
 		$qStr = 'SELECT '. $this->entity['pcl']['alias']
 			. ' FROM ' . $this->entity['pcl']['name'] . ' ' . $this->entity['pcl']['alias']
-			. ' JOIN ' . $this->entity['pcl']['alias'] . '.category ' . $this->entity['pc']['alias'];
+			. ' JOIN ' . $this->entity['pcl']['alias'] . '.category ' . $this->entity['pc']['alias']
+            . ' WITH ' .$this->entity['pcl']['alias'] . '.category = ' . $this->entity['pc']['alias'].'.id';
 
 		if (!is_null($sortOrder)) {
 			foreach ($sortOrder as $column => $direction) {
