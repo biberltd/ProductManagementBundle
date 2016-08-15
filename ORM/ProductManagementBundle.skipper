@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<skipper version="3.2.5.1283" mvc="Symfony2" orm="Doctrine2" name="ProductManagementBundle" uuid="e7302d86-5962-49b9-9627-6e6741c86318">
+<skipper version="3.2.6.1309" mvc="Symfony2" orm="Doctrine2" name="ProductManagementBundle" uuid="e7302d86-5962-49b9-9627-6e6741c86318">
   <module name="\SiteManagementBundle" local-name="SiteManagementBundle" namespace="\BiberLtd\Bundle\SiteManagementBundle\Entity" local-namespace="BiberLtd\Bundle\SiteManagementBundle\Entity" export-format="Doctrine2Php" export-path="../../site-management-bundle/Entity" uuid="860bb986-ef71-4cef-9da2-f560e58c2569">
     <entity name="\BiberLtd\Bundle\SiteManagementBundle\Entity\DomainAliases" local-name="DomainAliases" namespace="\BiberLtd\Bundle\SiteManagementBundle\Entity" description="Holds a list of alternative domains that the site will be served in." uuid="04602777-d7d4-4b5f-9557-c3a1ba1f9dbb">
       <field name="domain" description="Alias - domain. i.e. biberltd.com" type="text" required="true" unique="true" primary="true" uuid="766b4e3f-328f-4708-a9ff-d82d177d7e5c"/>
@@ -955,10 +955,13 @@
         </attribute>
       </orm-attributes>
     </entity>
-    <association from="\ActiveProductLocale" to="\Product" caption="idxFActiveProductOfLanguage" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="6164e2b3-f5a2-4938-90dc-5023e1ab8d87">
+    <association from="\ActiveProductLocale" to="\Product" caption="idxFProductOfActiveProductLocale" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="6164e2b3-f5a2-4938-90dc-5023e1ab8d87">
       <association-field from="product" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
     </association>
-    <association from="\ActiveProductLocale" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFActiveLanguageOfProduct" inverse-alias="locale" many-owner="true" many-inverse="false" parent-required="true" uuid="30c08aaf-e94b-4f4a-87a4-5f62fe77113b">
+    <association from="\ActiveProductLocale" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFLocaleOfActiveProductLocale" inverse-alias="locale" many-owner="true" many-inverse="false" parent-required="true" uuid="30c08aaf-e94b-4f4a-87a4-5f62fe77113b">
       <association-field from="locale" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -981,13 +984,13 @@
         </attribute>
       </orm-attributes>
     </entity>
-    <association from="\ActiveProductCategoryLocale" to="\ProductCategory" caption="idxFActiveProductCategoryOfLanguage" inverse-alias="category" many-owner="true" many-inverse="false" parent-required="true" uuid="14af7ccd-120f-476b-bf71-7632fb151220">
+    <association from="\ActiveProductCategoryLocale" to="\ProductCategory" caption="idxFCategoryOfActiveProductCategoryLocale" inverse-alias="category" many-owner="true" many-inverse="false" parent-required="true" uuid="14af7ccd-120f-476b-bf71-7632fb151220">
       <association-field from="category" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\ActiveProductCategoryLocale" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFActiveLanguageOfProductCategory" inverse-alias="locale" many-owner="true" many-inverse="false" parent-required="true" uuid="aa3357dd-d8f5-456f-ac6d-5ddd8f46fbde">
+    <association from="\ActiveProductCategoryLocale" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFLocaleOfActiveProductCategoryLocale" inverse-alias="locale" many-owner="true" many-inverse="false" parent-required="true" uuid="aa3357dd-d8f5-456f-ac6d-5ddd8f46fbde">
       <association-field from="locale" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1126,14 +1129,17 @@
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\Product" to="\Brand" caption="idxFBrandOfProduct" owner-alias="products" inverse-alias="brand" many-owner="true" many-inverse="false" uuid="e5582ebd-a1fb-44b2-b45d-edd45512cf0f">
+    <association from="\Product" to="\Brand" caption="idxFBrandOfProduct" owner-alias="" inverse-alias="brand" many-owner="true" many-inverse="false" uuid="e5582ebd-a1fb-44b2-b45d-edd45512cf0f">
       <association-field from="brand" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\Product" to="\BiberLtd\Bundle\StockManagementBundle\Entity\Supplier" caption="idx_f_product_supplier" inverse-alias="supplier" many-owner="true" many-inverse="false" uuid="3534aca0-24b7-42e2-8fae-bee6d480eafb">
+    <association from="\Product" to="\BiberLtd\Bundle\StockManagementBundle\Entity\Supplier" caption="idxFSupplierOfProduct" inverse-alias="supplier" many-owner="true" many-inverse="false" uuid="3534aca0-24b7-42e2-8fae-bee6d480eafb">
       <association-field from="supplier" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
     </association>
     <entity name="\ProductLocalization" local-name="ProductLocalization" namespace="\" description="Hols localization for each product." uuid="398bafb3-54d0-4c80-b26c-398e9a15f46d">
       <field name="product" description="Localized product." type="integer" size="15" required="true" primary="true" uuid="2f2c2584-53ab-417a-b413-4d9423a997b5"/>
@@ -1147,7 +1153,7 @@
         <index-field name="product"/>
         <index-field name="language"/>
       </index>
-      <index name="idxUProductUrlKey">
+      <index name="idxNProductUrlKey">
         <index-field name="product"/>
         <index-field name="language"/>
         <index-field name="url_key"/>
@@ -1162,7 +1168,7 @@
         <attribute name="export-file-name">ProductLocalization.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\ProductLocalization" to="\Product" caption="idxFLocalizedProduct" owner-alias="localizations" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="cd249b46-dc20-4984-9105-8f1fa3b4dedf">
+    <association from="\ProductLocalization" to="\Product" caption="idxFLocalizedProduct" owner-alias="" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="cd249b46-dc20-4984-9105-8f1fa3b4dedf">
       <association-field from="product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1207,13 +1213,13 @@
         <attribute name="export-file-name">ProductsOfSite.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\ProductsOfSite" to="\Product" caption="idxFProductOfSite" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="2e4250bb-0af2-49a9-bb56-90ff793474be">
+    <association from="\ProductsOfSite" to="\Product" caption="idxFProductOfProductsOfSite" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="2e4250bb-0af2-49a9-bb56-90ff793474be">
       <association-field from="product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\ProductsOfSite" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idxFSiteOfProduct" inverse-alias="site" many-owner="true" many-inverse="false" parent-required="true" uuid="5e9d566d-86ce-46ec-acec-b61d968fb34e">
+    <association from="\ProductsOfSite" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idxFSiteOfProductsOfSite" inverse-alias="site" many-owner="true" many-inverse="false" parent-required="true" uuid="5e9d566d-86ce-46ec-acec-b61d968fb34e">
       <association-field from="site" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1253,7 +1259,7 @@
         <attribute name="export-file-name">ProductCategory.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\ProductCategory" to="\ProductCategory" caption="idxFParentOfProductCategory" owner-alias="product_categories" inverse-alias="parent" many-owner="true" many-inverse="false" uuid="c14f5878-4dee-4629-a7eb-85530f7eac9d">
+    <association from="\ProductCategory" to="\ProductCategory" caption="idxFParentOfProductCategory" owner-alias="" inverse-alias="parent" many-owner="true" many-inverse="false" uuid="c14f5878-4dee-4629-a7eb-85530f7eac9d">
       <association-field from="parent" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">RESTRICT</attribute>
@@ -1303,7 +1309,7 @@
         <attribute name="export-file-name">ProductCategoryLocalization.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\ProductCategoryLocalization" to="\ProductCategory" caption="idxFLocalizedProductCategory" owner-alias="localizations" inverse-alias="category" many-owner="true" many-inverse="false" parent-required="true" uuid="1f496e54-ba0c-472d-a55f-db00287e9014">
+    <association from="\ProductCategoryLocalization" to="\ProductCategory" caption="idxFCategoryOfProductCategoryLocalization" owner-alias="" inverse-alias="category" many-owner="true" many-inverse="false" parent-required="true" uuid="1f496e54-ba0c-472d-a55f-db00287e9014">
       <association-field from="category" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1320,7 +1326,7 @@
         </attribute>
       </orm-attributes>
     </association>
-    <association from="\ProductCategoryLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFProductCategoryLocalizationLanguage" inverse-alias="language" many-owner="true" many-inverse="false" parent-required="true" uuid="90fa7d86-109a-4dee-8f53-eb1712691b6f">
+    <association from="\ProductCategoryLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFLanguageOfProductCategoryLocalization" inverse-alias="language" many-owner="true" many-inverse="false" parent-required="true" uuid="90fa7d86-109a-4dee-8f53-eb1712691b6f">
       <association-field from="language" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1348,13 +1354,13 @@
         <attribute name="export-file-name">CategoriesOfProduct.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\CategoriesOfProduct" to="\ProductCategory" caption="idxFCategoryOfProduct" inverse-alias="category" many-owner="true" many-inverse="false" uuid="cd03db2c-7b7b-4448-9a6d-05afdd69d069">
+    <association from="\CategoriesOfProduct" to="\ProductCategory" caption="idxFCategoryOfCategoriesOfProduct" inverse-alias="category" many-owner="true" many-inverse="false" uuid="cd03db2c-7b7b-4448-9a6d-05afdd69d069">
       <association-field from="category" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\CategoriesOfProduct" to="\Product" caption="idxFProductOfCategory" inverse-alias="product" many-owner="true" many-inverse="false" parent-required="true" uuid="238a4721-3792-4a5b-b65e-81b2d9eba953">
+    <association from="\CategoriesOfProduct" to="\Product" caption="idxFProductOfCategoriesOfProduct" inverse-alias="product" description="" many-owner="true" many-inverse="false" parent-required="true" uuid="238a4721-3792-4a5b-b65e-81b2d9eba953">
       <association-field from="product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1419,13 +1425,13 @@
         <attribute name="export-file-name">ProductAttributeLocalization.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\ProductAttributeLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxProductAttributeLocalizationLanguage" inverse-alias="language" many-owner="true" many-inverse="false" uuid="e3c61ead-3ee4-4349-8be9-ae96cbf3eb3a">
+    <association from="\ProductAttributeLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFLanguageOfProductAttributeLocalization" inverse-alias="language" many-owner="true" many-inverse="false" uuid="e3c61ead-3ee4-4349-8be9-ae96cbf3eb3a">
       <association-field from="language" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\ProductAttributeLocalization" to="\ProductAttribute" caption="idxFLocalizedProductAttribute" owner-alias="localizations" inverse-alias="attribute" many-owner="true" many-inverse="false" uuid="0193716e-9fc7-4858-a23c-15c14d9270ce">
+    <association from="\ProductAttributeLocalization" to="\ProductAttribute" caption="idxFAttributeOfProductAttributeLocalization" owner-alias="" inverse-alias="attribute" many-owner="true" many-inverse="false" uuid="0193716e-9fc7-4858-a23c-15c14d9270ce">
       <association-field from="attribute" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1438,7 +1444,7 @@
       <field name="date_added" description="Date when the attribute is first associated with product." type="datetime" required="true" uuid="28529f3d-e80e-47ff-a53f-843bb5904d54"/>
       <field name="price_factor" description="If attribute changes price, by what percentage or amount?" type="decimal" size="5" uuid="7b5de8d1-a7ca-4da0-afe0-643b390fbd9a"/>
       <field name="price_factor_type" description="a:amount,p:percentage" type="string" size="1" default="a" uuid="ffed21ca-63b5-42b6-a725-54f24198139b"/>
-      <index name="idx_u_attributes_of_product" unique="true">
+      <index name="idxUProductOfAttributesOfProduct" unique="true">
         <index-field name="product"/>
         <index-field name="attribute"/>
       </index>
@@ -1452,13 +1458,13 @@
         <attribute name="export-file-name">AttributesOfProduct.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\AttributesOfProduct" to="\ProductAttribute" caption="idx_f_attributes_of_product_attribute" inverse-alias="attribute" many-owner="true" many-inverse="false" uuid="e167335a-3e8d-4bd4-8fd9-1c391b514969">
+    <association from="\AttributesOfProduct" to="\ProductAttribute" caption="idxFAttributeOfAttributesOfProduct" inverse-alias="attribute" many-owner="true" many-inverse="false" uuid="e167335a-3e8d-4bd4-8fd9-1c391b514969">
       <association-field from="attribute" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\AttributesOfProduct" to="\Product" caption="idx_f_attributes_of_product_product" inverse-alias="product" many-owner="true" many-inverse="false" uuid="1f0350dc-9c72-48ba-abce-f8eaef6689dc">
+    <association from="\AttributesOfProduct" to="\Product" caption="idxFProductOfAttributesOfProduct" inverse-alias="product" many-owner="true" many-inverse="false" uuid="1f0350dc-9c72-48ba-abce-f8eaef6689dc">
       <association-field from="product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1529,13 +1535,13 @@
         <attribute name="export-file-name">AttributesOfProductCategory.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\AttributesOfProductCategory" to="\ProductAttribute" caption="idxFCategoryOfProductAttribute" inverse-alias="attribute" many-owner="true" many-inverse="false" uuid="840c7489-cc34-4e4b-898b-01b810449cd7">
+    <association from="\AttributesOfProductCategory" to="\ProductAttribute" caption="idxFAttributeOfAttributesOfProductCategory" inverse-alias="attribute" many-owner="true" many-inverse="false" uuid="840c7489-cc34-4e4b-898b-01b810449cd7">
       <association-field from="attribute" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\AttributesOfProductCategory" to="\ProductCategory" caption="idxFAttributeOfProductCategory" inverse-alias="category" many-owner="true" many-inverse="false" uuid="e2c72d09-406c-495e-8e08-e9040c7710f3">
+    <association from="\AttributesOfProductCategory" to="\ProductCategory" caption="idxFCategoryOfAttributesOfProductCategory" inverse-alias="category" many-owner="true" many-inverse="false" uuid="e2c72d09-406c-495e-8e08-e9040c7710f3">
       <association-field from="category" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1551,7 +1557,7 @@
         <index-field name="file"/>
         <index-field name="product"/>
       </index>
-      <index name="idxUFilesOfProductDateAdded">
+      <index name="idxNFilesOfProductDateAdded">
         <index-field name="date_added"/>
       </index>
       <orm-attributes>
@@ -1564,7 +1570,7 @@
         <attribute name="export-file-name">FilesOfProduct.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\FilesOfProduct" to="\BiberLtd\Bundle\FileManagementBundle\Entity\File" caption="idxFFileOfProduct" inverse-alias="file" many-owner="true" many-inverse="false" uuid="a4613ba6-5969-4a2b-af9e-bc9132f1c1cf">
+    <association from="\FilesOfProduct" to="\BiberLtd\Bundle\FileManagementBundle\Entity\File" caption="idxFFileOfFilesOfProduct" inverse-alias="file" many-owner="true" many-inverse="false" uuid="a4613ba6-5969-4a2b-af9e-bc9132f1c1cf">
       <association-field from="file" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -1575,7 +1581,7 @@
         </attribute>
       </orm-attributes>
     </association>
-    <association from="\FilesOfProduct" to="\Product" caption="idxFProductOfFile" inverse-alias="product" many-owner="true" many-inverse="false" uuid="5f16c0a9-34a7-43d5-84ac-afb2ca4ee191">
+    <association from="\FilesOfProduct" to="\Product" caption="idxFProductOfFilesOfProduct" inverse-alias="product" many-owner="true" many-inverse="false" uuid="5f16c0a9-34a7-43d5-84ac-afb2ca4ee191">
       <association-field from="product" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -2666,16 +2672,16 @@
     <entity uuid="07eeeac7-da1a-48f5-96c1-665a12f5d84f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="450" position-y="401" size-x="0" size-x2="125" size-y="0" size-y2="59"/>
     <entity uuid="0b71f735-9ad2-4268-9865-c28389d95af2" bg-color="4294967295" hdr-color="4292006610" position-x="1000" position-y="372" size-x="0" size-x2="109" size-y="0" size-y2="45"/>
     <entity uuid="2d0a30b3-246d-47fa-b198-331e87d4a439" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="200" position-y="294" size-x="0" size-x2="121" size-y="0" size-y2="59"/>
-    <entity uuid="398bafb3-54d0-4c80-b26c-398e9a15f46d" bg-color="4294967295" hdr-color="4292006610" position-x="450" position-y="50" size-x="0" size-x2="149" size-y="0" size-y2="101"/>
+    <entity uuid="398bafb3-54d0-4c80-b26c-398e9a15f46d" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="454" position-y="73" size-x="0" size-x2="144" size-y="0" size-y2="115"/>
     <entity uuid="3f4a45b3-5863-4c16-bb33-517be2cc9dbe" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="407" position-y="363" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
     <entity uuid="41bcf7a2-e5e3-42a8-af5a-39de1f0e86ff" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="400" position-y="44" size-x="0" size-x2="130" size-y="0" size-y2="115"/>
     <entity uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="50" position-y="50" size-x="0" size-x2="148" size-y="0" size-y2="157"/>
     <entity uuid="4b90e0df-e2bc-4c17-a54c-3e322936e52b" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="410" position-y="686" size-x="0" size-x2="125" size-y="0" size-y2="87"/>
     <entity uuid="54bdf829-a601-4c54-97b8-3ccbeb915fac" bg-color="4294967295" hdr-color="4292006610" position-x="50" position-y="450" size-x="0" size-x2="125" size-y="0" size-y2="87"/>
-    <entity uuid="5a305683-57f2-495d-9e9a-011d3343c137" bg-color="4294967295" hdr-color="4292006610" position-x="1450" position-y="200" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
-    <entity uuid="5ca3abd3-e423-44e0-be5b-2b26ff7c6dfe" bg-color="4294967295" hdr-color="4292006610" position-x="1124" position-y="439" size-x="0" size-x2="151" size-y="0" size-y2="45"/>
+    <entity uuid="5a305683-57f2-495d-9e9a-011d3343c137" bg-color="4294967295" hdr-color="4292006610" position-x="1470" position-y="169" size-x="0" size-x2="124" size-y="0" size-y2="101"/>
+    <entity uuid="5ca3abd3-e423-44e0-be5b-2b26ff7c6dfe" bg-color="4294967295" hdr-color="4292006610" position-x="1124" position-y="460" size-x="0" size-x2="136" size-y="0" size-y2="45"/>
     <entity uuid="5eb3ce91-cf7b-49db-b410-576f7533593c" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="233" position-y="40" size-x="0" size-x2="100" size-y="0" size-y2="45"/>
-    <entity uuid="68869a37-9734-4e32-8230-3420a1590c7a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="300" position-y="43" size-x="0" size-x2="20" size-y="0" size-y2="20"/>
+    <entity uuid="68869a37-9734-4e32-8230-3420a1590c7a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="274" position-y="0" size-x="0" size-x2="124" size-y="0" size-y2="87"/>
     <entity uuid="69ff24a3-fa9b-4442-9163-c7b0a5ec45ec" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="592" position-y="40" size-x="0" size-x2="138" size-y="0" size-y2="73"/>
     <entity uuid="6c78beba-37d8-4859-9e2b-d2d08a36918e" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="966" position-y="686" size-x="0" size-x2="147" size-y="0" size-y2="143"/>
     <entity uuid="7ce99bbb-4d97-4ee5-8703-dfe82e965514" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="100" position-y="94" size-x="0" size-x2="109" size-y="0" size-y2="115"/>
@@ -2683,7 +2689,7 @@
     <entity uuid="7fc57b10-86fb-4168-9d98-35483d3e89c1" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="34" position-y="363" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
     <entity uuid="86b782e0-3e4e-4b84-9a50-2edd472c2bbe" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="790" position-y="363" size-x="0" size-x2="120" size-y="0" size-y2="101"/>
     <entity uuid="87dc1e89-b09a-42a9-8785-8b9082ef5c61" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="979" position-y="40" size-x="0" size-x2="120" size-y="0" size-y2="73"/>
-    <entity uuid="88915b8c-14d5-42f1-a4e4-5d2a31ff96e3" bg-color="4294967295" hdr-color="4292006610" position-x="1450" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
+    <entity uuid="88915b8c-14d5-42f1-a4e4-5d2a31ff96e3" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1479" position-y="56" size-x="0" size-x2="117" size-y="0" size-y2="87"/>
     <entity uuid="9109d3a6-7a5c-4ab9-8ff7-8b5da86662c6" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="50" position-y="401" size-x="0" size-x2="363" size-y="0" size-y2="87"/>
     <entity uuid="91d6e0e0-19ef-47f8-bb6b-52e629c0c942" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="596" position-y="686" size-x="0" size-x2="130" size-y="0" size-y2="87"/>
     <entity uuid="93345873-c6ec-49b3-a636-b2fd12479071" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="215" position-y="363" size-x="0" size-x2="137" size-y="0" size-y2="283"/>
@@ -2691,29 +2697,29 @@
     <entity uuid="a12d9552-e3b0-4189-870d-82bf4cd5b6ed" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="500" position-y="151" size-x="0" size-x2="130" size-y="0" size-y2="87"/>
     <entity uuid="a4fd6a75-525f-45e6-b26e-d14afe61bd90" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="209" position-y="686" size-x="0" size-x2="149" size-y="0" size-y2="115"/>
     <entity uuid="a72a75d9-19f1-4b10-8bd6-81bff07bff79" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="970" position-y="363" size-x="0" size-x2="138" size-y="0" size-y2="171"/>
-    <entity uuid="ab4d46b1-9b5b-4ce2-9e65-898e5bcf4073" bg-color="4294967295" hdr-color="4292006610" position-x="750" position-y="200" size-x="0" size-x2="145" size-y="0" size-y2="73"/>
-    <entity uuid="ab52fd8c-bbaa-4acd-bf2b-ddf58080803e" bg-color="4294967295" hdr-color="4292006610" position-x="350" position-y="350" size-x="0" size-x2="138" size-y="0" size-y2="115"/>
+    <entity uuid="ab4d46b1-9b5b-4ce2-9e65-898e5bcf4073" bg-color="4294967295" hdr-color="4292006610" position-x="795" position-y="209" size-x="0" size-x2="131" size-y="0" size-y2="73"/>
+    <entity uuid="ab52fd8c-bbaa-4acd-bf2b-ddf58080803e" bg-color="4294967295" hdr-color="4292006610" position-x="264" position-y="391" size-x="0" size-x2="136" size-y="0" size-y2="171"/>
     <entity uuid="afaa4cd5-a9f4-4fa8-a0f3-c68989c619fc" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="50" position-y="1" size-x="0" size-x2="159" size-y="0" size-y2="269"/>
     <entity uuid="b1a562aa-744c-4a9d-8c8f-547d5bc84064" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="401" position-y="40" size-x="0" size-x2="142" size-y="0" size-y2="101"/>
     <entity uuid="b1cc9d75-7583-466b-9675-95dd95acbaf9" bg-color="4294967295" hdr-color="4292006610" position-x="1350" position-y="350" size-x="0" size-x2="147" size-y="0" size-y2="129"/>
-    <entity uuid="b7508859-399b-4f7f-877e-60541c9194d4" bg-color="4294967295" hdr-color="4292006610" position-x="1250" position-y="150" size-x="0" size-x2="150" size-y="0" size-y2="73"/>
-    <entity uuid="be02716a-911d-4e0e-8e00-5c89d2dbb0de" bg-color="4294967295" hdr-color="4292006610" position-x="551" position-y="521" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
+    <entity uuid="b7508859-399b-4f7f-877e-60541c9194d4" bg-color="4294967295" hdr-color="4292006610" position-x="1276" position-y="127" size-x="0" size-x2="133" size-y="0" size-y2="73"/>
+    <entity uuid="be02716a-911d-4e0e-8e00-5c89d2dbb0de" bg-color="4294967295" hdr-color="4292006610" position-x="523" position-y="534" size-x="0" size-x2="124" size-y="0" size-y2="101"/>
     <entity uuid="bf4deae3-debc-46b8-b08f-a8a17ca0f1e1" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="377" position-y="50" size-x="0" size-x2="20" size-y="0" size-y2="20"/>
     <entity uuid="c04c801c-5047-41eb-9209-dfd6732d5e31" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="445" position-y="30" size-x="0" size-x2="156" size-y="0" size-y2="213"/>
     <entity uuid="d2ffca1e-ac08-432b-96c8-0a5cb1b67587" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="785" position-y="40" size-x="0" size-x2="130" size-y="0" size-y2="101"/>
-    <entity uuid="d5752aa3-5dc2-43c1-a65d-b8c8beb1bc25" bg-color="4294967295" hdr-color="4292006610" position-x="650" position-y="350" size-x="0" size-x2="149" size-y="0" size-y2="115"/>
+    <entity uuid="d5752aa3-5dc2-43c1-a65d-b8c8beb1bc25" bg-color="4294967295" hdr-color="4292006610" position-x="701" position-y="358" size-x="0" size-x2="144" size-y="0" size-y2="115"/>
     <entity uuid="d731b316-305d-4125-8824-3385eb5120ea" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="300" position-y="251" size-x="0" size-x2="130" size-y="0" size-y2="129"/>
     <entity uuid="e0423af8-e6a8-4ef8-bb8e-f5360632dd91" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="592" position-y="363" size-x="0" size-x2="138" size-y="0" size-y2="73"/>
     <entity uuid="e19f9517-5f61-4eeb-ba10-cbc7ba6448e0" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="41" position-y="145" size-x="0" size-x2="20" size-y="0" size-y2="20"/>
     <entity uuid="e47e9a87-a19e-4f1c-b151-dd3ca1857aee" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="806" position-y="686" size-x="0" size-x2="89" size-y="0" size-y2="45"/>
     <entity uuid="e923dbd1-47ee-440d-b826-abf97f12cc74" bg-color="4294967295" hdr-color="4292006610" position-x="1100" position-y="50" size-x="0" size-x2="121" size-y="0" size-y2="101"/>
-    <entity uuid="ed4e2029-a3f4-47c3-8258-b05222394278" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="51" position-y="60" size-x="0" size-x2="137" size-y="0" size-y2="283"/>
+    <entity uuid="ed4e2029-a3f4-47c3-8258-b05222394278" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="27" position-y="69" size-x="0" size-x2="132" size-y="0" size-y2="283"/>
     <entity uuid="edc820a6-e14d-41ad-a986-7cabb15fd53a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="197" position-y="99" size-x="0" size-x2="130" size-y="0" size-y2="269"/>
     <entity uuid="ee5a09e5-2f3b-4832-ad20-b5adf8fa8365" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="20" position-y="686" size-x="0" size-x2="149" size-y="0" size-y2="115"/>
     <entity uuid="f5e7b28e-b32c-4169-a18f-e702396adee9" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="24" position-y="40" size-x="0" size-x2="141" size-y="0" size-y2="45"/>
-    <entity uuid="f94f0dff-737d-40da-bdae-9cc36c5db82a" bg-color="4294967295" hdr-color="4292006610" position-x="1080" position-y="242" size-x="0" size-x2="142" size-y="0" size-y2="101"/>
+    <entity uuid="f94f0dff-737d-40da-bdae-9cc36c5db82a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1095" position-y="190" size-x="0" size-x2="134" size-y="0" size-y2="101"/>
     <entity uuid="fd9a924e-dc7c-44be-a74e-510e80042650" bg-color="4294967295" hdr-color="4292006610" position-x="1550" position-y="450" size-x="0" size-x2="142" size-y="0" size-y2="45"/>
-    <entity uuid="ff58bc59-4964-4488-92c9-914bc835a050" bg-color="4294967295" hdr-color="4292006610" position-x="800" position-y="50" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
+    <entity uuid="ff58bc59-4964-4488-92c9-914bc835a050" bg-color="4294967295" hdr-color="4292006610" position-x="822" position-y="7" size-x="0" size-x2="117" size-y="0" size-y2="73"/>
     <module uuid="0f2a830e-feb4-4358-ba55-1084e3b5ea9e" bg-color="#E8FADF" position-x="900" position-y="650" size-x="0" size-x2="650" size-y="0" size-y2="443"/>
     <module uuid="1ee52e5c-71a2-47c6-8e25-eaa0a2ebbd0d" bg-color="#E7F3E7" position-x="4262" position-y="1139" size-x="0" size-x2="100" size-y="0" size-y2="100"/>
     <module uuid="264804cf-5ddd-4089-aaa2-d7c0f129a5ed" bg-color="#FDF5F3" position-x="50" position-y="506" size-x="0" size-x2="700" size-y="56" size-y2="417"/>

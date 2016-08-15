@@ -25,8 +25,8 @@ CREATE TABLE `active_product_category_locale` (
   PRIMARY KEY (`category`,`locale`),
   UNIQUE KEY `idxUActiveLocaleOfProductCategory` (`category`,`locale`) USING BTREE,
   KEY `idxFActiveLanguageOfProductCategory` (`locale`) USING BTREE,
-  CONSTRAINT `idxFActiveLanguageOfProductCategory` FOREIGN KEY (`locale`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFActiveProductCategoryOfLanguage` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFLocaleOfActiveProductCategoryLocale` FOREIGN KEY (`locale`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFCategoryOfActiveProductCategoryLocale` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 -- ----------------------------
@@ -39,8 +39,8 @@ CREATE TABLE `active_product_locale` (
   PRIMARY KEY (`product`,`locale`),
   UNIQUE KEY `idxUActiveLocaleOfProduct` (`product`,`locale`) USING BTREE,
   KEY `idxFActiveLanguageOfProduct` (`locale`) USING BTREE,
-  CONSTRAINT `idxFActiveLanguageOfProduct` FOREIGN KEY (`locale`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFActiveProductOfLanguage` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFLocaleOfActiveProductLocale` FOREIGN KEY (`locale`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFProductOfActiveProductLocale` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 -- ----------------------------
@@ -55,11 +55,11 @@ CREATE TABLE `attributes_of_product` (
   `price_factor` decimal(5,2) DEFAULT NULL COMMENT 'If attribute changes price, by what percentage?',
   `price_factor_type` char(1) COLLATE utf8_turkish_ci DEFAULT 'a' COMMENT 'a:amount;p:percentage.',
   PRIMARY KEY (`product`,`attribute`),
-  UNIQUE KEY `id_u_attributes_of_product` (`product`,`attribute`) USING BTREE,
-  KEY `idx_f_attributes_of_product_attribute` (`attribute`) USING BTREE,
-  KEY `idx_f_attributes_of_product_product` (`product`) USING BTREE,
-  CONSTRAINT `idx_f_attributes_of_product_attribute` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_attributes_of_product_product` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `idxUProductOfAttributesOfProduct` (`product`,`attribute`) USING BTREE,
+  KEY `idxNAttributeOfAttributesOfProduct` (`attribute`) USING BTREE,
+  KEY `idxNProductOfAttributesOfProduct` (`product`) USING BTREE,
+  CONSTRAINT `idxFAttributeOfAttributesOfProduct` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFProductOfAttributesOfProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -76,8 +76,8 @@ CREATE TABLE `attributes_of_product_category` (
   KEY `idx_f_attributes_of_product_category_attribute_idx` (`attribute`) USING BTREE,
   KEY `idxFCategoryOfProductAttribute` (`category`) USING BTREE,
   KEY `idxNAttributesOfProductCategoryDateAdded` (`date_added`) USING BTREE,
-  CONSTRAINT `idxFAttributeOfProductCategory` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`),
-  CONSTRAINT `idxFCategoryOfProductAttribute` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`)
+  CONSTRAINT `idxFAttributeOfAttributesOfProductCategory` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`),
+  CONSTRAINT `idxFCategoryOfAttributesOfProductCategory` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -94,8 +94,8 @@ CREATE TABLE `categories_of_product` (
   KEY `idxNCategoriesOfProductDateAdded` (`date_added`) USING BTREE,
   KEY `idxFCategoryOfProduct` (`category`) USING BTREE,
   KEY `idxFProductOfCategory` (`product`) USING BTREE,
-  CONSTRAINT `idxFCategoryOfProduct` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFProductOfCategory` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFCategoryOfCategoriesOfProduct` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFProductOfCategoriesOfProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -111,10 +111,10 @@ CREATE TABLE `files_of_product` (
   PRIMARY KEY (`file`,`product`),
   UNIQUE KEY `idxUFilesOfProduct` (`file`,`product`) USING BTREE,
   KEY `idxFProductOfFile` (`product`) USING BTREE,
-  KEY `idxUFilesOfProductDateAdded` (`date_added`) USING BTREE,
-  KEY `idxFFileOfProduct` (`file`) USING BTREE,
-  CONSTRAINT `idxFProductOfFile` FOREIGN KEY (`product`) REFERENCES `product` (`id`),
-  CONSTRAINT `idx_F_files_of_product_filer` FOREIGN KEY (`file`) REFERENCES `file` (`id`)
+  KEY `idxNFilesOfProductDateAdded` (`date_added`) USING BTREE,
+  KEY `idxNFileOfProduct` (`file`) USING BTREE,
+  CONSTRAINT `idxFProductOfFilesOfProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`),
+  CONSTRAINT `idxFFileOfFilesOfProduct` FOREIGN KEY (`file`) REFERENCES `file` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -151,9 +151,9 @@ CREATE TABLE `product` (
   KEY `idxFPreviewFileOfProduct` (`preview_file`) USING BTREE,
   KEY `idxNProductsOfBrand` (`id`,`brand`) USING BTREE,
   KEY `idxFBrandOfProduct` (`brand`) USING BTREE,
-  CONSTRAINT `idx_f_produc_site` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_brand` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_preview_File` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFSiteOfProduct` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFBrandOfProduct` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFPreviewFileOfProduct` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -169,7 +169,7 @@ CREATE TABLE `product_attribute` (
   `date_removed` datetime DEFAULT NULL COMMENT 'Date when the entry is marked as removed.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idxUProductAttributeId` (`id`) USING BTREE,
-  KEY `idx_f_product_attribute_site` (`site`) USING BTREE,
+  KEY `idxNSiteOfProductAttribute` (`site`) USING BTREE,
   KEY `idxNProductAttributeDateAdded` (`date_added`) USING BTREE,
   KEY `idxNProductAttributeDateUpdated` (`date_updated`),
   KEY `idxNProductAttributeDateRemoved` (`date_removed`),
@@ -187,18 +187,18 @@ CREATE TABLE `product_attribute_localization` (
   `url_key` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL COMMENT 'Localized Url Key of product attribute.',
   PRIMARY KEY (`language`,`attribute`),
   UNIQUE KEY `idxUProductAttributeLocalization` (`language`,`attribute`) USING BTREE,
-  UNIQUE KEY `idxUProductAttributeUrlKey` (`language`,`attribute`,`url_key`),
-  KEY `idxProductAttributeLocalizationLanguage` (`language`) USING BTREE,
-  KEY `idxFLocalizedProductAttribute` (`attribute`) USING BTREE,
-  CONSTRAINT `idxFLocalizedProductAttribute` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxProductAttributeLocalizationLanguage` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `idxNProductAttributeUrlKey` (`language`,`attribute`,`url_key`),
+  KEY `idxNProductAttributeLocalizationLanguage` (`language`) USING BTREE,
+  KEY `idxNLocalizedProductAttribute` (`attribute`) USING BTREE,
+  CONSTRAINT `idxFAttributeOfProductAttributeLocalization` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFLanguageOfProductAttributeLocalization` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for product_attribute_values
 -- ----------------------------
 DROP TABLE IF EXISTS `product_attribute_values`;
-CREATE TABLE `product_attribute_values` (
+  CREATE TABLE `product_attribute_values` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'System given id.',
   `value` text COLLATE utf8_turkish_ci NOT NULL COMMENT 'Value of attribute.',
   `language` int(10) unsigned NOT NULL COMMENT 'Language of the attribute value.',
@@ -212,8 +212,8 @@ CREATE TABLE `product_attribute_values` (
   KEY `idxAttributeOfAttributeValue` (`attribute`) USING BTREE,
   KEY `idxProductOfAttributeValue` (`product`) USING BTREE,
   CONSTRAINT `idxProductOfAttributeValue` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_attribute_values_attribute` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_attribute_values_language` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxAttributeOfAttributeValue` FOREIGN KEY (`attribute`) REFERENCES `product_attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxLanguageOfAttributeValue` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -241,9 +241,9 @@ CREATE TABLE `product_category` (
   KEY `idxFParentOfProductCategory` (`parent`) USING BTREE,
   KEY `idxFSiteOfProductCategory` (`site`) USING BTREE,
   KEY `idxFPreviewFileOfProductCategory` (`preview_file`) USING BTREE,
-  CONSTRAINT `idx_f_product_category_parent` FOREIGN KEY (`parent`) REFERENCES `product_category` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_category_site` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idx_f_product_categpry_preview_image` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFParentOfProductCategory` FOREIGN KEY (`parent`) REFERENCES `product_category` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `idxFSiteOfProductCategory` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFPreviewFileOfProductCategory` FOREIGN KEY (`preview_file`) REFERENCES `file` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -263,8 +263,8 @@ CREATE TABLE `product_category_localization` (
   UNIQUE KEY `idxUProductCategoryUrlKey` (`language`,`category`,`url_key`),
   KEY `idxFProductCategoryLocalizationLanguage` (`language`) USING BTREE,
   KEY `idxFLocalizedProductCategory` (`category`) USING BTREE,
-  CONSTRAINT `idxFLocalizedProductCategory` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFProductCategoryLocalizationLanguage` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFCategoryOfProductCategoryLocalization` FOREIGN KEY (`category`) REFERENCES `product_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFLanguageOfProductCategoryLocalization` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -281,11 +281,11 @@ CREATE TABLE `product_localization` (
   `url_key` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL,
   PRIMARY KEY (`product`,`language`),
   UNIQUE KEY `idxUProductLocalization` (`product`,`language`) USING BTREE,
-  KEY `idx_f_product_localization_language` (`language`) USING BTREE,
-  KEY `idx_f_product_localization_product` (`product`) USING BTREE,
+  KEY `idxNLanguageOfProductLocalization` (`language`) USING BTREE,
+  KEY `idxNProductOfProductLocalization` (`product`) USING BTREE,
   KEY `idxUProductUrlKey` (`product`,`language`,`url_key`) USING BTREE,
-  CONSTRAINT `idxFLocalizedProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFProductLocalizationLanguage` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFProductOfProductLocalization` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFLanguageOfProductLocalization` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -301,7 +301,7 @@ CREATE TABLE `product_url_key_history` (
   PRIMARY KEY (`url_key`),
   KEY `idxFProductOfUrlKey` (`product`),
   KEY `idxUProductUrlKey` (`url_key`,`date_added`,`product`),
-  CONSTRAINT `product_url_key_history_ibfk_1` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFProductOfUrlKey` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -319,23 +319,23 @@ CREATE TABLE `products_of_site` (
   KEY `idxNProductsOfSiteDateAdded` (`date_added`) USING BTREE,
   KEY `idxFSiteoFProduct` (`site`) USING BTREE,
   KEY `idxFProductOfSite` (`product`) USING BTREE,
-  CONSTRAINT `idxFProductOfSite` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFSiteoFProduct` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFProductOfProductsOfSite` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFSiteOfProductsOfSite` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for related_product
 -- ----------------------------
 DROP TABLE IF EXISTS `related_product`;
-CREATE TABLE `related_product` (
+  CREATE TABLE `related_product` (
   `product` int(10) unsigned NOT NULL,
   `related_product` int(10) unsigned NOT NULL,
   PRIMARY KEY (`product`,`related_product`),
   UNIQUE KEY `idxURelatedProduct` (`product`,`related_product`) USING BTREE,
   KEY `idxFRelatedProduct` (`related_product`) USING BTREE,
-  CONSTRAINT `idxFOwnerProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idxFRelatedProduct` FOREIGN KEY (`related_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+  CONSTRAINT `idxFProductOfRelatedProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE NULL,
+  CONSTRAINT `idxFRelatedProductOfRelatedProduct` FOREIGN KEY (`related_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for volume_pricing
