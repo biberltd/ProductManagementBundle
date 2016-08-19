@@ -333,8 +333,8 @@ DROP TABLE IF EXISTS `related_product`;
   PRIMARY KEY (`product`,`related_product`),
   UNIQUE KEY `idxURelatedProduct` (`product`,`related_product`) USING BTREE,
   KEY `idxFRelatedProduct` (`related_product`) USING BTREE,
-  CONSTRAINT `idxFProductOfRelatedProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE NULL,
-  CONSTRAINT `idxFRelatedProductOfRelatedProduct` FOREIGN KEY (`related_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE NULL
+  CONSTRAINT `idxFProductOfRelatedProduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idxFRelatedProductOfRelatedProduct` FOREIGN KEY (`related_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
