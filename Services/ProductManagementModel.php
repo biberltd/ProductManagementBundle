@@ -4957,7 +4957,7 @@ class ProductManagementModel extends CoreModel
 			$relatedProductEntry = new BundleEntity\RelatedProduct;
 			$relatedProductEntry->setProduct($product);
 			$relatedProductEntry->setRelatedProduct($relatedProduct);
-			$this->em->persist($relatedProduct);
+			$this->em->persist($relatedProductEntry);
 			$relatedProducts[] = $relatedProduct;
 			unset($relatedProduct, $response);
 			$countRelated++;
