@@ -6404,4 +6404,26 @@ class ProductManagementModel extends CoreModel
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 	}
+
+
+    /**
+     * @return ModelResponse
+     */
+    public function countActiveProducts()
+    {
+        $timeStamp = microtime(true);
+        $wStr = '';
+        $qStr = 'SELECT COUNT(' . $this->entity['p']['alias'] . ')'
+            . ' FROM ' . $this->entity['p']['name'] . ' ' . $this->entity['p']['alias']
+            . ' WHERE '.$this->entity['p']['alias'].'.status = \'a\'';
+
+        $qStr .= $wStr;
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getSingleScalarResult();
+        $count = 0;
+        if (!$result) {
+            $count = $result;
+        }
+        return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+    }
 }
