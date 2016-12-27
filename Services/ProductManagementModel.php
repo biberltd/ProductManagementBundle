@@ -4970,7 +4970,7 @@ class ProductManagementModel extends CoreModel
 	}
 
 	/**
-	 * @param array                                                   $categories
+	 * @param array $categories
 	 * @param mixed $product
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
