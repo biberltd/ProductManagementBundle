@@ -6077,7 +6077,7 @@ class ProductManagementModel extends CoreModel
 	public function listProductsWithIds(array $pIds, array $sortOrder = null, array $limit = null){
 		$filter[] = array(
 			'glue' => 'and',
-			'condition' => array('column' => $this->entity['p']['alias'].'.sku', 'comparison' => 'contains', 'value' => $keyword),
+            'condition' => array('column' => $this->entity['p']['alias'].'.id', 'comparison' => 'in', 'value' => $pIds),
 		);
 		return $this->listProducts($filter, $sortOrder, $limit);
 	}
