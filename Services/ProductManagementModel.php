@@ -6890,7 +6890,6 @@ class ProductManagementModel extends CoreModel
         return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
     }
 
-
     /**
      * @return ModelResponse
      */
@@ -6910,5 +6909,46 @@ class ProductManagementModel extends CoreModel
             $count = $result;
         }
         return new ModelResponse($count, 1, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+    }
+
+    /**
+     * @param string $keyword
+     * @param array|null $sortOrder
+     * @param array|null $limit
+     * @return ModelResponse
+     */
+    public function listProductCategoriesWithNameContaining(string $keyword, array $sortOrder = null, array $limit = null)
+    {
+        $filter = [];
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pcl']['alias'] . '.name', 'comparison' => 'contains', 'value' => $keyword),
+                )
+            )
+        );
+        return $this->listProductCategories($filter, $sortOrder, $limit);
+    }
+    /**
+     * @param string $keyword
+     * @param array|null $sortOrder
+     * @param array|null $limit
+     * @return ModelResponse
+     */
+    public function listTagsWithNameContaining(string $keyword, array $sortOrder = null, array $limit = null)
+    {
+        $filter = [];
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['t']['alias'] . '.name', 'comparison' => 'contains', 'value' => $keyword),
+                )
+            )
+        );
+        return $this->listTags($filter, $sortOrder, $limit);
     }
 }
