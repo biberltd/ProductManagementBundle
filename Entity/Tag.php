@@ -1,6 +1,6 @@
 <?php
 /**
- * @author		Can Berkol
+ * @author        Can Berkol
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
  * @license     GPLv3
@@ -10,7 +10,7 @@
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
-/** 
+/**
  * @ORM\Entity
  * @ORM\Table(
  *     name="tag",
@@ -19,7 +19,7 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  */
 class Tag extends CoreEntity
 {
-    /** 
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -27,7 +27,7 @@ class Tag extends CoreEntity
      */
     private $id;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=155, nullable=false)
      * @var string
      */
@@ -36,21 +36,21 @@ class Tag extends CoreEntity
      * @ORM\Column(type="string", length=255, nullable=false)
      * @var string
      */
-    private $urlKey;
+    private $url_key;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTime
      */
     public $date_added;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTime
      */
     public $date_updated;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
@@ -89,7 +89,7 @@ class Tag extends CoreEntity
      */
     public function setUrlKey(string $urlKey) {
         if($this->setModified('name', $urlKey)->isModified()) {
-            $this->urlKey = $urlKey;
+            $this->url_key = $urlKey;
         }
 
         return $this;
@@ -99,6 +99,6 @@ class Tag extends CoreEntity
      * @return string
      */
     public function getUrlKey() {
-        return $this->urlKey;
+        return $this->url_key;
     }
 }
