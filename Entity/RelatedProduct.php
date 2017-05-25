@@ -38,6 +38,12 @@ class RelatedProduct extends CoreEntity
     private $related_product;
 
     /**
+     * @ORM\Column(type="int", length=10, nullable=false)
+     * @var int
+     */
+    private $sort_order;
+
+    /**
      * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Product $product
      *
      * @return $this
@@ -75,5 +81,24 @@ class RelatedProduct extends CoreEntity
      */
     public function getRelatedProduct() {
         return $this->related_product;
+    }
+
+    /**
+     * @param int $sortOrder
+     * @return $this
+     */
+    public function setSortOrder(int $sortOrder) {
+        if($this->setModified('sortOrder', $sortOrder)->isModified()) {
+            $this->sort_order = $sortOrder;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSortOrder() {
+        return $this->sort_order;
     }
 }
