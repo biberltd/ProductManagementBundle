@@ -4029,7 +4029,9 @@ class ProductManagementModel extends CoreModel
         $qStr = 'SELECT ' . $this->entity['p']['alias'] . ', ' . $this->entity['pl']['alias']
             . ' FROM ' . $this->entity['pl']['name'] . ' ' . $this->entity['pl']['alias']
             . ' JOIN ' . $this->entity['pl']['alias'] . '.product ' . $this->entity['p']['alias']
-            . ' WITH ' . $this->entity['pl']['alias'] . '.product = '.$this->entity['p']['alias'].'.id';
+            . ' WITH ' . $this->entity['pl']['alias'] . '.product = '.$this->entity['p']['alias'].'.id'
+            . ' JOIN ' . $this->entity['p']['alias'] . '.brand ' . $this->entity['b']['alias']
+            . ' WITH ' . $this->entity['p']['alias'] . '.brand = '.$this->entity['b']['alias'].'.id';
 
         if (!is_null($sortOrder)) {
             foreach ($sortOrder as $column => $direction) {
@@ -4045,6 +4047,9 @@ class ProductManagementModel extends CoreModel
                     case 'count_like':
                     case 'site':
                         $column = $this->entity['p']['alias'] . '.' . $column;
+                        break;
+                    case 'brand':
+                        $column = $this->entity['b']['alias'] . '.name';
                         break;
                     case 'name':
                     case 'description':
