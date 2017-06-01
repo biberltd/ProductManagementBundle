@@ -1,6 +1,6 @@
 <?php
 /**
- * @author		Can Berkol
+ * @author        Can Berkol
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
  * @license     GPLv3
@@ -11,24 +11,23 @@ namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
 
-/** 
+/**
  * @ORM\Entity
  * @ORM\Table(
- *     name="files_of_product",
+ *     name="tags_of_product",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
- *     indexes={@ORM\Index(name="idxUFilesOfProductDateAdded", columns={"date_added"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idxUFilesOfProduct", columns={"file","product"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_u_product_tag", columns={"tag","product"})}
  * )
  */
 class TagsOfProduct extends CoreEntity
 {
-    /** 
+    /**
      * @ORM\Column(type="integer", length=10, nullable=false, options={"default":1})
      * @var int
      */
     private $sort_order;
 
-    /** 
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Tag", cascade={"persist"})
      * @ORM\JoinColumn(name="tag", referencedColumnName="id", onDelete="CASCADE")
@@ -36,7 +35,7 @@ class TagsOfProduct extends CoreEntity
      */
     private $tag;
 
-    /** 
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Product", cascade={"persist"})
      * @ORM\JoinColumn(name="product", referencedColumnName="id", onDelete="CASCADE")
@@ -52,8 +51,8 @@ class TagsOfProduct extends CoreEntity
         if(!$this->setModified('tag', $tag)->isModified()) {
             return $this;
         }
-		$this->tag = $tag;
-		return $this;
+        $this->tag = $tag;
+        return $this;
     }
 
     /**
@@ -72,8 +71,8 @@ class TagsOfProduct extends CoreEntity
         if(!$this->setModified('product', $product)->isModified()) {
             return $this;
         }
-		$this->product = $product;
-		return $this;
+        $this->product = $product;
+        return $this;
     }
 
     /**
@@ -92,8 +91,8 @@ class TagsOfProduct extends CoreEntity
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
-		$this->sort_order = $sort_order;
-		return $this;
+        $this->sort_order = $sort_order;
+        return $this;
     }
 
     /**

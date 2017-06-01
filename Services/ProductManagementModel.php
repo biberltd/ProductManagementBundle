@@ -16,6 +16,7 @@ use BiberLtd\Bundle\CoreBundle\Responses\ModelResponse;
 use BiberLtd\Bundle\ProductManagementBundle\Entity as BundleEntity;
 use BiberLtd\Bundle\FileManagementBundle\Entity as FileBundleEntity;
 use BiberLtd\Bundle\MultiLanguageSupportBundle\Entity as MLSEntity;
+use BiberLtd\Bundle\ProductManagementBundle\Entity\TagsOfProduct;
 use BiberLtd\Bundle\SiteManagementBundle\Entity as SiteManagementEntity;
 use BiberLtd\Bundle\FileManagementBundle\Services as FMMService;
 use BiberLtd\Bundle\MultiLanguageSupportBundle\Services as MLSService;
@@ -168,22 +169,22 @@ class ProductManagementModel extends CoreModel
             $topCollection = [];
             /** Check if association exists */
             if (!$this->isTagAssociatedWithProduct($item['tag'], $product, true)) {
-                $aop = new BundleEntity\TagsOfProduct();
-                $aop->setTag($item['tag'])->setProduct($product)->setDateAdded($now);
+                $top = new TagsOfProduct();
+                $top->setTag($item['tag'])->setProduct($product)->setDateAdded($now);
                 if (!is_null($item['sort_order'])) {
-                    $aop->setSortOrder($item['sort_order']);
+                    $top->setSortOrder($item['sort_order']);
                 } else {
-                    $aop->setSortOrder($this->getMaxSortOrderOfTagInProduct($product, true) + 1);
+                    $top->setSortOrder($this->getMaxSortOrderOfTagInProduct($product, true) + 1);
                 }
                 /** persist entry */
-                $this->em->persist($aop);
-                $aopCollection[] = $aop;
+                $this->em->persist($top);
+                $topCollection[] = $top;
                 $count++;
             }
         }
         if ($count > 0) {
             $this->em->flush();
-            return new ModelResponse($aopCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+            return new ModelResponse($topCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
         }
         return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
     }
@@ -832,6 +833,47 @@ class ProductManagementModel extends CoreModel
     }
 
     /**
+     * @param mixed $tag
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteTag($tag)
+    {
+        return $this->deleteTags(array($tag));
+    }
+
+    /**
+     * @param array $collection
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function deleteTags(array $collection)
+    {
+        $timeStamp = microtime(true);
+        if (!is_array($collection)) {
+            return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
+        }
+        $countDeleted = 0;
+        foreach ($collection as $entry) {
+            if ($entry instanceof BundleEntity\Tag) {
+                $this->em->remove($entry);
+                $countDeleted++;
+            } else {
+                $response = $this->getTag($entry);
+                if (!$response->error->exist) {
+                    $this->em->remove($response->result->set);
+                    $countDeleted++;
+                }
+            }
+        }
+        if ($countDeleted < 0) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+        }
+        $this->em->flush();
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
+    }
+
+    /**
      * @param mixed $attribute
      * @param bool $bypass
      *
@@ -994,7 +1036,7 @@ class ProductManagementModel extends CoreModel
         $result = null;
         switch ($brand) {
             case is_numeric($brand):
-                $result = $this->em->getRepository($this->entity['b']['id'])->findOneBy(array('id' => $brand));
+                $result = $this->em->getRepository($this->entity['b']['name'])->findOneBy(array('id' => $brand));
                 break;
             case is_string($brand):
                 $result = $this->em->getRepository($this->entity['b']['name'])->findOneBy(array('name' => $brand));
@@ -1021,7 +1063,7 @@ class ProductManagementModel extends CoreModel
         $result = null;
         switch ($tag) {
             case is_numeric($tag):
-                $result = $this->em->getRepository($this->entity['t']['id'])->findOneBy(array('id' => $tag));
+                $result = $this->em->getRepository($this->entity['t']['name'])->findOneBy(array('id' => $tag));
                 break;
             case is_string($tag):
                 $result = $this->em->getRepository($this->entity['t']['name'])->findOneBy(array('name' => $tag));
@@ -1523,6 +1565,53 @@ class ProductManagementModel extends CoreModel
         }
         $product = $response->result->set;
         return $this->listVolumePricingsOfProduct($product, [], array('quantity_limit' => 'desc'), array('start' => 0, 'count' => 1));
+    }
+
+    /**
+     * @param string $urlKey
+     * @param null $language
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getTagByUrlKey(string $urlKey, $language = null)
+    {
+        $timeStamp = microtime(true);
+        if (!is_string($urlKey)) {
+            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['t']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+                )
+            )
+        );
+        if (!is_null($language)) {
+            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+            $response = $mModel->getLanguage($language);
+            if (!$response->error->exist) {
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['t']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+                        )
+                    )
+                );
+            }
+        }
+        $response = $this->listTags($filter, null, array('start' => 0, 'count' => 1));
+        if ($response->error->exist) {
+            return $response;
+        }
+        $response->stats->execution->start = $timeStamp;
+        $response->stats->execution->end = microtime(true);
+        $response->result->set = $response->result->set[0];
+
+        return $response;
     }
 
     /**
@@ -2425,7 +2514,7 @@ class ProductManagementModel extends CoreModel
         $found = false;
 
         $qStr = 'SELECT COUNT(' . $this->entity['top']['alias'] . '.tag)'
-            . ' FROM ' . $this->entity['top']['name'] . ' ' . $this->entity['aop']['alias']
+            . ' FROM ' . $this->entity['top']['name'] . ' ' . $this->entity['top']['alias']
             . ' WHERE ' . $this->entity['top']['alias'] . '.tag = ' . $tag->getId()
             . ' AND ' . $this->entity['top']['alias'] . '.product = ' . $product->getId();
         $q = $this->em->createQuery($qStr);
@@ -3940,7 +4029,9 @@ class ProductManagementModel extends CoreModel
         $qStr = 'SELECT ' . $this->entity['p']['alias'] . ', ' . $this->entity['pl']['alias']
             . ' FROM ' . $this->entity['pl']['name'] . ' ' . $this->entity['pl']['alias']
             . ' JOIN ' . $this->entity['pl']['alias'] . '.product ' . $this->entity['p']['alias']
-            . ' WITH ' . $this->entity['pl']['alias'] . '.product = '.$this->entity['p']['alias'].'.id';
+            . ' WITH ' . $this->entity['pl']['alias'] . '.product = '.$this->entity['p']['alias'].'.id'
+            . ' JOIN ' . $this->entity['p']['alias'] . '.brand ' . $this->entity['b']['alias']
+            . ' WITH ' . $this->entity['p']['alias'] . '.brand = '.$this->entity['b']['alias'].'.id';
 
         if (!is_null($sortOrder)) {
             foreach ($sortOrder as $column => $direction) {
@@ -3956,6 +4047,9 @@ class ProductManagementModel extends CoreModel
                     case 'count_like':
                     case 'site':
                         $column = $this->entity['p']['alias'] . '.' . $column;
+                        break;
+                    case 'brand':
+                        $column = $this->entity['b']['alias'] . '.name';
                         break;
                     case 'name':
                     case 'description':
@@ -4009,13 +4103,15 @@ class ProductManagementModel extends CoreModel
         }
         $oStr = $wStr = $gStr = $fStr = '';
 
-        $qStr = 'SELECT ' . $this->entity['t']['alias']. ' FROM ' . $this->entity['t']['name'];
+        $qStr = 'SELECT ' . $this->entity['t']['alias']. ' FROM ' . $this->entity['t']['name']. ' ' . $this->entity['t']['alias'];
 
         if (!is_null($sortOrder)) {
             foreach ($sortOrder as $column => $direction) {
                 switch ($column) {
+                    case 'id':
                     case 'name':
                     case 'url_key':
+                    case 'date_added':
                         $column = $this->entity['t']['alias'] . '.' . $column;
                         break;
                 }
@@ -4036,11 +4132,7 @@ class ProductManagementModel extends CoreModel
         $result = $q->getResult();
         $entities = [];
         foreach ($result as $entry) {
-            $id = $entry->getProduct()->getId();
-            if (!isset($unique[$id])) {
-                $unique[$id] = '';
-                $entities[] = $entry->getProduct();
-            }
+            $entities[] = $entry;
         }
         $totalRows = count($entities);
         if ($totalRows < 1) {
@@ -4283,6 +4375,85 @@ class ProductManagementModel extends CoreModel
             return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
         }
         return new ModelResponse($products, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
+    }
+
+    /**
+     * @param array      $tags
+     * @param array|null $sortOrder
+     * @param array|null $limit
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listProductsInTag(array $tags, array $sortOrder = null, array $limit = null){
+        $timeStamp = microtime(true);
+        $tagIds = [];
+        foreach ($tags as $tag) {
+            $response = $this->getTag($tag);
+            if ($response->error->exist) {
+                continue;
+            }
+            $tag = $response->result->set;
+            $tagIds[] = $tag->getId();
+        }
+        if (empty($tagIds)) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
+        }
+        $tagIds = implode(',', $tagIds);
+
+        $qStr = 'SELECT ' . $this->entity['top']['alias']
+            . ' FROM ' . $this->entity['top']['name'] . ' ' . $this->entity['top']['alias']
+            . ' JOIN ' . $this->entity['p']['name'] . ' ' . $this->entity['p']['alias']
+            . ' WITH ' . $this->entity['top']['alias'] . '.product = '.$this->entity['p']['alias'].'.id'
+            . ' JOIN ' . $this->entity['pl']['name'] . ' ' . $this->entity['pl']['alias']
+            . ' WITH ' . $this->entity['top']['alias'] . '.product = '.$this->entity['pl']['alias'].'.product'
+            . ' WHERE ' . $this->entity['top']['alias'] . '.tag IN (' . $tagIds . ')';
+
+        $oStr = '';
+        if ($sortOrder != null) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'quantity':
+                    case 'price':
+                    case 'sku':
+                    case 'sort_order':
+                    case 'date_added':
+                    case 'date_updated':
+                        $column = $this->entity['p']['alias'] . '.' . $column;
+                        break;
+                    case 'name':
+                        $column = $this->entity['pl']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+        $qStr .= $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+        $result = $q->getResult();
+
+        $totalRows = 0;
+        $collection = [];
+        $unique = [];
+        if(count($result)){
+            foreach($result as $item){
+                $id = $item->getProduct()->getId();
+                if(!isset($unique[$id])){
+                    $unique[$id] = '';
+                    $collection[] = $item->getProduct();
+                    $totalRows++;
+                }
+            }
+        }
+        unset($unique);
+        unset($result);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
+        }
+        return new ModelResponse($collection, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
     }
 
     /**
@@ -5747,7 +5918,7 @@ class ProductManagementModel extends CoreModel
      */
     public function updateTag($tag)
     {
-        return $this->updateTag(array($tag));
+        return $this->updateTags(array($tag));
     }
     /**
      * @param mixed $brand
@@ -6565,6 +6736,21 @@ class ProductManagementModel extends CoreModel
             'condition' => array('column' => $this->entity['p']['alias'].'.id', 'comparison' => 'in', 'value' => $pIds),
         );
         return $this->listProducts($filter, $sortOrder, $limit);
+    }
+
+    /**
+     * @param array      $tIds
+     * @param array|null $sortOrder
+     * @param array|null $limit
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listTagsWithIds(array $tIds, array $sortOrder = null, array $limit = null){
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array('column' => $this->entity['t']['alias'].'.id', 'comparison' => 'in', 'value' => $tIds),
+        );
+        return $this->listTags($filter, $sortOrder, $limit);
     }
 
     /**
