@@ -382,51 +382,6 @@ class ProductManagementModel extends CoreModel
     }
 
     /**
-     * @param mixed $product
-     * @param array $collection
-     *
-     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-    public function addProductToCategories($product, array $collection){
-        $timeStamp = microtime(true);
-        $response = $this->getProduct($product);
-        if ($response->error->exist) {
-            return $response;
-        }
-        $product = $response->result->set;
-        $productCollection = [];
-        $count = 0;
-        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
-        foreach ($collection as $category) {
-            $response = $this->getProductCategory($category);
-            if ($response->error->exist) {
-                continue;
-            }
-            $category = $response->result->set;
-            if ($this->isProductAssociatedWithCategory($product, $category, true)) {
-                continue;
-            }
-            /** prepare object */
-            $cop = new BundleEntity\CategoriesOfProduct();
-            $cop->setProduct($product)->setCategory($category)->setDateAdded($now);
-            if (!is_null($product->getSortOrder())) {
-                $cop->setSortOrder(1);
-            } else {
-                $cop->setSortOrder($this->getMaxSortOrderOfProductInCategory($category, true) + 1);
-            }
-            /** persist entry */
-            $this->em->persist($cop);
-            $productCollection[] = $cop;
-            $count++;
-        }
-        if ($count > 0) {
-            $this->em->flush();
-            return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
-        }
-        return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
-    }
-
-    /**
      * @param array $categories
      * @param mixed $locale
      *
