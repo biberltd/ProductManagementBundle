@@ -38,7 +38,7 @@ class RelatedProduct extends CoreEntity
     private $related_product;
 
     /**
-     * @ORM\Column(type="int", length=10, nullable=false)
+     * @ORM\Column(type="integer", length=10, nullable=false)
      * @var int
      */
     private $sort_order;
