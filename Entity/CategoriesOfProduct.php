@@ -11,8 +11,8 @@ namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
 
-/** 
- * @ORM\Entity
+/**
+ * @ORM\Entity()
  * @ORM\Table(
  *     name="categories_of_product",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
@@ -22,29 +22,29 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  */
 class CategoriesOfProduct extends CoreEntity
 {
-    /** 
+    /**
      * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
      * @var int
      */
     private $sort_order;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTime
      */
     public $date_added;
 
-    /** 
+    /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="ProductCategory")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory", inversedBy="products")
      * @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
      */
     private $category;
 
-    /** 
+    /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\ManyToOne(fetch="EAGER", targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\Product", inversedBy="categories")
      * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\Product
      */
@@ -59,8 +59,8 @@ class CategoriesOfProduct extends CoreEntity
         if(!$this->setModified('category', $category)->isModified()) {
             return $this;
         }
-		$this->category = $category;
-		return $this;
+        $this->category = $category;
+        return $this;
     }
 
     /**
@@ -79,8 +79,8 @@ class CategoriesOfProduct extends CoreEntity
         if(!$this->setModified('product', $product)->isModified()) {
             return $this;
         }
-		$this->product = $product;
-		return $this;
+        $this->product = $product;
+        return $this;
     }
 
     /**
@@ -99,8 +99,8 @@ class CategoriesOfProduct extends CoreEntity
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
-		$this->sort_order = $sort_order;
-		return $this;
+        $this->sort_order = $sort_order;
+        return $this;
     }
 
     /**

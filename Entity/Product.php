@@ -51,7 +51,7 @@ class Product extends CoreLocalizableEntity{
      */
     private $price;
 
-    /** 
+    /**
      * @ORM\Column(type="decimal", length=6, nullable=true)
      * @var float
      */
@@ -93,7 +93,7 @@ class Product extends CoreLocalizableEntity{
      */
     public $date_updated;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
@@ -138,7 +138,7 @@ class Product extends CoreLocalizableEntity{
 
     /**
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File")
-	 * @ORM\JoinColumn(name="preview_file", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="preview_file", referencedColumnName="id", onDelete="CASCADE")
      * @var \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     private $preview_file;
@@ -159,6 +159,21 @@ class Product extends CoreLocalizableEntity{
     private $brand;
 
     /**
+     * @ORM\OneToMany(fetch="EAGER", targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\CategoriesOfProduct", mappedBy="product", cascade={"persist", "remove"}, orphanRemoval=true))
+     * @var ArrayCollection
+     */
+    private $categories;
+
+    /**
+     * Product constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->categories = new ArrayCollection();
+    }
+
+    /**
      * @return mixed
      */
     public function getId(){
@@ -174,222 +189,222 @@ class Product extends CoreLocalizableEntity{
         if(!$this->setModified('count_like', $count_like)->isModified()) {
             return $this;
         }
-		$this->count_like = $count_like;
-		return $this;
+        $this->count_like = $count_like;
+        return $this;
     }
 
-	/**
-	 * @return int
-	 */
+    /**
+     * @return int
+     */
     public function getCountLike() {
         return $this->count_like;
     }
 
-	/**
-	 * @param int $count_view
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param int $count_view
+     *
+     * @return $this
+     */
     public function setCountView(int $count_view) {
         if(!$this->setModified('count_view', $count_view)->isModified()) {
             return $this;
         }
-		$this->count_view = $count_view;
-		return $this;
+        $this->count_view = $count_view;
+        return $this;
     }
 
-	/**
-	 * @return int
-	 */
+    /**
+     * @return int
+     */
     public function getCountView() {
         return $this->count_view;
     }
 
-	/**
-	 * @param string $is_customizable
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $is_customizable
+     *
+     * @return $this
+     */
     public function setIsCustomizable(string $is_customizable) {
         if(!$this->setModified('is_customizable', $is_customizable)->isModified()) {
             return $this;
         }
-		$this->is_customizable = $is_customizable;
-		return $this;
+        $this->is_customizable = $is_customizable;
+        return $this;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getIsCustomizable() {
         return $this->is_customizable;
     }
 
-	/**
-	 * @param \BiberLtd\Bundle\FileManagementBundle\Entity\File $preview_file
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param \BiberLtd\Bundle\FileManagementBundle\Entity\File $preview_file
+     *
+     * @return $this
+     */
     public function setPreviewFile(\BiberLtd\Bundle\FileManagementBundle\Entity\File $preview_file) {
         if(!$this->setModified('preview_file', $preview_file)->isModified()) {
             return $this;
         }
-		$this->preview_file = $preview_file;
-		return $this;
+        $this->preview_file = $preview_file;
+        return $this;
     }
 
-	/**
-	 * @return \BiberLtd\Bundle\FileManagementBundle\Entity\File
-	 */
+    /**
+     * @return \BiberLtd\Bundle\FileManagementBundle\Entity\File
+     */
     public function getPreviewFile() {
         return $this->preview_file;
     }
 
-	/**
-	 * @param float $price
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param float $price
+     *
+     * @return $this
+     */
     public function setPrice(float $price) {
         if(!$this->setModified('price', $price)->isModified()) {
             return $this;
         }
-		$this->price = $price;
-		return $this;
+        $this->price = $price;
+        return $this;
     }
 
-	/**
-	 * @return float
-	 */
+    /**
+     * @return float
+     */
     public function getPrice() {
         return $this->price;
     }
 
-	/**
-	 * @param int $quantity
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param int $quantity
+     *
+     * @return $this
+     */
     public function setQuantity(int $quantity) {
         if(!$this->setModified('quantity', $quantity)->isModified()) {
             return $this;
         }
-		$this->quantity = $quantity;
-		return $this;
+        $this->quantity = $quantity;
+        return $this;
     }
 
-	/**
-	 * @return int
-	 */
+    /**
+     * @return int
+     */
     public function getQuantity() {
         return $this->quantity;
     }
 
-	/**
-	 * @param \BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param \BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site
+     *
+     * @return $this
+     */
     public function setSite(\BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site) {
         if(!$this->setModified('site', $site)->isModified()) {
             return $this;
         }
-		$this->site = $site;
-		return $this;
+        $this->site = $site;
+        return $this;
     }
 
-	/**
-	 * @return \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
-	 */
+    /**
+     * @return \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
+     */
     public function getSite() {
         return $this->site;
     }
 
-	/**
-	 * @param string $sku
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $sku
+     *
+     * @return $this
+     */
     public function setSku(string $sku) {
         if(!$this->setModified('sku', $sku)->isModified()) {
             return $this;
         }
-		$this->sku = $sku;
-		return $this;
+        $this->sku = $sku;
+        return $this;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getSku() {
         return $this->sku;
     }
 
-	/**
-	 * @param int $sort_order
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param int $sort_order
+     *
+     * @return $this
+     */
     public function setSortOrder(int $sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
-		$this->sort_order = $sort_order;
-		return $this;
+        $this->sort_order = $sort_order;
+        return $this;
     }
 
-	/**
-	 * @return int
-	 */
+    /**
+     * @return int
+     */
     public function getSortOrder() {
         return $this->sort_order;
     }
 
-	/**
-	 * @param string $status
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $status
+     *
+     * @return $this
+     */
     public function setStatus(string $status) {
         if(!$this->setModified('status', $status)->isModified()) {
             return $this;
         }
-		$this->status = $status;
-		return $this;
+        $this->status = $status;
+        return $this;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getStatus() {
         return $this->status;
     }
 
-	/**
-	 * @param string $type
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
     public function setType(string $type) {
         if(!$this->setModified('type', $type)->isModified()) {
             return $this;
         }
-		$this->type = $type;
-		return $this;
+        $this->type = $type;
+        return $this;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getType() {
         return $this->type;
     }
 
-	/**
-	 * @param \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier $supplier
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier $supplier
+     *
+     * @return $this
+     */
     public function setSupplier(\BiberLtd\Bundle\StockManagementBundle\Entity\Supplier $supplier) {
         if($this->setModified('supplier', $supplier)->isModified()) {
             $this->supplier = $supplier;
@@ -398,18 +413,18 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-	/**
-	 * @return \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier
-	 */
+    /**
+     * @return \BiberLtd\Bundle\StockManagementBundle\Entity\Supplier
+     */
     public function getSupplier() {
         return $this->supplier;
     }
 
-	/**
-	 * @param float $discount_price
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param float $discount_price
+     *
+     * @return $this
+     */
     public function setDiscountPrice(float $discount_price) {
         if($this->setModified('discount_price', $discount_price)->isModified()) {
             $this->discount_price = $discount_price;
@@ -418,18 +433,18 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-	/**
-	 * @return float
-	 */
+    /**
+     * @return float
+     */
     public function getDiscountPrice() {
         return $this->discount_price;
     }
 
-	/**
-	 * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand $brand
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand $brand
+     *
+     * @return $this
+     */
     public function setBrand(\BiberLtd\Bundle\ProductManagementBundle\Entity\Brand $brand) {
         if($this->setModified('brand', $brand)->isModified()) {
             $this->brand = $brand;
@@ -438,18 +453,18 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-	/**
-	 * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand
-	 */
+    /**
+     * @return \BiberLtd\Bundle\ProductManagementBundle\Entity\Brand
+     */
     public function getBrand() {
         return $this->brand;
     }
 
-	/**
-	 * @param string $extra_info
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $extra_info
+     *
+     * @return $this
+     */
     public function setExtraInfo(string $extra_info) {
         if($this->setModified('extra_info', $extra_info)->isModified()) {
             $this->extra_info = $extra_info;
@@ -458,10 +473,62 @@ class Product extends CoreLocalizableEntity{
         return $this;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getExtraInfo() {
         return $this->extra_info;
     }
+
+    /**
+     * @param CategoriesOfProduct $copEntry
+     */
+    public function addCategory(CategoriesOfProduct $copEntry){
+        if(!$this->categories instanceof ArrayCollection){
+            $this->categories = new ArrayCollection();
+        }
+        if (!$this->categories->contains($copEntry)) {
+            $this->categories->add($copEntry);
+            $copEntry->setProduct($this);
+        }
+    }
+
+    /**
+     * @param CategoriesOfProduct $copEntry
+     * @return $this
+     */
+    public function removeCategory(CategoriesOfProduct $copEntry)
+    {
+        if(!$this->categories instanceof ArrayCollection){
+            $this->categories = new ArrayCollection();
+        }
+        if ($this->categories->contains($copEntry)) {
+            $this->categories->removeElement($copEntry);
+            $copEntry->setProduct(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param bool $salt
+     * @return array|ArrayCollection
+     */
+    public function getCategories(bool $salt = false){
+        if(!$this->categories instanceof ArrayCollection){
+            $this->categories = new ArrayCollection();
+        }
+        if(!$salt){
+            return $this->categories;
+        }
+        $categories = [];
+        /**
+         * @var CategoriesOfProduct $copEntry
+         */
+        foreach ($this->categories as $copEntry){
+            $categories[] = $copEntry->getCategory();
+        }
+        return $categories;
+    }
+
 }

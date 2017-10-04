@@ -24,6 +24,8 @@ use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
 use BiberLtd\Bundle\CoreBundle\Services as CoreServices;
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
 use BiberLtd\Bundle\StockManagementBundle\Services\StockManagementModel;
+use Doctrine\DBAL\Logging\EchoSQLLogger;
+use Doctrine\ORM\EntityManager;
 
 class ProductManagementModel extends CoreModel
 {
@@ -331,52 +333,95 @@ class ProductManagementModel extends CoreModel
 
     /**
      * @param array $collection
-     * @param mixed $category
+     * @param mixed $product
      *
      * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function addProductToCategories($product, array $collection){
+    public function addCategoriesToProduct(array $collection, $product)
+    {
         $timeStamp = microtime(true);
         $response = $this->getProduct($product);
         if ($response->error->exist) {
             return $response;
         }
+        /**
+         * @var BundleEntity\Product $product
+         */
         $product = $response->result->set;
-        $productCollection = [];
-        $count = 0;
-        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+        $associatedCats = [];
+        foreach($collection as $aCat){
+            /***
+             * @var BundleEntity\ProductCategory $category
+             */
+            $response = $this->getProductCategory($aCat);
 
-        foreach ($collection as $category) {
-            $response = $this->getProductCategory($category);
             if ($response->error->exist) {
-                continue;
+                return $response;
             }
             $category = $response->result->set;
-            if ($this->isProductAssociatedWithCategory($product, $category, true)) {
-                continue;
+            if(!$this->isProductAssociatedWithCategory($product, $category, true)){
+                $copEntry = new BundleEntity\CategoriesOfProduct();
+                $copEntry->setProduct($product);
+                $copEntry->setCategory($category);
+                $copEntry->setDateAdded();
+                $this->em->persist($copEntry);
+                $response = $this->getMaxSortOrderOfProductInCategory($category);
+                $copEntry->setSortOrder($response->result->set);
+                $product->addCategory($copEntry);
+                $category->addProduct($copEntry);
+                $this->em->persist($product);
+            }
+        }
+        /**
+         * @var EntityManager $em
+         */
+        $this->em->flush();
+        return new ModelResponse($copCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+    }
+
+    /**
+     * @param array $collection
+     * @param mixed $category
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function addProductsToCategory(array $collection, $category)
+    {
+        $timeStamp = microtime(true);
+        $response = $this->getProductCategory($category);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $category = $response->result->set;
+        $copCollection = [];
+        $count = 0;
+        $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+        foreach ($collection as $product) {
+            $response = $this->getProduct($product['p']);
+            if ($response->error->exist) {
+                return $response;
+            }
+            $productEntity = $response->result->set;
+            /** Check if association exists */
+            if ($this->isProductAssociatedWithCategory($productEntity, $category, true)) {
+                break;
             }
             /** prepare object */
             $cop = new BundleEntity\CategoriesOfProduct();
-            $cop->setProduct($product)->setCategory($category)->setDateAdded($now);
-            if (!is_null($product->getSortOrder())) {
-                $cop->setSortOrder($count);
+            $cop->setProduct($productEntity)->setCategory($category)->setDateAdded($now);
+            if (!is_null($product['sort_order'])) {
+                $cop->setSortOrder($product['sort_order']);
             } else {
                 $cop->setSortOrder($this->getMaxSortOrderOfProductInCategory($category, true) + 1);
             }
-
-            /**
-             * @var EntityManager $em
-             */
-
             /** persist entry */
             $this->em->persist($cop);
-            $productCollection[] = $cop;
-            unset($cop);
+            $copCollection[] = $cop;
             $count++;
         }
         if ($count > 0) {
             $this->em->flush();
-            return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
+            return new ModelResponse($copCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
         }
         return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
     }
@@ -397,6 +442,7 @@ class ProductManagementModel extends CoreModel
         $productCollection = [];
         $count = 0;
         $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
+
         foreach ($collection as $category) {
             $response = $this->getProductCategory($category);
             if ($response->error->exist) {
@@ -419,6 +465,9 @@ class ProductManagementModel extends CoreModel
             $productCollection[] = $cop;
             $count++;
         }
+        $this->em->persist($product);
+
+        $this->em->persist($category);
         if ($count > 0) {
             $this->em->flush();
             return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
@@ -1201,12 +1250,12 @@ class ProductManagementModel extends CoreModel
             return $response;
         }
         $category = $response->result->set;
-        $qStr = 'SELECT MAX(' . $this->entity['cop']['alias'] . ') FROM ' . $this->entity['cop']['name']
+        $qStr = 'SELECT MAX(' . $this->entity['cop']['alias'] . '.sort_order) FROM ' . $this->entity['cop']['name'].' '.$this->entity['cop']['alias']
             . ' WHERE ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
 
         $query = $this->em->createQuery($qStr);
         $result = $query->getSingleScalarResult();
-
+        $result = $result ?? 1;
         if ($bypass) {
             return $result;
         }
@@ -3356,16 +3405,15 @@ class ProductManagementModel extends CoreModel
         $response->result->count->set = 1;
         return $response;
     }
-
     /**
-     * @param $product
+     * @param mixed $product
      * @param array|null $filter
      * @param array|null $sortOrder
      * @param array|null $limit
-     * @param bool $returnCop
-     * @return ModelResponse
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
-    public function listCategoriesOfProduct($product, array $filter = null, array $sortOrder = null, array $limit = null, $returnCop = false)
+    public function listCategoriesOfProduct($product, array $filter = null, array $sortOrder = null, array $limit = null)
     {
         $timeStamp = microtime(true);
         $response = $this->getProduct($product);
@@ -3384,9 +3432,6 @@ class ProductManagementModel extends CoreModel
             foreach ($result as $cop) {
                 $catsOfProduct[] = $cop->getCategory()->getId();
             }
-        }
-        if($returnCop){
-            return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
         }
         if (count($catsOfProduct) < 1) {
             return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
@@ -7034,22 +7079,23 @@ class ProductManagementModel extends CoreModel
      * @param $product
      * @return ModelResponse
      */
-    /**
-     * @param $product
-     * @return ModelResponse
-     */
     public function removeAllCategoriesOfProduct($product){
-        $response = $this->listCategoriesOfProduct($product, null, null, null, true);
-        if(!$response->error->exist){
-            foreach($response->result->set as $aCat){
-                /**
-                 * @var EntityManager $em
-                 */
-                $this->em->remove($aCat);
-            }
-            $this->em->flush();
+        $timeStamp = microtime(true);
+
+        $response = $this->getProduct($product);
+        if($response->error->exist){
+            return $response;
         }
-        return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
+        $product = $response->result->set;
+
+        $resultSet = $this->em->getRepository($this->entity['cop']['name'])->findBy(['product' => $product->getId()]);
+
+        foreach ($resultSet as $anItem){
+            $this->em->remove($anItem);
+        }
+        $this->em->flush();
+
+        return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
     }
 
     /**

@@ -8,10 +8,11 @@
  * @date        23.12.2015
  */
 namespace BiberLtd\Bundle\ProductManagementBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
 
-/** 
+/**
  * @ORM\Entity
  * @ORM\Table(
  *     name="product_category",
@@ -26,7 +27,7 @@ use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
  */
 class ProductCategory extends CoreLocalizableEntity
 {
-    /** 
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -34,68 +35,68 @@ class ProductCategory extends CoreLocalizableEntity
      */
     private $id;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=1, nullable=false, options={"default":"t"})
      * @var string
      */
     private $level;
 
-    /** 
+    /**
      * @ORM\Column(type="integer", length=10, nullable=false, options={"default":0})
      * @var int
      */
     private $count_children;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTime
      */
     public $date_added;
 
-    /** 
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
     public $date_updated;
 
-	/**
-	 * @ORM\Column(type="datetime", nullable=true)
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
-	 */
-	public $date_removed;
+     */
+    public $date_removed;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=1, nullable=false, options={"default":"n"})
      * @var string
      */
     private $is_featured;
 
-    /** 
+    /**
      * @ORM\Column(type="integer", nullable=true, options={"default":1})
      * @var int
      */
     private $sort_order;
 
-    /** 
+    /**
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\FileManagementBundle\Entity\File", cascade={"persist"})
-	 * @ORM\JoinColumn(name="preview_image", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="preview_image", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @var \BiberLtd\Bundle\FileManagementBundle\Entity\File
      */
     private $preview_image;
 
-    /** 
+    /**
      * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="parent")
      * @var array
      */
     private $product_categories;
 
-    /** 
+    /**
      * @ORM\OneToMany(targetEntity="ProductCategoryLocalization", mappedBy="category")
      * @var array
      */
     protected $localizations;
 
-    /** 
+    /**
      * @ORM\ManyToOne(targetEntity="ProductCategory", inversedBy="product_categories")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id", onDelete="RESTRICT")
      * @var \BiberLtd\Bundle\ProductManagementBundle\Entity\ProductCategory
@@ -103,12 +104,27 @@ class ProductCategory extends CoreLocalizableEntity
     private $parent;
 
 
-    /** 
+    /**
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      * @var \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
      */
     private $site;
+
+    /**
+     * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\ProductManagementBundle\Entity\CategoriesOfProduct", mappedBy="category", cascade={"persist", "remove"}, orphanRemoval=true))
+     * @var ArrayCollection
+     */
+    private $products;
+
+    /**
+     * Product constructor.
+     */
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        parent::__construct();
+    }
 
     /**
      * @return mixed
@@ -126,8 +142,8 @@ class ProductCategory extends CoreLocalizableEntity
         if(!$this->setModified('count_children', $count_children)->isModified()) {
             return $this;
         }
-		$this->count_children = $count_children;
-		return $this;
+        $this->count_children = $count_children;
+        return $this;
     }
 
     /**
@@ -146,8 +162,8 @@ class ProductCategory extends CoreLocalizableEntity
         if(!$this->setModified('level', $level)->isModified()) {
             return $this;
         }
-		$this->level = $level;
-		return $this;
+        $this->level = $level;
+        return $this;
     }
 
     /**
@@ -166,8 +182,8 @@ class ProductCategory extends CoreLocalizableEntity
         if(!$this->setModified('product_categories', $product_categories)->isModified()) {
             return $this;
         }
-		$this->product_categories = $product_categories;
-		return $this;
+        $this->product_categories = $product_categories;
+        return $this;
     }
 
     /**
@@ -186,8 +202,8 @@ class ProductCategory extends CoreLocalizableEntity
         if(!$this->setModified('parent', $product_category)->isModified()) {
             return $this;
         }
-		$this->parent = $product_category;
-		return $this;
+        $this->parent = $product_category;
+        return $this;
     }
 
     /**
@@ -206,8 +222,8 @@ class ProductCategory extends CoreLocalizableEntity
         if(!$this->setModified('site', $site)->isModified()) {
             return $this;
         }
-		$this->site = $site;
-		return $this;
+        $this->site = $site;
+        return $this;
     }
 
     /**
@@ -275,6 +291,57 @@ class ProductCategory extends CoreLocalizableEntity
      */
     public function getPreviewImage() {
         return $this->preview_image;
+    }
+
+    /**
+     * @param CategoriesOfProduct $copEntry
+     */
+    public function addProduct(CategoriesOfProduct $copEntry){
+        if(!$this->products instanceof ArrayCollection){
+            $this->products = new ArrayCollection();
+        }
+        if (!$this->products->contains($copEntry)) {
+            $this->products->add($copEntry);
+            $copEntry->setCategory($this);
+        }
+    }
+
+    /**
+     * @param CategoriesOfProduct $copEntry
+     * @return $this
+     */
+    public function removeProduct(CategoriesOfProduct $copEntry)
+    {
+        if(!$this->products instanceof ArrayCollection){
+            $this->products = new ArrayCollection();
+        }
+        if ($this->products->contains($copEntry)) {
+            $this->products->removeElement($copEntry);
+            $copEntry->setCategory(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param bool $salt
+     * @return array|ArrayCollection
+     */
+    public function getProducts(bool $salt = false){
+        if(!$this->products instanceof ArrayCollection){
+            $this->products = new ArrayCollection();
+        }
+        if(!$salt){
+            return $this->products;
+        }
+        $products = [];
+        /**
+         * @var CategoriesOfProduct $copEntry
+         */
+        foreach ($this->products as $copEntry){
+            $products[] = $copEntry->getProduct();
+        }
+        return $products;
     }
 
 }
