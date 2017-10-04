@@ -83,11 +83,11 @@ class TagsOfProduct extends CoreEntity
     }
 
     /**
-     * @param int $sort_order
+     * @param integer $sort_order
      *
      * @return $this
      */
-    public function setSortOrder(int $sort_order) {
+    public function setSortOrder($sort_order) {
         if(!$this->setModified('sort_order', $sort_order)->isModified()) {
             return $this;
         }
@@ -96,7 +96,7 @@ class TagsOfProduct extends CoreEntity
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getSortOrder() {
         return $this->sort_order;
