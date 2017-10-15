@@ -3449,6 +3449,20 @@ class ProductManagementModel extends CoreModel
         );
         return $this->listProductCategories($filter, $sortOrder, $limit);
     }
+    public function listCopEntriesByProduct($product){
+        $timeStamp = microtime(true);
+        $response = $this->getProduct($product);
+        if ($response->error->exist) {
+            return $response;
+        }
+        $product = $response->result->set;
+        $qStr = 'SELECT ' . $this->entity['cop']['alias']
+            . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
+            . ' WHERE ' . $this->entity['cop']['alias'] . '.product = ' . $product->getId();
+        $q = $this->em->createQuery($qStr);
+        $result = $q->getResult();
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
+    }
 
     /**
      * @param mixed $category
