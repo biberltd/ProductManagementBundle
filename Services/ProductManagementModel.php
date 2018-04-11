@@ -439,35 +439,39 @@ class ProductManagementModel extends CoreModel
             return $response;
         }
         $product = $response->result->set;
+        unset($response);
         $productCollection = [];
         $count = 0;
         $now = new \DateTime('now', new \DateTimezone($this->kernel->getContainer()->getParameter('app_timezone')));
-
         foreach ($collection as $category) {
             $response = $this->getProductCategory($category);
             if ($response->error->exist) {
                 continue;
             }
-            $category = $response->result->set;
-            if ($this->isProductAssociatedWithCategory($product, $category, true)) {
+            $categoryRes = $response->result->set;
+            unset($response);
+            if ($this->isProductAssociatedWithCategory($product, $categoryRes, true)) {
                 continue;
             }
             /** prepare object */
             $cop = new BundleEntity\CategoriesOfProduct();
-            $cop->setProduct($product)->setCategory($category)->setDateAdded($now);
+            $cop->setProduct($product)->setCategory($categoryRes)->setDateAdded($now);
             if (!is_null($product->getSortOrder())) {
-                $cop->setSortOrder(1);
+                $cop->setSortOrder($count);
             } else {
-                $cop->setSortOrder($this->getMaxSortOrderOfProductInCategory($category, true) + 1);
+                $cop->setSortOrder($this->getMaxSortOrderOfProductInCategory($categoryRes, true) + 1);
             }
+
+            /**
+             * @var EntityManager $em
+             */
+
             /** persist entry */
             $this->em->persist($cop);
             $productCollection[] = $cop;
+            unset($cop);
             $count++;
         }
-        $this->em->persist($product);
-
-        $this->em->persist($category);
         if ($count > 0) {
             $this->em->flush();
             return new ModelResponse($productCollection, $count, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
