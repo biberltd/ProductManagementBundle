@@ -6007,7 +6007,7 @@ class ProductManagementModel extends CoreModel
 		}
 		$in = ' IN (' . implode(',', $idsToRemove) . ')';
 		$qStr = 'DELETE FROM ' . $this->entity['fop']['name'] . ' ' . $this->entity['fop']['alias']
-			. ' WHERE ' . $this->entity['fop']['alias'] . '.product ' . $product->getId()
+			. ' WHERE ' . $this->entity['fop']['alias'] . '.product = ' . $product->getId()
 			. ' AND ' . $this->entity['fop']['alias'] . '.file ' . $in;
 
 		$q = $this->em->createQuery($qStr);
