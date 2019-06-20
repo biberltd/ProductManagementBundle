@@ -6980,7 +6980,7 @@ class ProductManagementModel extends CoreModel
         unset($response);
         $wStr = '';
 
-        $qStr = 'SELECT COUNT(' . $this->entity['cop']['alias'] . '.product)'
+        $qStr = 'SELECT COUNT(DISTINCT(' . $this->entity['cop']['alias'] . '.product))'
             . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
             . ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
             . ' WITH '. $this->entity['cop']['alias'].'.product = ' . $this->entity['p']['alias'].'.id';
