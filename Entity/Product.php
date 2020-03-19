@@ -76,6 +76,12 @@ class Product extends CoreLocalizableEntity{
     private $sku;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $barcode;
+
+    /**
      * @ORM\Column(type="integer", nullable=false, options={"default":0})
      * @var int
      */
@@ -530,5 +536,22 @@ class Product extends CoreLocalizableEntity{
         }
         return $categories;
     }
+
+    /**
+     * @return string
+     */
+    public function getBarcode()
+    {
+        return $this->barcode;
+    }
+
+    /**
+     * @param string $barcode
+     */
+    public function setBarcode($barcode)
+    {
+        $this->barcode = $barcode;
+    }
+
 
 }
