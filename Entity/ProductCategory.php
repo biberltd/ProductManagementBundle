@@ -72,6 +72,12 @@ class ProductCategory extends CoreLocalizableEntity
     private $is_featured;
 
     /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    private $google_cat;
+
+    /**
      * @ORM\Column(type="integer", nullable=true, options={"default":1})
      * @var int
      */
@@ -344,4 +350,19 @@ class ProductCategory extends CoreLocalizableEntity
         return $products;
     }
 
+    /**
+     * @return string
+     */
+    public function getGoogleCat()
+    {
+        return $this->google_cat;
+    }
+
+    /**
+     * @param string $google_cat
+     */
+    public function setGoogleCat($google_cat)
+    {
+        $this->google_cat = $google_cat;
+    }
 }
