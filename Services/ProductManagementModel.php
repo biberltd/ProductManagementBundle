@@ -5812,7 +5812,7 @@ class ProductManagementModel extends CoreModel
         $category = $response->result->set;
         $idsToRemove = [];
         foreach ($products as $product) {
-            $response = $this->getProductCategory($category);
+            $response = $this->getProduct($product->getId());
             if ($response->error->exist) {
                 continue;
             }
@@ -5820,7 +5820,7 @@ class ProductManagementModel extends CoreModel
         }
         $in = ' IN (' . implode(',', $idsToRemove) . ')';
         $qStr = 'DELETE FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
-            . ' WHERE ' . $this->entity['cop']['alias'] . '.category ' . $category->getId()
+            . ' WHERE ' . $this->entity['cop']['alias'] . '.category =' . $category->getId()
             . ' AND ' . $this->entity['cop']['alias'] . '.product ' . $in;
 
         $q = $this->em->createQuery($qStr);
