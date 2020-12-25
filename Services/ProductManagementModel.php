@@ -2882,7 +2882,7 @@ class ProductManagementModel extends CoreModel
         $qStr = 'SELECT ' . $this->entity['cop']['alias'] . ', ' . $this->entity['p']['alias']
             . ' FROM ' . $this->entity['cop']['name'] . ' ' . $this->entity['cop']['alias']
             . ' JOIN ' . $this->entity['cop']['alias'] . '.product ' . $this->entity['p']['alias']
-            . ' WHERE ' . $this->entity['cop']['alias'] . '.category = ' . $category->getId();
+            . ' WHERE ' . $this->entity['cop']['alias'] . '.category = ' . $category;
 
         $oStr = '';
         if ($sortOrder != null) {
