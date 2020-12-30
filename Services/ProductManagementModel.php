@@ -7111,9 +7111,7 @@ class ProductManagementModel extends CoreModel
         foreach ($resultSet as $anItem){
             $this->em->remove($anItem);
         }
-        if($resultSet){
-            $this->em->persist($anItem);
-        }
+
         $this->em->flush();
 
         return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
